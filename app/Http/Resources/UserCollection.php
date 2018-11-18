@@ -6,6 +6,8 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class UserCollection extends ResourceCollection
 {
+
+    public $collects = UserResource::class;
     /**
      * Transform the resource collection into an array.
      *
@@ -15,8 +17,10 @@ class UserCollection extends ResourceCollection
     public function toArray($request)
     {
         return [
-            'username' => $this->username,
-            'created_at' => $this->created_at
+            'data' => $this->collection,
+            'links' => [
+                'self' => 'link-value',
+            ],
         ];
     }
 }

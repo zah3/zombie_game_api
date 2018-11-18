@@ -12,6 +12,8 @@ use App\Http\Helpers\StatusResponse;
 use App\Http\Requests\{
     LoginRequest, RegisterRequest
 };
+use App\Http\Resources\UserResource;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -36,7 +38,9 @@ class UserController extends Controller{
 
     public function register(RegisterRequest $request)
     {
-        
+        $user = User::create($request->all());
+
+        return response()->json(['success' => new UserResource(User::find($user->id))]);
     }
 
 
