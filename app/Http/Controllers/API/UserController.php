@@ -8,7 +8,11 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\LoginRequest;
+use App\Http\Helpers\StatusResponse;
+use App\Http\Requests\{
+    LoginRequest, RegisterRequest
+};
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,13 +24,19 @@ class UserController extends Controller{
      * @param LoginRequest $request
      * @return Response
      */
-    public function login(LoginRequest $request) {
+    public function login(LoginRequest $request)
+    {
         $user = Auth::user();
 
         $success['message'] = 'success';
         $success['token'] =  $user->createToken('GameToken')-> accessToken;
 
-        return response()->json(['success' => $success], 200);
+        return response()->json(['success' => $success], StatusResponse::STATUS_OK);
+    }
+
+    public function register(RegisterRequest $request)
+    {
+        
     }
 
 
