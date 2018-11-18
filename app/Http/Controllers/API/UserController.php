@@ -30,17 +30,23 @@ class UserController extends Controller{
     {
         $user = Auth::user();
 
-        $success['message'] = 'success';
+        $success['message'] = 'You are successfully login.';
         $success['token'] =  $user->createToken('GameToken')-> accessToken;
 
-        return response()->json(['success' => $success], StatusResponse::STATUS_OK);
+        return response()->json( $success, StatusResponse::STATUS_OK);
     }
 
+    /**
+     * Route for register user
+     *
+     * @param RegisterRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function register(RegisterRequest $request)
     {
         $user = User::create($request->all());
 
-        return response()->json(['success' => new UserResource(User::find($user->id))]);
+        return response()->json(['data' => new UserResource(User::find($user->id))]);
     }
 
 
