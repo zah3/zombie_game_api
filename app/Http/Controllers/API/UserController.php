@@ -40,12 +40,12 @@ class UserController extends Controller{
             //expires time
             $token->expires_at = Carbon::now()->addDay(1);
             $token->save();
+            DB::commit();
         } catch (\Exception $exception) {
             DB::rollBack();
             return response()->json(['message' => 'Failed to create new token'],StatusResponse::STATUS_BAD_REQUEST);
         }
-        DB::commit();
-
+        
         $success['message'] = 'You are successfully login.';
         $success['token'] = $createdToken->accessToken;
         return response()->json($success, StatusResponse::STATUS_OK);
