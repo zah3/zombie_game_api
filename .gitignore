@@ -13,5 +13,4 @@ yarn-error.log
 .env
 .phpunit.result.cache
 
-/config/database.php
 composer.phar
