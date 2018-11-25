@@ -63,4 +63,17 @@ class UserController extends Controller{
 
         return response()->json(['data' => new UserResource(User::find($user->id))]);
     }
+
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function logout(){
+        if (Auth::check()) {
+            Auth::user()->token()->revoke();
+            return response()->json(['success' =>'logout success'],200);
+        }else{
+            return response()->json(['error' =>'Something goes wrong. You cannot logout.'], 500);
+        }
+    }
 }
