@@ -20,7 +20,7 @@ class CreateItemsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('fraction_id')->references('id')->on('fractions');
+            $table->foreign('fraction_id')->references('id')->on('fractions')->onDelete('cascade');
         });
     }
 

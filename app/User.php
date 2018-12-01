@@ -2,7 +2,9 @@
 
 namespace App;
 
+use App\Events\UserEvent;
 use App\Http\Helpers\StatusResponse;
+use App\Providers\EventServiceProvider;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
@@ -66,7 +68,17 @@ class User extends Authenticatable
      */
     public function roles()
     {
-        return $this->hasMany(Role::class);
+        return $this->belongsToMany(Role::class)->withTimestamps();
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function($user){
+            $userEvent = new UserEvent();
+            event($userEvent->userCreated($user));
+        });
     }
 
     public function authorizeRoles($roles)
@@ -88,5 +100,6 @@ class User extends Authenticatable
     {
         return !is_null($this->roles()->where('name','=',$role)->first());
     }
+
 }
 
