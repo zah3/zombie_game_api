@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Http\Helpers\StatusResponse;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
@@ -59,5 +60,33 @@ class User extends Authenticatable
         return $this->hasMany(Character::class);
     }
 
+    /**
+     * Relation to role model.
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function roles()
+    {
+        return $this->hasMany(Role::class);
+    }
+
+    public function authorizeRoles($roles)
+    {
+        if (is_array($roles)) {
+            return $this->hasAnyRole($roles) ||
+                abort(StatusResponse::STATUS_UNAUTHORIZED,'This action is unauthorized.');
+        }
+        return $this->hasRole($roles) ||
+            abort(StatusResponse::STATUS_UNAUTHORIZED, 'This action is unauthorized.');
+    }
+
+    public function hasAnyRole($roles)
+    {
+        return !is_null($this->roles()->whereIn('name',$roles)->first());
+    }
+
+    public function hasRole($role)
+    {
+        return !is_null($this->roles()->where('name','=',$role)->first());
+    }
 }
 
