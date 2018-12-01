@@ -12,30 +12,25 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-        $user = new User();
-        $user->username = 'Zachariasz';
-        $user->password = bcrypt('Zachariasz');
-        $user->save();
-
-        $user = new User();
-        $user->username = 'Karol';
-        $user->password = bcrypt('Karol');
-        $user->save();
-
-        $user = new User();
-        $user->username = 'Rafal';
-        $user->password = bcrypt('Rafał');
-        $user->save();
-
-        $user = new User();
-        $user->username = 'Maciej';
-        $user->password = bcrypt('Maciej');
-        $user->save();
-
-        $user = new User();
-        $user->username = 'Mikołaj';
-        $user->password = bcrypt('Mikołaj');
-        $user->save();
-
+        User::create([
+           'username' => 'Zachariasz',
+           'password' => bcrypt('Zachariasz')
+        ]);
+        User::create([
+           'username' => 'Karol',
+           'password' => bcrypt('Karol')
+        ]);
+        User::create([
+           'username' => 'Rafał',
+           'password' => bcrypt('Rafał')
+        ]);
+        User::create([
+           'username' => 'Maciej',
+           'password' => bcrypt('Maciej')
+        ]);
+        User::create([
+           'username' => 'Mikołaj',
+           'password' => bcrypt('Mikołaj')
+        ]);
     }
 }

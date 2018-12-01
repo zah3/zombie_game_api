@@ -64,13 +64,16 @@ class User extends Authenticatable
 
     /**
      * Relation to role model.
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function roles()
     {
         return $this->belongsToMany(Role::class)->withTimestamps();
     }
 
+    /**
+     * @inheritdoc
+     */
     protected static function boot()
     {
         parent::boot();
@@ -81,6 +84,11 @@ class User extends Authenticatable
         });
     }
 
+
+    /**
+     * @param string | array$roles
+     * @return bool
+     */
     public function authorizeRoles($roles)
     {
         if (is_array($roles)) {
