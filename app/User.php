@@ -3,6 +3,7 @@
 namespace App;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
@@ -11,7 +12,8 @@ use Laravel\Passport\Passport;
 class User extends Authenticatable
 {
     use Notifiable,
-        HasApiTokens;
+        HasApiTokens,
+        SoftDeletes;
 
     public const GAME_TOKEN = "GameToken";
 
@@ -41,6 +43,12 @@ class User extends Authenticatable
         'created_at',
         'updated_at'
     ];
+
+    /**
+     * softDelete attribute.
+     * @var array
+     */
+    public $dates = ['deleted_at'];
 
     /**
      * Relation to character model.
