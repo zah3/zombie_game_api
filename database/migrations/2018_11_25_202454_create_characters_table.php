@@ -15,10 +15,10 @@ class CreateCharactersTable extends Migration
     {
         Schema::create('characters', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('user_id')->index();
+            $table->unsignedInteger('user_id')->index()->nullable();
             $table->unsignedInteger('fraction_id')->index()->default(1);
-            $table->string('name');
-            $table->tinyInteger('level',false,true);
+            $table->string('name')->collation('utf8_bin')->unique();
+            $table->unsignedInteger('experience')->default(0);
             $table->timestamps();
             $table->softDeletes();
 

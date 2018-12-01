@@ -15,6 +15,11 @@ class Character extends Model
         'deleted_at'
     ];
 
+    protected $fillable = [
+        'name',
+        'experience',
+    ];
+
     /**
      * Relation to fraction model.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
