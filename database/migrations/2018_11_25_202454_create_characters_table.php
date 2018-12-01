@@ -16,14 +16,14 @@ class CreateCharactersTable extends Migration
         Schema::create('characters', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id')->index();
-            $table->unsignedInteger('fraction_id')->index()->default($this->getIdNormalFraction());
+            $table->unsignedInteger('fraction_id')->index()->default(1);
             $table->string('name');
             $table->tinyInteger('level',false,true);
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('user_id')->references('users')->on('id');
-            $table->foreign('fraction_id')->references('fractions')->on('id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('fraction_id')->references('id')->on('fractions');
         });
 
     }
@@ -38,10 +38,4 @@ class CreateCharactersTable extends Migration
         Schema::dropIfExists('characters');
     }
 
-    public function getIdNormalFraction()
-    {
-        return \App\Fraction::query()
-                            ->where('name','=',\App\Fraction::FRACTION_NAME_NORMAL)
-                            ->select('id');
-    }
 }
