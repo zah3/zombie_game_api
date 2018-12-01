@@ -10,7 +10,8 @@ use Laravel\Passport\Passport;
 
 class User extends Authenticatable
 {
-    use Notifiable,HasApiTokens;
+    use Notifiable,
+        HasApiTokens;
 
     public const GAME_TOKEN = "GameToken";
 
@@ -32,8 +33,23 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * @var array
+     */
     public $timestamps = [
         'created_at',
         'updated_at'
     ];
+
+    /**
+     * Relation to character model.
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function characters()
+    {
+        return $this->hasMany(Character::class);
+    }
+
 }
+

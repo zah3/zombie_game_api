@@ -15,7 +15,12 @@ class CreateItemsTable extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('fraction_id')->index();
+            $table->string('name');
             $table->timestamps();
+            $table->softDeletes();
+
+            $table->foreign('fraction_id')->references('fractions')->on('id');
         });
     }
 
