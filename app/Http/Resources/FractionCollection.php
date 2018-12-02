@@ -2,12 +2,12 @@
 
 namespace App\Http\Resources;
 
+use App\Fraction;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class UserCollection extends ResourceCollection
+class FractionCollection extends ResourceCollection
 {
-
-    public $collects = UserResource::class;
+    public $collects = Fraction::class;
     /**
      * Transform the resource collection into an array.
      *
@@ -16,8 +16,6 @@ class UserCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return [
-            'data' => $this->collection,
-        ];
+        return  [ 'data' => $this->collection ];
     }
 }

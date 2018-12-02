@@ -23,10 +23,27 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     Route::post('register', 'API\UserController@register');
 
 //});
-Route::group(['middleware' => 'auth:api'], function(){
+Route::group(['middleware' => 'auth:api'], function() {
 
     Route::post('logout','API\UserController@logout');
 
     Route::post('details', 'API\UserController@details');
+
+
+});
+
+Route::prefix('user')->group(function () {
+
+    Route::get('/','API\UserController@index')->middleware('auth:api');
+
+    Route::post('/store','API\UserController@store')->middleware('auth:api');
+
+    Route::delete('/destroy/{id}','API\UserController@destroy')->middleware('auth:api');
+
+    Route::get('/show/{id}','API\UserController@show')->middleware('auth:api');
+
+    Route::put('/update/{id}','API\UserController@update')->middleware('auth:api');
+
+    Route::get('/admins','API\UserController@admins')->middleware('auth:api');
 
 });

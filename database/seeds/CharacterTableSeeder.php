@@ -12,7 +12,8 @@ class CharacterTableSeeder extends Seeder
      */
     public function run()
     {
-        $zachariasz = \App\User::where('username','=','Zachariasz')->first();
+        $zachariaszAdmin = \App\User::where('username','=','Zachariasz_admin')->first();
+        //$zachariaszUser = \App\User::where('username','=','Zachariasz_user')->first();
 
         $characterNormalType = new Character();
         $characterNormalType->name = 'Nowy cham';
@@ -24,7 +25,7 @@ class CharacterTableSeeder extends Seeder
             'experience' => 123123
         ]);
 
-        $zachariasz->characters()->saveMany([
+        $zachariaszAdmin->characters()->saveMany([
             $characterNormalType,
             $characterOtherType
         ]);

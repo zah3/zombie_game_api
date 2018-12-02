@@ -17,6 +17,7 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('username')->collation('utf8_bin')->unique();
             $table->string('password');
+            $table->boolean('is_active')->default(false);
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

@@ -21,21 +21,23 @@ class RolesTableSeeder extends Seeder
             'name' => 'admin',
             'description' => 'Game admin',
             ]);
-        $zachariasz = \App\User::where('username','=','Zachariasz')->first();
+        $zachariaszAdmin = \App\User::where('username','=','Zachariasz_admin')->first();
+        $zachariaszUser = \App\User::where('username','=','Zachariasz_user')->first();
         $mikolaj = \App\User::where('username','=','Mikołaj')->first();
         $maciej = \App\User::where('username','=','Maciej')->first();
         $rafal = \App\User::where('username','=','Rafał')->first();
         $karol = \App\User::where('username','=','Karol')->first();
 
         $userRole->users()->sync([
-            $zachariasz->id,
+            $zachariaszUser->id,
+            $zachariaszAdmin->id,
             $mikolaj->id,
             $maciej->id,
             $rafal->id,
             $karol->id,
         ]);
         $adminRole->users()->sync([
-            $zachariasz->id,
+            $zachariaszAdmin->id,
             $mikolaj->id,
             $maciej->id,
             $rafal->id,

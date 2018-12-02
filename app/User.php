@@ -23,6 +23,7 @@ class User extends Authenticatable
     protected $fillable = [
         'username',
         'password',
+        'is_active'
     ];
 
     /**
@@ -80,9 +81,8 @@ class User extends Authenticatable
         });
     }
 
-
     /**
-     * @param string | array$roles
+     * @param string || array $roles
      * @return bool
      */
     public function authorizeRoles($roles)
@@ -95,15 +95,55 @@ class User extends Authenticatable
             abort(StatusResponse::STATUS_UNAUTHORIZED, 'This action is unauthorized.');
     }
 
-    public function hasAnyRole($roles)
+    /**
+     * Check if user has any of roles.
+     * @param array $roles
+     * @return bool
+     */
+    public function hasAnyRole(array $roles)
     {
         return !is_null($this->roles()->whereIn('name',$roles)->first());
     }
 
-    public function hasRole($role)
+    /**
+     * Check if user has 1 role.
+     * @param string $role
+     * @return bool
+     */
+    public function hasRole(string $role)
     {
         return !is_null($this->roles()->where('name','=',$role)->first());
     }
 
+    /**
+     * Activate User.
+     * @return bool || void
+     */
+    public function activate()
+    {
+        if ($this->is_active === false) {
+            return $this->is_active = true;
+        }
+    }
+
+    /**
+     * Activate User.
+     * @return bool
+     */
+    public function activateAndSave()
+    {
+        if ($this->is_active === false) {
+            $this->is_active = true;
+            $this->update();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active','=',true);
+    }
 }
 
