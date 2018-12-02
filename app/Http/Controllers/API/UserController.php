@@ -19,7 +19,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\{
     Auth,
-    DB
+    DB,
+    Hash
 };
 
 class UserController extends Controller{
@@ -32,7 +33,7 @@ class UserController extends Controller{
      */
     public function login(LoginRequest $request)
     {
-        $user = Auth::user();
+        $user = User::where('username','=',$request->input('username'))->first();
         DB::beginTransaction();
         try {
             $createdToken = $user->createToken(User::GAME_TOKEN);
@@ -59,8 +60,9 @@ class UserController extends Controller{
      */
     public function register(RegisterRequest $request)
     {
-        $user = User::create($request->all());
-
+        $inputs = $request->all();
+        $inputs['password'] = Hash::make($inputs['password']);
+        $user = User::create($inputs);
         return response()->json(['data' => new UserResource(User::find($user->id))]);
     }
 

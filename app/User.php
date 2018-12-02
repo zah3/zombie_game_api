@@ -4,19 +4,14 @@ namespace App;
 
 use App\Events\UserEvent;
 use App\Http\Helpers\StatusResponse;
-use App\Providers\EventServiceProvider;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
-use Laravel\Passport\Passport;
 
 class User extends Authenticatable
 {
-    use Notifiable,
-        HasApiTokens,
-        SoftDeletes;
+    use Notifiable, HasApiTokens, SoftDeletes;
 
     public const GAME_TOKEN = "GameToken";
 
@@ -36,7 +31,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
     ];
 
     /**
