@@ -16,8 +16,10 @@ class UserCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return [
-            'data' => $this->collection,
-        ];
+        $data = [];
+        foreach ($this->collection as $item) {
+            $data[] = new UserResource($item);
+        }
+        return $data;
     }
 }

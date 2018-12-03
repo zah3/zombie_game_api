@@ -17,7 +17,7 @@ class UserPolicy
      * @param  \App\User  $model
      * @return mixed
      */
-    public function show(User $user, User $model)
+    public function read(User $user, User $model)
     {
         return $user->hasRole(Role::ROLE_ADMIN) || $user->id === $model->id;
     }
@@ -28,7 +28,7 @@ class UserPolicy
      * @param  \App\User  $user
      * @return mixed
      */
-    public function store(User $user)
+    public function create(User $user)
     {
         return $user->hasRole(Role::ROLE_ADMIN);
     }
@@ -52,7 +52,7 @@ class UserPolicy
      * @param  \App\User  $model
      * @return mixed
      */
-    public function destroy(User $user, User $model)
+    public function delete(User $user, User $model)
     {
         return $user->hasRole(Role::ROLE_ADMIN) || $user->id === $model->id;
     }

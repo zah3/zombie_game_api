@@ -104,7 +104,7 @@ class UserController extends Controller{
      */
     public function store(Request $request)
     {
-        $this->authorize('store', User::class);
+        $this->authorize('create', User::class);
 
         return response()->json(['message'=> 'success']);
     }
@@ -116,7 +116,7 @@ class UserController extends Controller{
      */
     public function show(User $user)
     {
-        $this->authorize('show', $user);
+        $this->authorize('read', $user);
 
         return response()->json(['message'=> 'success']);
     }
@@ -144,7 +144,7 @@ class UserController extends Controller{
      */
     public function destroy(User $user)
     {
-        $this->authorize('destroy', $user);
+        $this->authorize('delete', $user);
 
         return response()->json(['message'=> 'success']);
     }
