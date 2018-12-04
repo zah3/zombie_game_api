@@ -13,12 +13,16 @@ use App\Http\Requests\{
     LoginRequest,
     RegisterRequest
 };
-use App\Http\Resources\UserCollection;
-use App\Http\Resources\UserResource;
+use App\Http\Resources\{
+    UserResource,
+    UserCollection
+};
 use App\User;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Illuminate\Http\{
+    Response,
+    Request
+};
 use Illuminate\Support\Facades\{
     Auth,
     DB,
@@ -91,62 +95,89 @@ class UserController extends Controller{
      */
     public function index()
     {
-        return response()->json( new UserCollection(User::with(['roles'])->all()), StatusResponse::STATUS_OK);
+        //return response()->json(['ok']);
+        return response()->json( new UserCollection(User::with(['roles'])->get()), StatusResponse::STATUS_OK);
     }
-
 
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function store(Request $request)
+    public function store(RegisterRequest $request)
     {
         $this->authorize('create', User::class);
+        $user = User::create([
+            'username' => $request->input('username'),
+            'password' => Hash::make($request->input('password')),
+            'is_active' => false,
+        ]);
 
-        return response()->json(['message'=> 'success']);
+        return response()->json(['message'=> 'success','data' => new UserResource($user)]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\User  $user
+     * @param User $user
+     *
+     * @return \Illuminate\Http\JsonResponse
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function show(User $user)
     {
         $this->authorize('read', $user);
 
-        return response()->json(['message'=> 'success']);
+        return response()->json(new UserResource($user));
     }
 
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  User $user
-     * @return array
+     * @param Request $request
+     * @param User $user
+     *
+     * @return \Illuminate\Http\JsonResponse
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(Request $request, User $user)
     {
         $this->authorize('update', $user);
 
-        return response()->json(['message'=> 'success']);
+        if ($request->input('username') || $user->username) {
+            $user->username = $request->input('username');
+            $user->save();
+            return response()->json(['message' => 'Updated']);
+        } else {
+            return response()->json(['error' => 'nothing has changed']);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  User $user
-     * @return array
+     * @param User $user
+     *
+     * @return \Illuminate\Http\JsonResponse
+     *
+     * @throws \Exception
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function destroy(User $user)
     {
         $this->authorize('delete', $user);
 
-        return response()->json(['message'=> 'success']);
+        $user->delete();
+
+        return response()->json(['message'=> 'Successful deleted.']);
     }
 
     public function admins()

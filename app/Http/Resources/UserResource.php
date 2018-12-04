@@ -17,10 +17,11 @@ class UserResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'username' => $this->username,
-            'is_active' => $this->when(Auth::user()->hasRole(Role::ROLE_ADMIN),'is_active'),
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'is_active' => $this->when(Auth::user()->hasRole(Role::ROLE_ADMIN),$this->is_active),
+            'created_at' => $this->created_at->toDateTimeString(),
+            'updated_at' => $this->updated_at->toDateTimeString(),
             'roles' => RoleResource::collection( $this->whenLoaded('roles')),
         ];
     }

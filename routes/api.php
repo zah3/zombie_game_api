@@ -32,6 +32,7 @@ Route::group(['middleware' => 'auth:api'], function() {
 
 });
 
+
 Route::prefix('user')->group(function () {
 
     Route::get('/','API\UserController@index')->middleware('auth:api');
