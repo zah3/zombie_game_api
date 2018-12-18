@@ -22,7 +22,7 @@ class UserResource extends JsonResource
             'is_active' => $this->when(Auth::user()->hasRole(Role::ROLE_ADMIN),$this->is_active),
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
-            'roles' => RoleResource::collection( $this->whenLoaded('roles')),
+            'roles' => RoleResource::collection($this->whenLoaded('roles')),
         ];
     }
 }

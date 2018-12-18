@@ -10,8 +10,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\StatusResponse;
 use App\Http\Requests\{
-    LoginRequest,
-    RegisterRequest
+    LoginRequest, UserRegisterRequest, UpdateUserRequest
 };
 use App\Http\Resources\{
     UserResource,
@@ -20,8 +19,7 @@ use App\Http\Resources\{
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\{
-    Response,
-    Request
+    Response
 };
 use Illuminate\Support\Facades\{
     Auth,
@@ -50,7 +48,7 @@ class UserController extends Controller{
             DB::commit();
         } catch (\Exception $exception) {
             DB::rollBack();
-            return response()->json(['message' => 'Failed to create new token'],StatusResponse::STATUS_BAD_REQUEST);
+            return response()->json(['message' => 'Failed to create new token.'],StatusResponse::STATUS_BAD_REQUEST);
         }
         
         $success['message'] = 'You are successfully login.';
@@ -61,10 +59,10 @@ class UserController extends Controller{
     /**
      * Route for register user
      *
-     * @param RegisterRequest $request
+     * @param UserRegisterRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function register(RegisterRequest $request)
+    public function register(UserRegisterRequest $request)
     {
         $newUser = [
             'username' => $request->input('username'),
@@ -95,21 +93,20 @@ class UserController extends Controller{
      */
     public function index()
     {
-        //return response()->json(['ok']);
-        return response()->json( new UserCollection(User::with(['roles'])->get()), StatusResponse::STATUS_OK);
+        return response()->json(new UserCollection(User::with(['roles'])->get()), StatusResponse::STATUS_OK);
     }
 
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param UserRegisterRequest $request
      *
      * @return \Illuminate\Http\JsonResponse
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function store(RegisterRequest $request)
+    public function store(UserRegisterRequest $request)
     {
         $this->authorize('create', User::class);
         $user = User::create([
@@ -141,18 +138,18 @@ class UserController extends Controller{
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param UpdateUserRequest $request
      * @param User $user
      *
      * @return \Illuminate\Http\JsonResponse
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function update(Request $request, User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
         $this->authorize('update', $user);
 
-        if ($request->input('username') || $user->username) {
+        if ($request->input('username') !== $user->username) {
             $user->username = $request->input('username');
             $user->save();
             return response()->json(['message' => 'Updated']);
@@ -180,9 +177,4 @@ class UserController extends Controller{
         return response()->json(['message'=> 'Successful deleted.']);
     }
 
-    public function admins()
-    {
-        $users = UserCollection::make(User::with('roles')->admins()->get());
-        return response()->json($users);
-    }
 }

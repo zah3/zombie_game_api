@@ -27,7 +27,7 @@ Route::group(['middleware' => 'auth:api'], function() {
 
     Route::post('logout','API\UserController@logout');
 
-    Route::post('details', 'API\UserController@details');
+    //Route::post('details', 'API\UserController@details');
 
 
 });
@@ -45,6 +45,5 @@ Route::prefix('user')->group(function () {
 
     Route::put('/update/{id}','API\UserController@update')->middleware('auth:api');
 
-    Route::get('/admins','API\UserController@admins')->middleware('auth:api');
 
 });
