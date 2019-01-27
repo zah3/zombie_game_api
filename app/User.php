@@ -141,9 +141,28 @@ class User extends Authenticatable
         }
     }
 
+
+    /**
+     * Scope for active users.
+     *
+     * @param $query
+     * @return mixed
+     */
     public function scopeActive($query)
     {
-        return $query->where('is_active','=',true);
+        return $query->where($this->table . '.is_active','=',true);
+    }
+
+    /**
+     * Scope with username
+     *
+     * @param $query
+     * @param $username
+     * @return mixed
+     */
+    public function scopeWithUsername($query, $username)
+    {
+        return $query->where($this->table . '.username','=',$username);
     }
 }
 

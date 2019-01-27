@@ -3,13 +3,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use MongoDB\Driver\Query;
 
 class Role extends Model
 {
 
-    public const ROLE_USER = 'user';
-
-    public const ROLE_ADMIN = 'admin';
+    public const ADMIN = 'administrator';
+    public const USER = 'user';
 
     protected $fillable = [
         'name',
@@ -23,5 +23,19 @@ class Role extends Model
     public function users()
     {
         return $this->belongsToMany(User::class)->withTimestamps();
+    }
+
+    /// Scopes
+
+    /**
+     * Scope return role with name.
+     *
+     * @param $query
+     * @param string $name
+     * @return Query
+     */
+    public function scopeWithName($query, string $name)
+    {
+        return $query->where($this->table . '.name', '=', $name);
     }
 }

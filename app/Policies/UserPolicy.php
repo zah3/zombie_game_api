@@ -19,7 +19,7 @@ class UserPolicy
      */
     public function read(User $user, User $model)
     {
-        return $user->hasRole(Role::ROLE_ADMIN) || $user->id === $model->id;
+        return $user->hasRole(Role::ADMIN) || $user->id === $model->id;
     }
 
     /**
@@ -30,7 +30,7 @@ class UserPolicy
      */
     public function create(User $user)
     {
-        return $user->hasRole(Role::ROLE_ADMIN);
+        return $user->hasRole(Role::ADMIN);
     }
 
     /**
@@ -42,7 +42,7 @@ class UserPolicy
      */
     public function update(User $user, User $model)
     {
-        return $user->hasRole(Role::ROLE_ADMIN) || $user->id === $model->id;
+        return $user->hasRole(Role::ADMIN) || $user->id === $model->id;
     }
 
     /**
@@ -54,6 +54,6 @@ class UserPolicy
      */
     public function delete(User $user, User $model)
     {
-        return $user->hasRole(Role::ROLE_ADMIN) || $user->id === $model->id;
+        return $user->hasRole(Role::ADMIN) || $user->id === $model->id;
     }
 }
