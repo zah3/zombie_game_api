@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Http\Resources\UserCollection;
+use App\Http\Resources\UserResourceCollection;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -14,7 +14,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        UserCollection::withoutWrapping();
+
     }
 
     /**

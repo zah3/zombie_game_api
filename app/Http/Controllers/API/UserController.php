@@ -14,7 +14,7 @@ use App\Http\Requests\{
 };
 use App\Http\Resources\{
     UserResource,
-    UserCollection
+    UserResourceCollection
 };
 use App\User;
 use Carbon\Carbon;
@@ -93,7 +93,7 @@ class UserController extends Controller{
      */
     public function index()
     {
-        return response()->json(new UserCollection(User::with(['roles'])->get()), StatusResponse::STATUS_OK);
+        return response()->json(new UserResourceCollection(User::with(['roles'])->get()), StatusResponse::STATUS_OK);
     }
 
 
