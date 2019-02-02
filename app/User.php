@@ -15,6 +15,8 @@ class User extends Authenticatable
 
     public const GAME_TOKEN = "GameToken";
 
+    public const MESSAGE_UNAUTHORIZED = 'This action is unauthorized.';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -52,6 +54,7 @@ class User extends Authenticatable
 
     /**
      * Relation to character model.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function characters()
@@ -61,6 +64,7 @@ class User extends Authenticatable
 
     /**
      * Relation to role model.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function roles()
@@ -82,22 +86,27 @@ class User extends Authenticatable
     }
 
     /**
+     * AuthorizeRoles
+     *
      * @param string || array $roles
+     *
      * @return bool
      */
     public function authorizeRoles($roles)
     {
         if (is_array($roles)) {
             return $this->hasAnyRole($roles) ||
-                abort(StatusResponse::STATUS_UNAUTHORIZED,'This action is unauthorized.');
+                abort(StatusResponse::STATUS_UNAUTHORIZED,self::MESSAGE_UNAUTHORIZED);
         }
         return $this->hasRole($roles) ||
-            abort(StatusResponse::STATUS_UNAUTHORIZED, 'This action is unauthorized.');
+            abort(StatusResponse::STATUS_UNAUTHORIZED, self::MESSAGE_UNAUTHORIZED);
     }
 
     /**
      * Check if user has any of roles.
+     *
      * @param array $roles
+     *
      * @return bool
      */
     public function hasAnyRole(array $roles)
@@ -107,7 +116,9 @@ class User extends Authenticatable
 
     /**
      * Check if user has 1 role.
+     *
      * @param string $role
+     *
      * @return bool
      */
     public function hasRole(string $role)
