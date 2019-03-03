@@ -15,19 +15,17 @@ class UserEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    /**
-     * Create a new event instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
 
+    /**
+     * When user is created add to him User role.
+     *
+     * @param User $user
+     *
+     * @return $this
+     */
     public function userCreated(User $user)
     {
-        $user->roles()->attach(Role::where('name','=','user')->first());
+        $user->roles()->attach(Role::withName(Role::USER)->first());
         return $this;
     }
 

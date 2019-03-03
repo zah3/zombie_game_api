@@ -9,12 +9,7 @@ class API_User_Test extends TestCase
 {
     use DatabaseTransactions;
 
-    /**
-     * Finish it, when factories are created
-     * A basic test example.
-     *
-     * @return void
-     */
+    /** @test */
     public function register()
     {
         $goodData = [

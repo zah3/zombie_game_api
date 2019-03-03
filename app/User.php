@@ -4,7 +4,10 @@ namespace App;
 
 use App\Events\UserEvent;
 use App\Http\Helpers\StatusResponse;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
@@ -17,26 +20,6 @@ class User extends Authenticatable
 
     public const MESSAGE_UNAUTHORIZED = 'This action is unauthorized.';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'username',
-        'password',
-        'is_active'
-    ];
-
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
 
     /**
      * @var array
@@ -57,7 +40,7 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function characters()
+    public function characters(): HasMany
     {
         return $this->hasMany(Character::class);
     }
@@ -67,9 +50,9 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function roles()
+    public function roles(): BelongsToMany
     {
-        return $this->belongsToMany(Role::class)->withTimestamps();
+        return $this->belongsToMany(Role::class);
     }
 
     /**
@@ -79,10 +62,33 @@ class User extends Authenticatable
     {
         parent::boot();
 
-        static::created(function($user){
+        static::created(function ($user) {
             $userEvent = new UserEvent();
             event($userEvent->userCreated($user));
         });
+    }
+
+    /**
+     * Scope for active users.
+     *
+     * @param $query
+     * @return mixed
+     */
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->where($this->table . '.is_active', '=', true);
+    }
+
+    /**
+     * Scope with username
+     *
+     * @param $query
+     * @param $username
+     * @return mixed
+     */
+    public function scopeWithUsername(Builder $query, string $username): Builder
+    {
+        return $query->where($this->table . '.username', '=', $username);
     }
 
     /**
@@ -96,7 +102,7 @@ class User extends Authenticatable
     {
         if (is_array($roles)) {
             return $this->hasAnyRole($roles) ||
-                abort(StatusResponse::STATUS_UNAUTHORIZED,self::MESSAGE_UNAUTHORIZED);
+                abort(StatusResponse::STATUS_UNAUTHORIZED, self::MESSAGE_UNAUTHORIZED);
         }
         return $this->hasRole($roles) ||
             abort(StatusResponse::STATUS_UNAUTHORIZED, self::MESSAGE_UNAUTHORIZED);
@@ -109,9 +115,9 @@ class User extends Authenticatable
      *
      * @return bool
      */
-    public function hasAnyRole(array $roles)
+    public function hasAnyRole(array $roles): bool
     {
-        return !is_null($this->roles()->whereIn('name',$roles)->first());
+        return !is_null($this->roles()->whereIn('name', $roles)->first());
     }
 
     /**
@@ -121,16 +127,16 @@ class User extends Authenticatable
      *
      * @return bool
      */
-    public function hasRole(string $role)
+    public function hasRole(string $role): bool
     {
-        return !is_null($this->roles()->where('name','=',$role)->first());
+        return !is_null($this->roles()->where('name', '=', $role)->first());
     }
 
     /**
      * Activate User.
      * @return bool || void
      */
-    public function activate()
+    public function activate(): ?bool
     {
         if ($this->is_active === false) {
             return $this->is_active = true;
@@ -141,7 +147,7 @@ class User extends Authenticatable
      * Activate User.
      * @return bool
      */
-    public function activateAndSave()
+    public function activateAndSave(): bool
     {
         if ($this->is_active === false) {
             $this->is_active = true;
@@ -150,30 +156,6 @@ class User extends Authenticatable
         } else {
             return false;
         }
-    }
-
-
-    /**
-     * Scope for active users.
-     *
-     * @param $query
-     * @return mixed
-     */
-    public function scopeActive($query)
-    {
-        return $query->where($this->table . '.is_active','=',true);
-    }
-
-    /**
-     * Scope with username
-     *
-     * @param $query
-     * @param $username
-     * @return mixed
-     */
-    public function scopeWithUsername($query, $username)
-    {
-        return $query->where($this->table . '.username','=',$username);
     }
 }
 
