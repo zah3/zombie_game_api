@@ -42,5 +42,4 @@ Route::prefix('user')->group(function () {
 
     Route::put('/update/{id}','API\UserController@update')->middleware('auth:api');
 
-
 });

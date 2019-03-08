@@ -22,6 +22,7 @@ class API_User_Test extends TestCase
             'api/register',
             $goodData
         );
+
         $response->status(200);
     }
 }
