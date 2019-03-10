@@ -13,8 +13,7 @@ class API_User_Test extends TestCase
     public function testLoginCheckCaseSensitiveInFields()
     {
         $user = factory(User::class)->make([
-            'password' => 'PassWord',
-            'username' => 'username',
+            'username' => 'usernamE',
         ]);
         $goodDataWithCamelCase = [
             'username' => $user->username,
@@ -37,42 +36,114 @@ class API_User_Test extends TestCase
             ]
         );
 
-        // Send incorrect data for login
-        $response = $this->json(
+        // Send incorrect data for log in
+        // Password is in lowercase
+        $response2 = $this->json(
             'POST',
             'api/login',
             [
-                'password' => strtolower($user->password),
+                'password' => strtolower($goodDataWithCamelCase['password']),
                 'username' => $user->username,
             ]
         );
-        $response->assertStatus(422)
+        $response2->assertStatus(422)
+            ->assertJsonValidationErrors('username');
+
+        // Send incorrect data for login
+        // Username is in lowercase
+        $response3 = $this->json(
+            'POST',
+            'api/login',
+            [
+                'password' => $goodDataWithCamelCase['password'],
+                'username' => strtolower($user->username),
+            ]
+        );
+        $response3->assertStatus(422)
             ->assertJsonValidationErrors('username');
 
         // Send correct data for login
-        $response = $this->json(
+        $response4 = $this->json(
             'POST',
             'api/login',
             [
-                'password' => $user->password,
+                'password' => $goodDataWithCamelCase['password'],
                 'username' => $user->username,
             ]
         );
-        $response->assertStatus(200);
+        $response4->assertStatus(200);
     }
 
-    public function register_test()
+    public function testRegisterWithIncorrectData()
     {
+        // Send incorrect password with confirm_password
+        $incorrectData = [
+            'username' => 'username',
+            'password' => 'password',
+            'confirm_password' => 'password1',
+        ];
+
+        $response1 = $this->json(
+            'POST',
+            'api/register',
+            $incorrectData
+        );
+
+        $response1->assertStatus(422)
+            ->assertJsonValidationErrors('confirm_password');
+        $this->assertDatabaseMissing(
+            'users',
+            ['username' => $incorrectData['username']]
+        );
+
+        // Try to create user with already existed username
+        $user = factory(User::class)->create([
+            'username' => 'existed',
+        ]);
+
+        $incorrectData2 = [
+            'username' => $user->username,
+            'password' => 'password',
+            'confirm_password' => 'password',
+        ];
+
+        $response2 = $this->json(
+            'POST',
+            'api/register',
+            $incorrectData2
+        );
+
+        $response2->assertStatus(422)
+            ->assertJsonValidationErrors('username');
+
+        // Send correct data
         $goodData = [
             'username' => 'username',
             'password' => 'password',
             'confirm_password' => 'password',
         ];
-        $response = $this->json(
+
+        $response3 = $this->json(
             'POST',
             'api/register',
             $goodData
         );
-        $response->assertStatus(200);
+        $response3->assertStatus(200)
+            ->assertJsonStructure([
+                'data' => [
+                    'id',
+                    'username',
+                    'created_at',
+                    'updated_at',
+                ],
+            ])->assertJsonFragment([
+                'username' => $goodData['username'],
+            ]);
+        $this->assertDatabaseHas(
+            'users',
+            [
+                'username' => $goodData['username'],
+            ]
+        );
     }
 }
