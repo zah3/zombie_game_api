@@ -5,6 +5,7 @@
  * Date: 2018-10-28
  * Time: 16:46
  */
+
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
@@ -14,7 +15,6 @@ use App\Http\Requests\{
 };
 use App\Http\Resources\{
     UserResource,
-    UserResourceCollection
 };
 use App\User;
 use Carbon\Carbon;
@@ -27,17 +27,19 @@ use Illuminate\Support\Facades\{
     Hash
 };
 
-class UserController extends Controller{
-
+class UserController extends Controller
+{
     /**
-     * Login api.
+     * POST /api/login
+     * Log in existed user
      *
      * @param LoginRequest $request
+     *
      * @return Response
      */
     public function login(LoginRequest $request)
     {
-        $user = User::where('username','=',$request->input('username'))->first();
+        $user = User::where('username', '=', $request->input('username'))->first();
         DB::beginTransaction();
         try {
             $createdToken = $user->createToken(User::GAME_TOKEN);
@@ -48,19 +50,21 @@ class UserController extends Controller{
             DB::commit();
         } catch (\Exception $exception) {
             DB::rollBack();
-            return response()->json(['message' => 'Failed to create new token.'],StatusResponse::STATUS_BAD_REQUEST);
+            return response()->json(['message' => 'Failed to create new token.'], StatusResponse::STATUS_BAD_REQUEST);
         }
-        
+
         $success['message'] = 'You are successfully login.';
         $success['token'] = $createdToken->accessToken;
         return response()->json($success, StatusResponse::STATUS_OK);
     }
 
     /**
-     * Route for register user
+     * POST /api/register
+     * Registers a new user
      *
      * @param UserRegisterRequest $request
-     * @return \Illuminate\Http\JsonResponse
+     *
+     * @return UserResource
      */
     public function register(UserRegisterRequest $request)
     {
@@ -69,20 +73,27 @@ class UserController extends Controller{
             'password' => Hash::make($request->input('password')),
             'is_active' => false
         ];
-        $user = User::create($newUser);
-        return response()->json(['data' => new UserResource(User::find($user->id))]);
+        $user = new User();
+        $user->username = $newUser['username'];
+        $user->password = $newUser['password'];
+        $user->is_active = $newUser['is_active'];
+        $user->save();
+
+        return UserResource::make(User::find($user->id));
     }
 
 
     /**
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function logout(){
+    public function logout()
+    {
         if (Auth::check()) {
             Auth::user()->token()->revoke();
-            return response()->json(['message' =>'logout success'],StatusResponse::STATUS_OK);
+            return response()->json(['message' => 'logout success'], StatusResponse::STATUS_OK);
         } else {
-            return response()->json(['error' =>'Something goes wrong. You cannot logout.'], StatusResponse::STATUS_UNAUTHORIZED);
+            return response()->json(['error' => 'Something goes wrong. You cannot logout.'], StatusResponse::STATUS_UNAUTHORIZED);
         }
     }
 
@@ -109,13 +120,15 @@ class UserController extends Controller{
     public function store(UserRegisterRequest $request)
     {
         $this->authorize('create', User::class);
-        $user = User::create([
-            'username' => $request->input('username'),
-            'password' => Hash::make($request->input('password')),
-            'is_active' => false,
-        ]);
+        $user = User::create(
+            [
+                'username' => $request->input('username'),
+                'password' => Hash::make($request->input('password')),
+                'is_active' => false,
+            ]
+        );
 
-        return response()->json(['message'=> 'success','data' => new UserResource($user)]);
+        return response()->json(['message' => 'success', 'data' => new UserResource($user)]);
     }
 
     /**
@@ -174,7 +187,7 @@ class UserController extends Controller{
 
         $user->delete();
 
-        return response()->json(['message'=> 'Successful deleted.']);
+        return response()->json(['message' => 'Successful deleted.']);
     }
 
 }

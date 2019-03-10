@@ -35,12 +35,26 @@ class User extends Authenticatable
      */
     public $dates = ['deleted_at'];
 
+
+    protected $fillable = [
+        'username',
+        'email',
+        'is_active',
+    ];
+
+    protected $hidden = [
+        'password',
+    ];
+
+   protected $casts = [
+       'is_active',
+   ];
     /**
      * Relation to character model.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function characters(): HasMany
+    public function characters() : HasMany
     {
         return $this->hasMany(Character::class);
     }
@@ -50,7 +64,7 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function roles(): BelongsToMany
+    public function roles() : BelongsToMany
     {
         return $this->belongsToMany(Role::class);
     }
@@ -62,19 +76,22 @@ class User extends Authenticatable
     {
         parent::boot();
 
-        static::created(function ($user) {
-            $userEvent = new UserEvent();
-            event($userEvent->userCreated($user));
-        });
+        static::created(
+            function ($user) {
+                $userEvent = new UserEvent();
+                event($userEvent->userCreated($user));
+            }
+        );
     }
 
     /**
      * Scope for active users.
      *
      * @param $query
+     *
      * @return mixed
      */
-    public function scopeActive(Builder $query): Builder
+    public function scopeActive(Builder $query) : Builder
     {
         return $query->where($this->table . '.is_active', '=', true);
     }
@@ -84,9 +101,10 @@ class User extends Authenticatable
      *
      * @param $query
      * @param $username
+     *
      * @return mixed
      */
-    public function scopeWithUsername(Builder $query, string $username): Builder
+    public function scopeWithUsername(Builder $query, string $username) : Builder
     {
         return $query->where($this->table . '.username', '=', $username);
     }
@@ -115,7 +133,7 @@ class User extends Authenticatable
      *
      * @return bool
      */
-    public function hasAnyRole(array $roles): bool
+    public function hasAnyRole(array $roles) : bool
     {
         return !is_null($this->roles()->whereIn('name', $roles)->first());
     }
@@ -127,7 +145,7 @@ class User extends Authenticatable
      *
      * @return bool
      */
-    public function hasRole(string $role): bool
+    public function hasRole(string $role) : bool
     {
         return !is_null($this->roles()->where('name', '=', $role)->first());
     }
@@ -136,7 +154,7 @@ class User extends Authenticatable
      * Activate User.
      * @return bool || void
      */
-    public function activate(): ?bool
+    public function activate() : ?bool
     {
         if ($this->is_active === false) {
             return $this->is_active = true;
@@ -147,7 +165,7 @@ class User extends Authenticatable
      * Activate User.
      * @return bool
      */
-    public function activateAndSave(): bool
+    public function activateAndSave() : bool
     {
         if ($this->is_active === false) {
             $this->is_active = true;
