@@ -12,6 +12,7 @@ class API_User_Test extends TestCase
     /** @test */
     public function register()
     {
+        $this->withoutExceptionHandling();
         $goodData = [
             'username' => 'username',
             'password' => 'password',
@@ -23,6 +24,6 @@ class API_User_Test extends TestCase
             $goodData
         );
 
-        $response->status(200);
+        $response->assertStatus(200);
     }
 }

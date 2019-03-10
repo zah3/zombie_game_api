@@ -2,9 +2,8 @@
 
 namespace Tests\Unit;
 
+use App\User;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class LoginTest extends TestCase
 {
@@ -15,10 +14,19 @@ class LoginTest extends TestCase
      */
     public function testIsCamelCaseSensitive()
     {
-        $this->call('POST','api/login',[
-            'password' => 'Zachariasz',
-            'username' => 'Zachariasz'
-        ]);
-        //$this->assertArray(true);
+        $user = factory(User::class)->create(
+            [
+                'password' => 'PassWord'
+            ]
+        );
+
+        $response = $this->actingAs($user)->post(
+            'api/login',
+            [
+                'password' => strtolower($user->password),
+                'username' => 'Zachariasz_user'
+            ]
+        );
+        $response->assertJsonValidationErrors(200);
     }
 }
