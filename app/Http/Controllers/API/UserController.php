@@ -13,9 +13,7 @@ use App\Http\Helpers\StatusResponse;
 use App\Http\Requests\{
     LoginRequest, UserRegisterRequest, UpdateUserRequest
 };
-use App\Http\Resources\{
-    UserResource,
-};
+use App\Http\Resources\UserResource;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\{
@@ -39,12 +37,13 @@ class UserController extends Controller
      */
     public function login(LoginRequest $request)
     {
-        $user = User::where('username', '=', $request->input('username'))->first();
+        $user = User::withUsername($request->input('username'))->first();
+
         DB::beginTransaction();
         try {
             $createdToken = $user->createToken(User::GAME_TOKEN);
             $token = $createdToken->token;
-            //expires time
+            // Expires time
             $token->expires_at = Carbon::now()->addDay(1);
             $token->save();
             DB::commit();
@@ -104,7 +103,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return response()->json(new UserResourceCollection(User::with(['roles'])->get()), StatusResponse::STATUS_OK);
+        return response()->json(UserResource::collection(User::with(['roles'])->get()), StatusResponse::STATUS_OK);
     }
 
 
@@ -144,7 +143,7 @@ class UserController extends Controller
     {
         $this->authorize('read', $user);
 
-        return response()->json(new UserResource($user));
+        return response()->json(UserResource::make($user));
     }
 
 
@@ -187,7 +186,7 @@ class UserController extends Controller
 
         $user->delete();
 
-        return response()->json(['message' => 'Successful deleted.']);
+        return response(null, 204);
     }
 
 }
