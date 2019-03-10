@@ -19,7 +19,7 @@ class UserResource extends JsonResource
         return [
             'id' => $this->id,
             'username' => $this->username,
-            'is_active' => $this->when(Auth::user()->hasRole(Role::ADMIN), $this->is_active),
+            'is_active' => $this->when(optional($request->user())->hasRole(Role::ADMIN), $this->is_active),
             'created_at' => optional($this->created_at)->toDateTimeString(),
             'updated_at' => optional($this->updated_at)->toDateTimeString(),
             'roles' => RoleResource::collection($this->whenLoaded('roles')),
