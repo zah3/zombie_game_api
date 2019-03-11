@@ -74,28 +74,72 @@ class API_User_Test extends TestCase
         $response4->assertStatus(200);
     }
 
-    public function testRegisterWithIncorrectData()
+    public function testRegisterWithIncorrectPasswordData()
     {
-        // Send incorrect password with confirm_password
+        // Incorrect password with confirm_password
         $incorrectData = [
             'username' => 'username',
             'password' => 'password',
             'confirm_password' => 'password1',
         ];
 
-        $response1 = $this->json(
+        $response = $this->json(
             'POST',
             'api/register',
             $incorrectData
         );
 
-        $response1->assertStatus(422)
+        $response->assertStatus(422)
             ->assertJsonValidationErrors('confirm_password');
         $this->assertDatabaseMissing(
             'users',
             ['username' => $incorrectData['username']]
         );
 
+        // Incorrect password - over 20 characters
+        $incorrectData = [
+            'username' => 'username',
+            'password' => 'LoremipsumLoremipsumLoremipsumLoremipsumLoremipsumLoremipsum',
+            'confirm_password' => 'LoremipsumLoremipsumLoremipsumLoremipsumLoremipsumLoremipsum',
+
+        ];
+
+        $response = $this->json(
+            'POST',
+            'api/register',
+            $incorrectData
+        );
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors('password');
+        $this->assertDatabaseMissing(
+            'users',
+            ['username' => $incorrectData['username']]
+        );
+
+        // Incorrect password - less then 8 characters
+        $incorrectData = [
+            'username' => 'username',
+            'password' => 'Lorem',
+            'confirm_password' => 'Lorem',
+        ];
+
+        $response = $this->json(
+            'POST',
+            'api/register',
+            $incorrectData
+        );
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors('password');
+        $this->assertDatabaseMissing(
+            'users',
+            ['username' => $incorrectData['username']]
+        );
+    }
+
+    public function testRegisterWithIncorrectUsernameData()
+    {
         // Try to create user with already existed username
         $user = factory(User::class)->create([
             'username' => 'existed',
