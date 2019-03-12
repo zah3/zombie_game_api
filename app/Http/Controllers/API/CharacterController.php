@@ -5,17 +5,20 @@ namespace App\Http\Controllers\API;
 use App\Character;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CharacterController extends Controller
 {
     /**
+     * GET Characters
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+//        $user = Auth::user();
+
     }
 
     /**

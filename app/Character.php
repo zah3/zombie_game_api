@@ -3,8 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\{
-    Model,
-    SoftDeletes
+    Builder, Model, SoftDeletes
 };
 
 class Character extends Model
@@ -33,6 +32,19 @@ class Character extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Find models with provided user.
+     *
+     * @param Builder $query
+     * @param User $user
+     *
+     * @return Builder
+     */
+    public function scopeWithUser(Builder $query, User $user) : Builder
+    {
+        return $query->where($this->getTable() . '.user_id', '=', $user->id);
     }
 }
 
