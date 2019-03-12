@@ -80,9 +80,9 @@ class UserController extends Controller
 
         return UserResource::make(User::find($user->id));
     }
-
-
+    
     /**
+     * POST api/logout
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -93,8 +93,7 @@ class UserController extends Controller
             return response()->json(['message' => 'logout success'], StatusResponse::STATUS_OK);
         } else {
             return response()->json(['error' => 'Something goes wrong. You cannot logout.'], StatusResponse::STATUS_UNAUTHORIZED);
-        }
-    }
+        }    }
 
     /**
      * Display a listing of the resource.
