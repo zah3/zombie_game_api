@@ -16,21 +16,31 @@ use App\User;
 class CharacterRepository
 {
     /**
-     * Creates a new character
+     * Creates new character record in database
+     *
+     * @param User $user
+     * @param Fraction|null $fraction
+     * @param string $name
+     * @param int|null $experience
+     *
+     * @return Character
      */
     public static function create(
         User $user,
         ?Fraction $fraction,
         string $name,
-        ?int $experiance
+        ?int $experience
     ) : Character
     {
         $character = new Character();
         $character->user_id = $user->id;
         $character->fraction_id = $fraction !== null ?
             $fraction->id :
-             ;
+            Fraction::NAME_NORMAL;
         $character->name = $name;
-        $character->experiance = $experiance !== null ? $experiance : 0;
+        $character->experiance = $experience !== null ? $experience : 0;
+        $character->save();
+
+        return $character;
     }
 }

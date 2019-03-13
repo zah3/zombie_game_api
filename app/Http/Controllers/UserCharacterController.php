@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Character;
 use App\Http\Requests\UserCharacterRequest;
 use App\Http\Resources\CharacterResource;
+use App\Repositories\CharacterRepository;
 use Illuminate\Support\Facades\Auth;
 
 class UserCharacterController extends Controller
@@ -28,12 +29,22 @@ class UserCharacterController extends Controller
     }
 
     /**
-     * Create new character for user
+     * POST user/characters
+     * Creates new character for user
      *
      * @param UserCharacterRequest $userCharacterRequest
+     *
+     * @return CharacterResource
      */
-    public function store(UserCharacterRequest $userCharacterRequest)
+    public function store(UserCharacterRequest $userCharacterRequest) : CharacterResource
     {
+        $character = CharacterRepository::create(
+            $userCharacterRequest->user(),
+            null,
+            $userCharacterRequest->input('name'),
+            null
+        );
 
+        return CharacterResource::make($character);
     }
 }
