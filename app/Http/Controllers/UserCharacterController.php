@@ -6,6 +6,7 @@ use App\Character;
 use App\Http\Requests\UserCharacterRequest;
 use App\Http\Resources\CharacterResource;
 use App\Repositories\CharacterRepository;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
 
 class UserCharacterController extends Controller
@@ -17,7 +18,7 @@ class UserCharacterController extends Controller
      *
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function index()
+    public function index() : AnonymousResourceCollection
     {
         $user = Auth::user();
         $userCharacters = Character::query()
