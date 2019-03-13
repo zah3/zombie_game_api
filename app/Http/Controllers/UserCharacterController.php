@@ -6,13 +6,13 @@ use App\Character;
 use App\Http\Requests\UserCharacterRequest;
 use App\Http\Resources\CharacterResource;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
 
 class UserCharacterController extends Controller
 {
 
     /**
      * GET user/characters
+     * Returns all characters of user
      *
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
@@ -27,6 +27,11 @@ class UserCharacterController extends Controller
         return CharacterResource::collection($userCharacters);
     }
 
+    /**
+     * Create new character for user
+     *
+     * @param UserCharacterRequest $userCharacterRequest
+     */
     public function store(UserCharacterRequest $userCharacterRequest)
     {
 
