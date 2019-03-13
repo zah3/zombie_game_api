@@ -26,8 +26,10 @@ class CharacterRepository
     ) : Character
     {
         $character = new Character();
-        $character->user_id = $user->id,
-        $character->fraction_id = $fraction !== null ? $fraction->id : null;
+        $character->user_id = $user->id;
+        $character->fraction_id = $fraction !== null ?
+            $fraction->id :
+             ;
         $character->name = $name;
         $character->experiance = $experiance !== null ? $experiance : 0;
     }

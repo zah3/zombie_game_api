@@ -15,9 +15,9 @@ class SeedFractionTable extends Migration
     {
         DB::unprepared(
             "INSERT INTO fractions (name,created_at) VALUES 
-                  ('" . Fraction::FRACTION_NAME_NORMAL . "',NOW()),
-                  ('" . Fraction::FRACTION_NAME_ZOMBIE_KILLER . "',NOW()),
-                  ('" . Fraction::FRACTION_NAME_KNIGHT . "',NOW())"
+                  ('" . Fraction::NAME_NORMAL . "',NOW()),
+                  ('" . Fraction::NAME_ZOMBIE_KILLER . "',NOW()),
+                  ('" . Fraction::NAME_KNIGHT . "',NOW())"
         );
     }
 }
