@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Role;
+use App\Rules\CharacterLimit;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UserCharacterRequest extends FormRequest
 {
@@ -13,6 +16,12 @@ class UserCharacterRequest extends FormRequest
      */
     public function authorize()
     {
+        //TODO check it
+//        $user = $this->user();
+//        dd($this);
+//        if ($user->hasRole(Role::USER)) {
+//            return $user->id ===
+//        }
         return false;
     }
 
@@ -24,7 +33,13 @@ class UserCharacterRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'string|unique:characters,name|max:255',
+            'name' => [
+                'string',
+                'unique:characters',
+                'name',
+                'max:255',
+                new CharacterLimit(Auth::user())
+            ],
         ];
     }
 }

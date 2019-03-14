@@ -48,5 +48,18 @@ class Character extends Model
     {
         return $query->where($this->getTable() . '.user_id', '=', $user->id);
     }
+
+    /**
+     * Scope query for specified character.id
+     *
+     * @param Builder $query
+     * @param int $characterId
+     *
+     * @return Builder
+     */
+    public function scopeWithId(Builder $query, int $characterId) : Builder
+    {
+        return $query->where($this->getTable() . '.id', '=', $characterId);
+    }
 }
 

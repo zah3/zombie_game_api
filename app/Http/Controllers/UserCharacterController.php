@@ -6,8 +6,11 @@ use App\Character;
 use App\Http\Requests\UserCharacterRequest;
 use App\Http\Resources\CharacterResource;
 use App\Repositories\CharacterRepository;
+use App\Rules\CharacterLimit;
+use App\User;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
 
 class UserCharacterController extends Controller
 {
@@ -47,5 +50,23 @@ class UserCharacterController extends Controller
         );
 
         return CharacterResource::make($character);
+    }
+
+    /**
+     * DELETE user/characters/{character.id}
+     * Deletes specified character
+     *
+     * @param Request $request
+     * @param int $characterId
+     *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
+    public function destroy(Request $request, int $characterId)
+    {
+        $user = $request->user();
+        $character = Character::query()->withUser($user)->withId($characterId)->firstOrFail();
+        $character->delete();
+
+        return response(null, 204);
     }
 }
