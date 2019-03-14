@@ -10,6 +10,8 @@ class Character extends Model
 {
     use SoftDeletes;
 
+    public const LIMIT_PER_USER = 5;
+
     protected $dates = [
         'deleted_at'
     ];

@@ -2,9 +2,9 @@
 
 namespace App\Rules;
 
+use App\Character;
 use App\User;
 use Illuminate\Contracts\Validation\Rule;
-use Illuminate\Support\Facades\Auth;
 
 class CharacterLimit implements Rule
 {
@@ -13,6 +13,8 @@ class CharacterLimit implements Rule
 
     /**
      * Create a new rule instance.
+     *
+     * @param User $user
      *
      * @return void
      */
@@ -24,12 +26,20 @@ class CharacterLimit implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string  $attribute
-     * @param  mixed  $value
+     * @param  string $attribute
+     * @param  mixed $value
+     *
      * @return bool
      */
     public function passes($attribute, $value)
     {
+        $userCharacters = Character::query()
+            ->withUser($this->user)
+            ->count();
+        if ($userCharacters >= Character::LIMIT_PER_USER){
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -39,6 +49,6 @@ class CharacterLimit implements Rule
      */
     public function message()
     {
-        return 'The validation error message.';
+        return "User {$this->user->username} has archived limit of characters.";
     }
 }
