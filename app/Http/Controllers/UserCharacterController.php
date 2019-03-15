@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Character;
-use App\Http\Requests\UserCharacterRequest;
+use App\Http\Requests\UserCharacterStoreRequest;
+use App\Http\Requests\UserCharacterUpdateRequest;
 use App\Http\Resources\CharacterResource;
 use App\Repositories\CharacterRepository;
 use App\Rules\CharacterLimit;
@@ -36,11 +37,11 @@ class UserCharacterController extends Controller
      * POST user/characters
      * Creates new character for user
      *
-     * @param UserCharacterRequest $userCharacterRequest
+     * @param UserCharacterStoreRequest $userCharacterRequest
      *
      * @return CharacterResource
      */
-    public function store(UserCharacterRequest $userCharacterRequest) : CharacterResource
+    public function store(UserCharacterStoreRequest $userCharacterRequest) : CharacterResource
     {
         $character = CharacterRepository::create(
             $userCharacterRequest->user(),
@@ -50,6 +51,11 @@ class UserCharacterController extends Controller
         );
 
         return CharacterResource::make($character);
+    }
+
+    public function update(UserCharacterUpdateRequest $userCharacterUpdateRequest) : CharacterResource
+    {
+        $character = $character
     }
 
     /**

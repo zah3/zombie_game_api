@@ -11,9 +11,10 @@ namespace App\Repositories;
 
 use App\Character;
 use App\Fraction;
+use App\Repositories\Helpers\BaseRepository;
 use App\User;
 
-class CharacterRepository
+class CharacterRepository extends BaseRepository
 {
     /**
      * Creates new character record in database
@@ -38,9 +39,31 @@ class CharacterRepository
             $fraction->id :
             Fraction::NAME_NORMAL;
         $character->name = $name;
-        $character->experiance = $experience !== null ? $experience : 0;
+        $character->experience = $experience !== null ? $experience : 0;
         $character->save();
 
+        return $character;
+    }
+
+    /**
+     * Updates existed character in database
+     *
+     * @param Character $character
+     * @param array $newFields
+     *
+     * @return Character
+     */
+    public static function update(
+        Character $character,
+        Array $newFields
+    ) : Character
+    {
+        $character = self::updateField($character, $newFields, 'user_id');
+        $character = self::updateField($character, $newFields, 'fraction_id');
+        $character = self::updateField($character, $newFields, 'name');
+        $character = self::updateField($character, $newFields, 'experience');
+
+        $character->save();
         return $character;
     }
 }
