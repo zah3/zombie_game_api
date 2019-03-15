@@ -29,12 +29,16 @@ Route::group(['middleware' => 'auth:api'], function () {
 
 Route::prefix('user')->group(function () {
     Route::get('/', 'API\UserController@index')->middleware('auth:api');
-
     Route::post('/store', 'API\UserController@store')->middleware('auth:api');
-
     Route::delete('/destroy/{id}', 'API\UserController@destroy')->middleware('auth:api');
-
     Route::get('/show/{id}', 'API\UserController@show')->middleware('auth:api');
-
     Route::put('/update/{id}', 'API\UserController@update')->middleware('auth:api');
+
+    Route::prefix('/characters')->group(function () {
+        Route::delete('/','API\UserCharacterController@destroy');
+        Route::post('/','API\UserCharacterController@store');
+        Route::get('/{character}','API\UserCharacterController@show');
+        Route::put('/{character}','API\UserCharacterController@update');
+        Route::get('/','API\UserCharacterController@index');
+    });
 });
