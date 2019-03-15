@@ -4,7 +4,6 @@ namespace App\Http\Requests;
 
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class UserCharacterUpdateRequest extends FormRequest
@@ -29,7 +28,7 @@ class UserCharacterUpdateRequest extends FormRequest
         return [
             'name' => [
                 'string',
-                Rule::Unique('characters','name')->ignore(Auth::user()->id),
+                Rule::Unique('characters','name')->ignore($this->user()->id),
                 'name',
                 'max:255',
             ],
