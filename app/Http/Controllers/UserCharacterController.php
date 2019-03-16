@@ -7,9 +7,6 @@ use App\Http\Requests\UserCharacterStoreRequest;
 use App\Http\Requests\UserCharacterUpdateRequest;
 use App\Http\Resources\CharacterResource;
 use App\Repositories\CharacterRepository;
-use App\Rules\CharacterLimit;
-use App\User;
-use Illuminate\Auth\Access\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
@@ -53,6 +50,22 @@ class UserCharacterController extends Controller
         );
 
         return CharacterResource::make($character);
+    }
+
+    /**
+     * GET user/character/{character.id}
+     * Displays provided character for current logged user
+     *
+     * @param $request
+     * @param int $characterId
+     *
+     * @return $this | JsonResponse
+     */
+    public function show($request, int $characterId)
+    {
+        $user = $request->user();
+        $character = Character::query()->withUser($user)->withId($characterId)->firstOrFail();
+        return CharacterResource::make($character)->response()->setStatusCode(200);
     }
 
     /**

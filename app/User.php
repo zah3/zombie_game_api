@@ -165,14 +165,11 @@ class User extends Authenticatable
      * Activate User.
      * @return bool
      */
-    public function activateAndSave() : bool
+    public function activateAndSave() : void
     {
         if ($this->is_active === false) {
             $this->is_active = true;
             $this->update();
-            return true;
-        } else {
-            return false;
         }
     }
 }

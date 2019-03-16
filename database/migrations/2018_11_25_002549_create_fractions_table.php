@@ -15,7 +15,7 @@ class CreateFractionsTable extends Migration
     {
         Schema::create('fractions', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name',150);
+            $table->string('name',150)->unique();
             $table->timestamps();
         });
     }
