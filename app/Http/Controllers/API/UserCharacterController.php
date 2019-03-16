@@ -10,7 +10,7 @@ use App\Repositories\CharacterRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class UserCharacterController extends Controller
@@ -46,7 +46,7 @@ class UserCharacterController extends Controller
         $character = CharacterRepository::create(
             $userCharacterRequest->user(),
             null,
-            $userCharacterRequest->input('name'),
+            $userCharacterRequest->input('data.name'),
             null
         );
 
@@ -54,7 +54,7 @@ class UserCharacterController extends Controller
     }
 
     /**
-     * GET user/character/{character.id}
+     * GET user/character/{character.id} N
      * Displays provided character for current logged user
      *
      * @param $request
@@ -62,10 +62,14 @@ class UserCharacterController extends Controller
      *
      * @return $this | JsonResponse
      */
-    public function show($request, int $characterId)
+    public function show(Request $request, int $characterId)
     {
         $user = $request->user();
-        $character = Character::query()->withUser($user)->withId($characterId)->firstOrFail();
+        $character = Character::query()
+            ->with(['fraction'])
+            ->withUser($user)
+            ->findOrFail($characterId);
+
         return CharacterResource::make($character)->response()->setStatusCode(200);
     }
 

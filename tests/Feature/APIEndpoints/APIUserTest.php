@@ -26,41 +26,42 @@ class API_User_Test extends TestCase
             'api/register',
             $goodDataWithCamelCase
         );
-        // Create user in database from endpoint
-        $response->assertStatus(200);
-        $this->assertDatabaseHas(
-            'users',
-            [
-                'username' => $user->username,
-                'is_active' => 0,
-            ]
-        );
-
-        // Send incorrect data for log in
-        // Password is in lowercase
-        $response2 = $this->json(
-            'POST',
-            'api/login',
-            [
-                'password' => strtolower($goodDataWithCamelCase['password']),
-                'username' => $user->username,
-            ]
-        );
-        $response2->assertStatus(422)
-            ->assertJsonValidationErrors('username');
-
-        // Send incorrect data for login
-        // Username is in lowercase
-        $response3 = $this->json(
-            'POST',
-            'api/login',
-            [
-                'password' => $goodDataWithCamelCase['password'],
-                'username' => strtolower($user->username),
-            ]
-        );
-        $response3->assertStatus(422)
-            ->assertJsonValidationErrors('username');
+//        // Create user in database from endpoint
+//        $response->assertStatus(200);
+//        $this->assertDatabaseHas(
+//            'users',
+//            [
+//                'username' => $user->username,
+//                'is_active' => 0,
+//            ]
+//        );
+//
+//        // Send incorrect data for log in
+//        // Password is in lowercase
+//        $response2 = $this->json(
+//            'POST',
+//            'api/login',
+//            [
+//                'password' => strtolower($goodDataWithCamelCase['password']),
+//                'username' => $user->username,
+//            ]
+//        );
+//        $response2->assertStatus(422)
+//            ->assertJsonValidationErrors('username');
+//
+//        // Send incorrect data for login
+//        // Username is in lowercase
+//        $response3 = $this->json(
+//            'POST',
+//            'api/login',
+//            [
+//                'password' => $goodDataWithCamelCase['password'],
+//                'username' => strtolower($user->username),
+//            ]
+//        );
+//        $response3->assertStatus(422)
+//            ->assertJsonValidationErrors('username');
+        $this->withoutExceptionHandling();
 
         // Send correct data for login
         $response4 = $this->json(

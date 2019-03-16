@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Role;
 use App\Rules\CharacterLimit;
+use App\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,15 +15,9 @@ class UserCharacterStoreRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(User $user)
     {
-        //TODO check it
-//        $user = $this->user();
-//        dd($this);
-//        if ($user->hasRole(Role::USER)) {
-//            return $user->id ===
-//        }
-        return false;
+        return true;
     }
 
     /**

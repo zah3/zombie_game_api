@@ -17,15 +17,16 @@ class LoginValidation implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string  $attribute
-     * @param  mixed  $value
+     * @param  string $attribute
+     * @param  mixed $value
+     *
      * @return bool
      */
     public function passes($attribute, $value)
     {
-        if(Auth::attempt(['username' => request('username'), 'password' => request('password')])){
+        if (Auth::attempt(['username' => request('username'), 'password' => request('password')])) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }

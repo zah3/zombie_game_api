@@ -37,7 +37,7 @@ class CharacterRepository extends BaseRepository
         $character->user_id = $user->id;
         $character->fraction_id = $fraction !== null ?
             $fraction->id :
-            Fraction::NAME_NORMAL;
+            Fraction::ID_NORMAL;
         $character->name = $name;
         $character->experience = $experience !== null ? $experience : 0;
         $character->save();
