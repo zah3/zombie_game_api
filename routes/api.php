@@ -27,7 +27,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 });
 
 
-Route::prefix('user')->group(function () {
+Route::prefix('user')->middleware('auth:api')->group(function () {
     Route::get('/', 'API\UserController@index')->middleware('auth:api');
     Route::post('/store', 'API\UserController@store')->middleware('auth:api');
     Route::delete('/destroy/{id}', 'API\UserController@destroy')->middleware('auth:api');

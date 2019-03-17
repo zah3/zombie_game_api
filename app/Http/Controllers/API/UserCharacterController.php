@@ -7,6 +7,7 @@ use App\Http\Requests\UserCharacterStoreRequest;
 use App\Http\Requests\UserCharacterUpdateRequest;
 use App\Http\Resources\CharacterResource;
 use App\Repositories\CharacterRepository;
+use App\Rules\CharacterLimit;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
@@ -41,12 +42,21 @@ class UserCharacterController extends Controller
      *
      * @return CharacterResource
      */
-    public function store(UserCharacterStoreRequest $userCharacterRequest) : CharacterResource
+    public function store(Request $userCharacterRequest) : CharacterResource
     {
+        $userCharacterRequest->validate([
+            'name' => [
+                'required',
+                'string',
+                'unique:characters',
+                'max:255',
+                new CharacterLimit($userCharacterRequest->user())
+            ]
+        ]);
         $character = CharacterRepository::create(
             $userCharacterRequest->user(),
             null,
-            $userCharacterRequest->input('data.name'),
+            $userCharacterRequest->input('name'),
             null
         );
 
