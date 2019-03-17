@@ -42,17 +42,8 @@ class UserCharacterController extends Controller
      *
      * @return CharacterResource
      */
-    public function store(Request $userCharacterRequest) : CharacterResource
+    public function store(UserCharacterStoreRequest $userCharacterRequest) : CharacterResource
     {
-        $userCharacterRequest->validate([
-            'name' => [
-                'required',
-                'string',
-                'unique:characters',
-                'max:255',
-                new CharacterLimit($userCharacterRequest->user())
-            ]
-        ]);
         $character = CharacterRepository::create(
             $userCharacterRequest->user(),
             null,

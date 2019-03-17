@@ -4,7 +4,6 @@ namespace App\Http\Requests;
 
 use App\Rules\CharacterLimit;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 
 class UserCharacterStoreRequest extends FormRequest
 {
@@ -25,13 +24,13 @@ class UserCharacterStoreRequest extends FormRequest
      */
     public function rules()
     {
-        //dd($this->user());
         return [
             'name' => [
                 'required',
-                'string',
-                'unique:characters',
+                'alpha_dash',
+                'min:4',
                 'max:255',
+                'unique:characters',
                 new CharacterLimit($this->user())
             ]
         ];

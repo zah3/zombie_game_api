@@ -10,7 +10,7 @@ $factory->define(App\Character::class, function (Faker $faker) {
         'fraction_id' => function () {
             return factory(\App\Fraction::class)->create()->id;
         },
-        'name' => $faker->unique()->name,
+        'name' => $faker->unique()->firstName,
         'experience' => 0,
     ];
 });

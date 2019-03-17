@@ -28,9 +28,11 @@ class UserCharacterUpdateRequest extends FormRequest
         return [
             'name' => [
                 'string',
-                Rule::Unique('characters','name')->ignore($this->user()->id),
+                Rule::Unique('characters', 'name')->ignore($this->user()->id),
                 'name',
                 'max:255',
+                'alpha_dash',
+                'min:4',
             ],
         ];
     }

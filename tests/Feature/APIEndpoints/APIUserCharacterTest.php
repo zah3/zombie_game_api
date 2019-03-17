@@ -151,4 +151,107 @@ class API_User_Character_Test extends TestCase
             ->assertJsonValidationErrors('name');
         $this->assertDatabaseMissing('characters', $userCharacter->toArray());
     }
+
+    public function testStoreCharacterWithUniqueName()
+    {
+        // Creates user and character
+        $user = factory(User::class)->create();
+        $userCharacter = factory(Character::class)->create([
+            'user_id' => $user->id,
+        ]);
+
+        $otherUser = factory(User::class)->create();
+        $otherUserCharacter = factory(Character::class)->make([
+            'user_id' => $otherUser->id,
+            'name' => $userCharacter->name,
+        ]);
+
+        // Send request to endpoint
+        $response = $this->actingAs($user, 'api')
+            ->json('POST', 'api/user/characters', $otherUserCharacter->toArray());
+
+        // Check response
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors('name');
+        $this->assertDatabaseMissing('characters', $otherUserCharacter->toArray());
+    }
+
+    public function testStoreCharacterWithoutName()
+    {
+        // Creates user and character
+        $user = factory(User::class)->create();
+        $userCharacter = factory(Character::class)->make([
+            'user_id' => $user->id,
+            'name' => null,
+        ]);
+
+        // Send request to endpoint
+        $response = $this->actingAs($user, 'api')
+            ->json('POST', 'api/user/characters', $userCharacter->toArray());
+
+        // Check response
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors('name');
+        $this->assertDatabaseMissing('characters', $userCharacter->toArray());
+    }
+
+    public function testStoreCharacterWithTooShortName()
+    {
+        // Creates user and character
+        $user = factory(User::class)->create();
+        $userCharacter = factory(Character::class)->make([
+            'user_id' => $user->id,
+            'name' => 'f',
+        ]);
+
+        // Send request to endpoint
+        $response = $this->actingAs($user, 'api')
+            ->json('POST', 'api/user/characters', $userCharacter->toArray());
+
+        // Check response
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors('name');
+        $this->assertDatabaseMissing('characters', $userCharacter->toArray());
+    }
+
+    public function testStoreCharacterWithTooLongName()
+    {
+        // Creates user and character
+        $user = factory(User::class)->create();
+        $userCharacter = factory(Character::class)->make([
+            'user_id' => $user->id,
+            'name' => 'PellentesquePellentesquePellentesquePellentesquePelle' .
+                'nPellentesquePellentesquePellentesquePellentesquePellen' .
+                'nPellentesquePellentesquePellentesquePellentesquePellen' .
+                'nPellentesquePellentesquePellentesquePellentesquePellen' .
+                'tesquePellentesquePellentesquePellentesquePellentesquePellentesque',
+        ]);
+        // Send request to endpoint
+        $response = $this->actingAs($user, 'api')
+            ->json('POST', 'api/user/characters', $userCharacter->toArray());
+
+        // Check response
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors('name');
+        $this->assertDatabaseMissing('characters', $userCharacter->toArray());
+    }
+
+    public function testStoreCharacterWithNoAlphaDashName()
+    {
+        // Creates user and character
+        $user = factory(User::class)->create();
+        $userCharacter = factory(Character::class)->make([
+            'user_id' => $user->id,
+            'name' => 'Lorem Ipsum',
+        ]);
+
+        // Send request to endpoint
+        $response = $this->actingAs($user, 'api')
+            ->json('POST', 'api/user/characters', $userCharacter->toArray());
+
+        // Check response
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors('name');
+        $this->assertDatabaseMissing('characters', $userCharacter->toArray());
+    }
 }
