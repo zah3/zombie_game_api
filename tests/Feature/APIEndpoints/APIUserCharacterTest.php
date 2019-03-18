@@ -125,7 +125,7 @@ class API_User_Character_Test extends TestCase
 
         // Send request to endpoint
         $response = $this->actingAs($user, 'api')
-            ->json('POST', 'api/user/characters/',  $userCharacter->toArray());
+            ->json('POST', 'api/user/characters/', $userCharacter->toArray());
         // Check response
         $response->assertStatus(201);
         $this->assertDatabaseHas('characters', $userCharacter->toArray());
@@ -318,5 +318,122 @@ class API_User_Character_Test extends TestCase
         // Check response
         $response->assertStatus(200);
         $this->assertDatabaseHas('characters', $userCharacterExisted->toArray());
+    }
+
+    public function testShowAvailableCharacterForUser()
+    {
+        // Creates user and character
+        $user = factory(User::class)->create();
+        $userCharacterExisted = factory(Character::class)->create([
+            'user_id' => $user->id,
+        ]);
+
+        // Send request to endpoint
+        $response = $this->actingAs($user, 'api')
+            ->json(
+                'GET',
+                'api/user/characters/' . $userCharacterExisted->id
+            );
+        // Check response
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('characters', $userCharacterExisted->toArray());
+    }
+
+    public function testShowCharacterNotBelongToUser()
+    {
+        // Creates user and character
+        $user = factory(User::class)->create();
+        $userCharacter = factory(Character::class)->create([
+            'user_id' => $user->id,
+        ]);
+        // Creates other user
+        $otherUser = factory(User::class)->create();
+
+        // Send request to endpoint
+        $response = $this->actingAs($otherUser, 'api')
+            ->json(
+                'GET',
+                'api/user/characters/' . $userCharacter->id
+            );
+        // Check response
+        $response->assertStatus(404);
+        $this->assertDatabaseHas('characters', $userCharacter->toArray());
+    }
+
+    public function testShowForNotLoggedUser()
+    {
+        // Creates user and character
+        $user = factory(User::class)->create();
+        $userCharacter = factory(Character::class)->create([
+            'user_id' => $user->id,
+        ]);
+
+        // Send request to endpoint
+        $response = $this->json(
+            'GET',
+            'api/user/characters/' . $userCharacter->id
+        );
+        // Check response
+        $response->assertStatus(401);
+        $this->assertDatabaseHas('characters', $userCharacter->toArray());
+    }
+
+    public function testDestroyUserCharacter()
+    {
+        // Creates user and character
+        $user = factory(User::class)->create();
+        $userCharacter = factory(Character::class)->create([
+            'user_id' => $user->id,
+        ]);
+
+        // Send request to endpoint
+        $response = $this->actingAs($user, 'api')
+            ->json(
+                'DELETE',
+                'api/user/characters/' . $userCharacter->id
+            );
+        $userCharacter->refresh();
+        // Check response
+        $response->assertStatus(204);
+        $this->assertDatabaseHas('characters', $userCharacter->toArray());
+        $this->assertSoftDeleted('characters',$userCharacter->toArray());
+    }
+
+    public function testDestroyCharacterNotBelongToUser()
+    {
+        // Creates user and character
+        $user = factory(User::class)->create();
+        $userCharacter = factory(Character::class)->create([
+            'user_id' => $user->id,
+        ]);
+        // Creates other user
+        $otherUser = factory(User::class)->create();
+        // Send request to endpoint
+        $response = $this->actingAs($otherUser, 'api')
+            ->json(
+                'DELETE',
+                'api/user/characters/' . $userCharacter->id
+            );
+        // Check response
+        $response->assertStatus(404);
+        $this->assertDatabaseHas('characters', $userCharacter->toArray());
+    }
+
+    public function testDestroyNotLoggedUser()
+    {
+        // Creates user and character
+        $user = factory(User::class)->create();
+        $userCharacter = factory(Character::class)->create([
+            'user_id' => $user->id,
+        ]);
+
+        // Send request to endpoint
+        $response = $this->json(
+                'DELETE',
+                'api/user/characters/' . $userCharacter->id
+            );
+        // Check response
+        $response->assertStatus(401);
+        $this->assertDatabaseHas('characters', $userCharacter->toArray());
     }
 }

@@ -89,7 +89,7 @@ class UserCharacterController extends Controller
     )
     {
         $user = $userCharacterUpdateRequest->user();
-        $character = Character::query()->withUser($user)->withId($characterId)->firstOrFail();
+        $character = Character::query()->withUser($user)->findOrFail($characterId);
         $characterUpdated = CharacterRepository::update(
             $character,
             $userCharacterUpdateRequest->all()
@@ -109,7 +109,7 @@ class UserCharacterController extends Controller
     public function destroy(Request $request, int $characterId)
     {
         $user = $request->user();
-        $character = Character::query()->withUser($user)->withId($characterId)->firstOrFail();
+        $character = Character::query()->withUser($user)->findOrFail($characterId);
         $character->delete();
 
         return response(null, 204);

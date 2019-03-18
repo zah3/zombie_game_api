@@ -35,7 +35,7 @@ Route::prefix('user')->middleware('auth:api')->group(function () {
     Route::put('/update/{id}', 'API\UserController@update')->middleware('auth:api');
 
     Route::prefix('/characters')->group(function () {
-        Route::delete('/','API\UserCharacterController@destroy');
+        Route::delete('/{character}','API\UserCharacterController@destroy');
         Route::post('/','API\UserCharacterController@store');
         Route::get('/{character}','API\UserCharacterController@show');
         Route::put('/{character}','API\UserCharacterController@update');
