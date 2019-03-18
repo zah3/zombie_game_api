@@ -125,7 +125,7 @@ class API_User_Character_Test extends TestCase
 
         // Send request to endpoint
         $response = $this->actingAs($user, 'api')
-            ->json('POST', 'api/user/characters/', $userCharacter->toArray());
+            ->json('POST', 'api/user/characters/',  $userCharacter->toArray());
         // Check response
         $response->assertStatus(201);
         $this->assertDatabaseHas('characters', $userCharacter->toArray());
@@ -253,5 +253,70 @@ class API_User_Character_Test extends TestCase
         $response->assertStatus(422)
             ->assertJsonValidationErrors('name');
         $this->assertDatabaseMissing('characters', $userCharacter->toArray());
+    }
+
+    public function testUpdateCharacterWithCorrectData()
+    {
+        // Creates user and character
+        $user = factory(User::class)->create();
+        $userCharacterExisted = factory(Character::class)->create([
+            'user_id' => $user->id,
+        ]);
+        $userCharacterDataToUpdate = factory(Character::class)->make();
+
+        // Send request to endpoint
+        $response = $this->actingAs($user, 'api')
+            ->json(
+                'PUT',
+                'api/user/characters/' . $userCharacterExisted->id,
+                ['inputs' => $userCharacterDataToUpdate->toArray()]
+            );
+        // Check response
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('characters', $userCharacterDataToUpdate->toArray());
+    }
+
+    public function testUpdateCharacterWithExistedNameData()
+    {
+        // Creates user and character
+        $user = factory(User::class)->create();
+        $userCharacterExisted = factory(Character::class)->create([
+            'user_id' => $user->id,
+        ]);
+        $otherCharacter = factory(Character::class)->create();
+        $userCharacterDataToUpdate = factory(Character::class)->make([
+            'name' => $otherCharacter->name,
+        ]);
+
+        // Send request to endpoint
+        $response = $this->actingAs($user, 'api')
+            ->json(
+                'PUT',
+                'api/user/characters/' . $userCharacterExisted->id,
+                ['inputs' => $userCharacterDataToUpdate->toArray()]
+            );
+        // Check response
+        $response->assertStatus(422);
+        $this->assertDatabaseMissing('characters', $userCharacterDataToUpdate->toArray());
+    }
+
+    public function testUpdateCharacterIgnoreUniqueForSameCharacterNameData()
+    {
+        // Creates user and character
+        $user = factory(User::class)->create();
+        $userCharacterExisted = factory(Character::class)->create([
+            'user_id' => $user->id,
+        ]);
+
+        // Send request to endpoint
+        $response = $this->actingAs($user, 'api')
+            ->json(
+                'PUT',
+                'api/user/characters/' . $userCharacterExisted->id,
+                ['inputs' => $userCharacterExisted->toArray()]
+            );
+        // Check response
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('characters', $userCharacterExisted->toArray());
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 
+use App\Role;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -15,7 +16,7 @@ class UserCharacterUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -26,10 +27,9 @@ class UserCharacterUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => [
+            'inputs.name' => [
                 'string',
-                Rule::Unique('characters', 'name')->ignore($this->user()->id),
-                'name',
+                Rule::unique('characters','name')->ignore($this->route('character')),
                 'max:255',
                 'alpha_dash',
                 'min:4',

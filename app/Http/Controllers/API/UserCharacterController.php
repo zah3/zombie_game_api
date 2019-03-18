@@ -13,6 +13,7 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class UserCharacterController extends Controller
 {
@@ -91,9 +92,9 @@ class UserCharacterController extends Controller
         $character = Character::query()->withUser($user)->withId($characterId)->firstOrFail();
         $characterUpdated = CharacterRepository::update(
             $character,
-            $userCharacterUpdateRequest->data
+            $userCharacterUpdateRequest->inputs
         );
-        return CharacterResource::make($characterUpdated)->response()->setStatusCode(201);
+        return CharacterResource::make($characterUpdated)->response()->setStatusCode(200);
     }
 
     /**
