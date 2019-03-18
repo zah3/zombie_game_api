@@ -269,7 +269,7 @@ class API_User_Character_Test extends TestCase
             ->json(
                 'PUT',
                 'api/user/characters/' . $userCharacterExisted->id,
-                ['inputs' => $userCharacterDataToUpdate->toArray()]
+                $userCharacterDataToUpdate->toArray()
             );
         // Check response
         $response->assertStatus(200);
@@ -293,7 +293,7 @@ class API_User_Character_Test extends TestCase
             ->json(
                 'PUT',
                 'api/user/characters/' . $userCharacterExisted->id,
-                ['inputs' => $userCharacterDataToUpdate->toArray()]
+                $userCharacterDataToUpdate->toArray()
             );
         // Check response
         $response->assertStatus(422);
@@ -313,7 +313,7 @@ class API_User_Character_Test extends TestCase
             ->json(
                 'PUT',
                 'api/user/characters/' . $userCharacterExisted->id,
-                ['inputs' => $userCharacterExisted->toArray()]
+                $userCharacterExisted->toArray()
             );
         // Check response
         $response->assertStatus(200);

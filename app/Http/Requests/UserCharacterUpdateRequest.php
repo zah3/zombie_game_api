@@ -27,7 +27,7 @@ class UserCharacterUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'inputs.name' => [
+            'name' => [
                 'string',
                 Rule::unique('characters','name')->ignore($this->route('character')),
                 'max:255',

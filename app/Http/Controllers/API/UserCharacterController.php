@@ -48,7 +48,7 @@ class UserCharacterController extends Controller
         $character = CharacterRepository::create(
             $userCharacterRequest->user(),
             null,
-            $userCharacterRequest->input('name'),
+            $userCharacterRequest->input(['name']),
             null
         );
 
@@ -56,7 +56,7 @@ class UserCharacterController extends Controller
     }
 
     /**
-     * GET user/character/{character.id} N
+     * GET user/character/{character.id}
      * Displays provided character for current logged user
      *
      * @param $request
@@ -92,7 +92,7 @@ class UserCharacterController extends Controller
         $character = Character::query()->withUser($user)->withId($characterId)->firstOrFail();
         $characterUpdated = CharacterRepository::update(
             $character,
-            $userCharacterUpdateRequest->inputs
+            $userCharacterUpdateRequest->all()
         );
         return CharacterResource::make($characterUpdated)->response()->setStatusCode(200);
     }
