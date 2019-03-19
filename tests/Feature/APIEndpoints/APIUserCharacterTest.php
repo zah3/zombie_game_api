@@ -413,9 +413,11 @@ class API_User_Character_Test extends TestCase
                 'DELETE',
                 'api/user/characters/' . $userCharacter->id
             );
+        $userCharacter->refresh();
         // Check response
         $response->assertStatus(404);
         $this->assertDatabaseHas('characters', $userCharacter->toArray());
+        $this->assertNull($userCharacter->toArray()['deleted_at']);
     }
 
     public function testDestroyNotLoggedUser()
@@ -431,8 +433,10 @@ class API_User_Character_Test extends TestCase
             'DELETE',
             'api/user/characters/' . $userCharacter->id
         );
+        $userCharacter->refresh();
         // Check response
         $response->assertStatus(401);
         $this->assertDatabaseHas('characters', $userCharacter->toArray());
+        $this->assertNull($userCharacter->toArray()['deleted_at']);
     }
 }

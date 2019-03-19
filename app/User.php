@@ -46,9 +46,10 @@ class User extends Authenticatable
         'password',
     ];
 
-   protected $casts = [
-       'is_active',
-   ];
+    protected $casts = [
+        'is_active' => true,
+    ];
+
     /**
      * Relation to character model.
      *

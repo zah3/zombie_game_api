@@ -36,7 +36,6 @@ class CharacterLimit implements Rule
         $userCharacters = Character::query()
             ->withUser($this->user)
             ->count();
-        //dd($userCharacters >= Character::LIMIT_PER_USER);
         if ($userCharacters >= Character::LIMIT_PER_USER){
             return false;
         }
