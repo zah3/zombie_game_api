@@ -9,6 +9,7 @@
 namespace Tests\Feature\Models\Relationships;
 
 
+use App\Character;
 use App\Role;
 use App\RoleUser;
 use App\User;
@@ -23,12 +24,21 @@ class UserRelationshipsTest extends TestCase
     {
         $user = factory(User::class)->create();
         $role = factory(Role::class)->create();
-        $roleUser = factory(RoleUser::class)->create([
+        factory(RoleUser::class)->create([
             'user_id' => $user->id,
             'role_id' => $role->id,
         ]);
         $rolesForUser = $user->roles;
         $this->assertNotNull($rolesForUser);
+    }
 
+    public function testCharacters()
+    {
+        $user = factory(User::class)->create();
+        factory(Character::class)->create([
+            'user_id' => $user->id,
+        ]);
+        $userCharacters = $user->characters;
+        $this->assertNotEmpty($userCharacters);
     }
 }
