@@ -10,6 +10,8 @@ namespace Tests\Feature\Models\Relationships;
 
 
 use App\Role;
+use App\RoleUser;
+use App\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
@@ -19,6 +21,14 @@ class UserRelationshipsTest extends TestCase
 
     public function testRoles()
     {
-        dd(Role::all()->toArray());
+        $user = factory(User::class)->create();
+        $role = factory(Role::class)->create();
+        $roleUser = factory(RoleUser::class)->create([
+            'user_id' => $user->id,
+            'role_id' => $role->id,
+        ]);
+        $rolesForUser = $user->roles;
+        $this->assertNotNull($rolesForUser);
+
     }
 }
