@@ -7,13 +7,11 @@ use App\Http\Requests\UserCharacterStoreRequest;
 use App\Http\Requests\UserCharacterUpdateRequest;
 use App\Http\Resources\CharacterResource;
 use App\Repositories\CharacterRepository;
-use App\Rules\CharacterLimit;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
 
 class UserCharacterController extends Controller
 {
