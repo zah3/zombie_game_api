@@ -164,7 +164,7 @@ class User extends Authenticatable
 
     /**
      * Activate User.
-     * @return bool
+     * @return void
      */
     public function activateAndSave() : void
     {
