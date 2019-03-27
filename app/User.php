@@ -92,7 +92,7 @@ class User extends Authenticatable
      *
      * @return mixed
      */
-    public function scopeActive(Builder $query) : Builder
+    public function scopeWithActive(Builder $query) : Builder
     {
         return $query->where($this->table . '.is_active', '=', true);
     }
