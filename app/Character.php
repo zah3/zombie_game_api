@@ -50,19 +50,15 @@ class Character extends Model
     }
 
     /**
-     * Find deleted or not models
+     * Scope query to find deleted models
      *
      * @param Builder $query
-     * @param bool $delete
      *
      * @return Builder
      */
-    public function scopeDeleted(Builder $query, bool $delete = false) : Builder
+    public function scopeWithDeleted(Builder $query) : Builder
     {
-        if ($delete === false) {
-            return $query->where($this->getTable() . '.deleted_at', '=', null);
-        }
-        return $query->where($this->getTable() . '.deleted_at', '!=', null);
+        return $query->withTrashed()->where($this->getTable() . '.deleted_at', '!=', null);
     }
 }
 

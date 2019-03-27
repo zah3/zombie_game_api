@@ -11,7 +11,7 @@ namespace App\Repositories\Helpers;
 
 use Illuminate\Database\Eloquent\Model;
 
-class BaseRepository
+abstract class BaseRepository
 {
     /**
      * Update field for specified model
