@@ -17,7 +17,7 @@ class FractionTableSeeder extends Seeder
         do {
             $faker = Faker\Factory::create();
             $fraction = new Fraction();
-            $fraction->name = ($i == 0) ? Fraction::FRACTION_NAME_NORMAL : $faker->colorName;
+            $fraction->name = ($i == 0) ? Fraction::NAME_NORMAL : $faker->colorName;
             $fraction->save();
             $i++;
         } while ($i <= $this->i);

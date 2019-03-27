@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use MongoDB\Driver\Query;
+use Illuminate\Database\Eloquent\Builder;
 
 class Role extends Model
 {
@@ -32,9 +32,9 @@ class Role extends Model
      *
      * @param $query
      * @param string $name
-     * @return Query
+     * @return Builder
      */
-    public function scopeWithName($query, string $name)
+    public function scopeWithName($query, string $name) : Builder
     {
         return $query->where($this->table . '.name', '=', $name);
     }

@@ -46,9 +46,10 @@ class User extends Authenticatable
         'password',
     ];
 
-   protected $casts = [
-       'is_active',
-   ];
+    protected $casts = [
+        'is_active' => true,
+    ];
+
     /**
      * Relation to character model.
      *
@@ -91,7 +92,7 @@ class User extends Authenticatable
      *
      * @return mixed
      */
-    public function scopeActive(Builder $query) : Builder
+    public function scopeWithActive(Builder $query) : Builder
     {
         return $query->where($this->table . '.is_active', '=', true);
     }
@@ -163,16 +164,13 @@ class User extends Authenticatable
 
     /**
      * Activate User.
-     * @return bool
+     * @return void
      */
-    public function activateAndSave() : bool
+    public function activateAndSave() : void
     {
         if ($this->is_active === false) {
             $this->is_active = true;
             $this->update();
-            return true;
-        } else {
-            return false;
         }
     }
 }

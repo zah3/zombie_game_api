@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 
-class UserRegisterRequest extends FormRequest
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+
+class UserCharacterUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +26,13 @@ class UserRegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'username' => 'required|unique:users|max:255|min:3|alpha_dash',
-            'password' => 'required|min:8|max:20',
-            'confirm_password' => 'required|same:password'
+            'name' => [
+                'string',
+                Rule::unique('characters','name')->ignore($this->route('character')),
+                'max:255',
+                'alpha_dash',
+                'min:4',
+            ],
         ];
     }
 }

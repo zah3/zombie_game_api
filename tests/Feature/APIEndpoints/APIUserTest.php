@@ -190,4 +190,54 @@ class API_User_Test extends TestCase
             ]
         );
     }
+    public function testRegisterWithIncorrectTooLongUsernameData()
+    {
+        $user = factory(User::class)->make([
+            'username' => 'LoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsum' .
+                'LoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsum' .
+                'LoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsum' .
+                'LoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsum' .
+                'LoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsum' .
+                'LoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsum' .
+                'LoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsum',
+        ]);
+
+        $incorrectData = [
+            'username' => $user->username,
+            'password' => 'password',
+            'confirm_password' => 'password',
+        ];
+
+        $response = $this->json(
+            'POST',
+            'api/register',
+            $incorrectData
+        );
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors('username');
+
+    }
+    public function testRegisterWithNonAlphaDashUsernameData()
+    {
+        $user = factory(User::class)->make([
+            'username' => 'Lorem Ipsum Lorem',
+        ]);
+
+        $incorrectData = [
+            'username' => $user->username,
+            'password' => 'password',
+            'confirm_password' => 'password',
+        ];
+
+        $response = $this->json(
+            'POST',
+            'api/register',
+            $incorrectData
+        );
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors('username');
+
+    }
 }

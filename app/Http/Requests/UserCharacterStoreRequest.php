@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\CharacterLimit;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserRegisterRequest extends FormRequest
+class UserCharacterStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +25,14 @@ class UserRegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'username' => 'required|unique:users|max:255|min:3|alpha_dash',
-            'password' => 'required|min:8|max:20',
-            'confirm_password' => 'required|same:password'
+            'name' => [
+                'required',
+                'alpha_dash',
+                'min:4',
+                'max:255',
+                'unique:characters',
+                new CharacterLimit($this->user())
+            ]
         ];
     }
 }
