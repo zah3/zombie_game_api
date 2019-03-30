@@ -125,6 +125,7 @@ class API_User_Character_Test extends TestCase
         // Send request to endpoint
         $response = $this->actingAs($user, 'api')
             ->json('POST', 'api/user/characters/', $userCharacter->toArray());
+        var_dump($response->json());
         // Check response
         $response->assertStatus(201);
         $this->assertDatabaseHas('characters', $userCharacter->toArray());
