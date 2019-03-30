@@ -23,7 +23,12 @@ class CharacterRepositoryTest extends TestCase
     {
         $user = factory(User::class)->create();
         $character = factory(Character::class)->make();
-        $createdModel = CharacterRepository::create($user, null, $character->name, null);
+        $createdModel = CharacterRepository::create(
+            $user,
+            null,
+            $character->name,
+            null
+        );
         $this->assertNotNull($createdModel);
         $this->assertEquals($character->name, $createdModel->name);
         $this->assertDatabaseHas($character->getTable(), $createdModel->toArray());
