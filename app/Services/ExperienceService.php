@@ -9,9 +9,23 @@
 namespace App\Services;
 
 
+use App\Character;
+use App\Repositories\CharacterRepository;
+
 class ExperienceService
 {
-    public function calculateLevel() : int
+
+    /**
+     * Adds experience to character
+     *
+     * @param int $experiencePoints
+     * @param Character $character
+     *
+     * @return int Character.experience
+     */
+    public function addExperienceToCharacter(int $experiencePoints, Character $character) : int
     {
+        $character = CharacterRepository::addExperience($experiencePoints, $character);
+        return $character->experience;
     }
 }
