@@ -9,6 +9,7 @@
 namespace App\Services;
 
 
+use App\Http\Helpers\StatusResponse;
 use App\Notifications\VerifyEmail;
 use App\User;
 
@@ -50,5 +51,49 @@ class UserService
     public function sendEmailVerificationNotification(User $user) : void
     {
         $user->notify(new VerifyEmail()); // my notification
+    }
+
+    /**
+     * AuthorizeRoles
+     *
+     * @param User $user
+     * @param string || array $roles
+     *
+     * @return bool
+     */
+    public function authorizeRoles(User $user, $roles)
+    {
+        if (is_array($roles)) {
+            return $this->hasAnyRole($roles) ||
+                abort(StatusResponse::STATUS_UNAUTHORIZED, User::MESSAGE_UNAUTHORIZED);
+        }
+        return $this->hasRole($roles) ||
+            abort(StatusResponse::STATUS_UNAUTHORIZED, User::MESSAGE_UNAUTHORIZED);
+    }
+
+    /**
+     * Check if user has any of roles.
+     *
+     * @param User $user
+     * @param array $roles
+     *
+     * @return bool
+     */
+    public function hasAnyRole(User $user, array $roles) : bool
+    {
+        return !is_null($this->roles()->whereIn('name', $roles)->first());
+    }
+
+    /**
+     * Check if user has 1 role.
+     *
+     * @param User $user
+     * @param string $role
+     *
+     * @return bool
+     */
+    public function hasRole(User $user, string $role) : bool
+    {
+        return !is_null($this->roles()->where('name', '=', $role)->first());
     }
 }

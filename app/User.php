@@ -37,7 +37,6 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public $dates = ['deleted_at'];
 
-
     protected $fillable = [
         'username',
         'email',
@@ -107,45 +106,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return $query->where($this->table . '.username', '=', $username);
     }
 
-    /**
-     * AuthorizeRoles
-     *
-     * @param string || array $roles
-     *
-     * @return bool
-     */
-    public function authorizeRoles($roles)
-    {
-        if (is_array($roles)) {
-            return $this->hasAnyRole($roles) ||
-                abort(StatusResponse::STATUS_UNAUTHORIZED, self::MESSAGE_UNAUTHORIZED);
-        }
-        return $this->hasRole($roles) ||
-            abort(StatusResponse::STATUS_UNAUTHORIZED, self::MESSAGE_UNAUTHORIZED);
-    }
 
-    /**
-     * Check if user has any of roles.
-     *
-     * @param array $roles
-     *
-     * @return bool
-     */
-    public function hasAnyRole(array $roles) : bool
-    {
-        return !is_null($this->roles()->whereIn('name', $roles)->first());
-    }
-
-    /**
-     * Check if user has 1 role.
-     *
-     * @param string $role
-     *
-     * @return bool
-     */
-    public function hasRole(string $role) : bool
-    {
-        return !is_null($this->roles()->where('name', '=', $role)->first());
-    }
 }
 
