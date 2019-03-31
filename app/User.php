@@ -4,6 +4,7 @@ namespace App;
 
 use App\Events\UserEvent;
 use App\Http\Helpers\StatusResponse;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -12,7 +13,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable, HasApiTokens, SoftDeletes;
 
@@ -26,7 +27,8 @@ class User extends Authenticatable
      */
     public $timestamps = [
         'created_at',
-        'updated_at'
+        'updated_at',
+        'email_verified_at',
     ];
 
     /**
@@ -49,6 +51,39 @@ class User extends Authenticatable
     protected $casts = [
         'is_active' => true,
     ];
+
+
+
+    /**
+     * Determine if the user has verified their email address.
+     *
+     * @return bool
+     */
+    public function hasVerifiedEmail() : bool
+    {
+        return $this->email_verified_at !== null;
+    }
+
+    /**
+     * Mark the given user's email as verified.
+     *
+     * @return bool
+     */
+    public function markEmailAsVerified() : bool
+    {
+        $this->email_verified_at = now();
+        return $this->save();
+    }
+
+    /**
+     * Send the email verification notification.
+     *
+     * @return void
+     */
+    public function sendEmailVerificationNotification() : void
+    {
+
+    }
 
     /**
      * Relation to character model.
