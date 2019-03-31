@@ -33,12 +33,12 @@ class UserService
      *
      * @param User $user
      *
-     * @return bool
+     * @return void
      */
-    public function setEmailAsVerified(User $user) : bool
+    public function setEmailAsVerified(User $user) : void
     {
         $user->email_verified_at = now();
-        return $user->save();
+        $user->save();
     }
 
     /**
@@ -50,7 +50,7 @@ class UserService
      */
     public function sendEmailVerificationNotification(User $user) : void
     {
-        $user->notify(new VerifyEmail()); // my notification
+        $user->notify(new VerifyEmail());
     }
 
     /**
@@ -64,10 +64,10 @@ class UserService
     public function authorizeRoles(User $user, $roles)
     {
         if (is_array($roles)) {
-            return $this->hasAnyRole($roles) ||
+            return $this->hasAnyRole($user, $roles) ||
                 abort(StatusResponse::STATUS_UNAUTHORIZED, User::MESSAGE_UNAUTHORIZED);
         }
-        return $this->hasRole($roles) ||
+        return $this->hasRole($user, $roles) ||
             abort(StatusResponse::STATUS_UNAUTHORIZED, User::MESSAGE_UNAUTHORIZED);
     }
 
@@ -81,7 +81,7 @@ class UserService
      */
     public function hasAnyRole(User $user, array $roles) : bool
     {
-        return !is_null($this->roles()->whereIn('name', $roles)->first());
+        return !is_null($user->roles()->whereIn('name', $roles)->first());
     }
 
     /**
@@ -94,6 +94,6 @@ class UserService
      */
     public function hasRole(User $user, string $role) : bool
     {
-        return !is_null($this->roles()->where('name', '=', $role)->first());
+        return !is_null($user->roles()->where('name', '=', $role)->first());
     }
 }
