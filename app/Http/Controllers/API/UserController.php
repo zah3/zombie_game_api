@@ -78,6 +78,8 @@ class UserController extends Controller
         $user->email_verified_at = $newUser['email_verified_at'];
         $user->save();
 
+        $user->sendEmailVerificationNotification();
+        
         return UserResource::make(User::find($user->id));
     }
 

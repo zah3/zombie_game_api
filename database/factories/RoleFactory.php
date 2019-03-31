@@ -6,6 +6,6 @@ use Faker\Generator as Faker;
 $factory->define(App\Role::class, function (Faker $faker) {
     return [
         'name' => $faker->unique()->name,
-        'description' => $faker->paragraph,
+        'description' => $faker->text(200),
     ];
 });
