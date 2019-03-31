@@ -68,18 +68,20 @@ class UserController extends Controller
     public function register(UserRegisterRequest $request)
     {
         $newUser = [
+            'email' => $request->input('email'),
             'username' => $request->input('username'),
             'password' => Hash::make($request->input('password')),
             'email_verified_at' => null
         ];
         $user = new User();
+        $user->email = $newUser['email'];
         $user->username = $newUser['username'];
         $user->password = $newUser['password'];
         $user->email_verified_at = $newUser['email_verified_at'];
         $user->save();
 
         $user->sendEmailVerificationNotification();
-        
+
         return UserResource::make(User::find($user->id));
     }
 

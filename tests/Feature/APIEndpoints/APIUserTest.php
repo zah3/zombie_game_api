@@ -16,6 +16,7 @@ class API_User_Test extends TestCase
             'username' => 'usernamE',
         ]);
         $goodDataWithCamelCase = [
+            'email' => $user->email,
             'username' => $user->username,
             'password' => 'PassWord',
             'confirm_password' => 'PassWord',
@@ -146,6 +147,7 @@ class API_User_Test extends TestCase
         ]);
 
         $incorrectData2 = [
+            'email' => $user->email,
             'username' => $user->username,
             'password' => 'password',
             'confirm_password' => 'password',
@@ -162,6 +164,7 @@ class API_User_Test extends TestCase
 
         // Send correct data
         $goodData = [
+            'email' => 'email@o2.pl',
             'username' => 'username',
             'password' => 'password',
             'confirm_password' => 'password',
@@ -203,6 +206,7 @@ class API_User_Test extends TestCase
         ]);
 
         $incorrectData = [
+            'email' => 'email@o2.pl',
             'username' => $user->username,
             'password' => 'password',
             'confirm_password' => 'password',
@@ -225,6 +229,7 @@ class API_User_Test extends TestCase
         ]);
 
         $incorrectData = [
+            'email' => 'email@o2.pl',
             'username' => $user->username,
             'password' => 'password',
             'confirm_password' => 'password',
