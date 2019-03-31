@@ -30,7 +30,6 @@ class UserCharacterStoreRequest extends FormRequest
                 'alpha_dash',
                 'min:4',
                 'max:255',
-                'unique:characters',
                 new CharacterLimit($this->user())
             ]
         ];

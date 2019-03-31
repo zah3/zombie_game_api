@@ -155,24 +155,24 @@ class API_User_Character_Test extends TestCase
     {
         // Creates user and character
         $user = factory(User::class)->create();
-        $userCharacter = factory(Character::class)->create([
+        factory(Character::class)->create([
             'user_id' => $user->id,
         ]);
 
         $otherUser = factory(User::class)->create();
         $otherUserCharacter = factory(Character::class)->make([
             'user_id' => $otherUser->id,
-            'name' => $userCharacter->name,
+            'name' => 'random_name',
+            'fraction_id' => 1,
         ]);
 
         // Send request to endpoint
-        $response = $this->actingAs($user, 'api')
+        $response = $this->actingAs($otherUser, 'api')
             ->json('POST', 'api/user/characters', $otherUserCharacter->toArray());
 
         // Check response
-        $response->assertStatus(422)
-            ->assertJsonValidationErrors('name');
-        $this->assertDatabaseMissing('characters', $otherUserCharacter->toArray());
+        $response->assertStatus(201);
+        $this->assertDatabaseHas('characters', $otherUserCharacter->toArray());
     }
 
     public function testStoreCharacterWithoutName()
@@ -296,8 +296,8 @@ class API_User_Character_Test extends TestCase
                 $userCharacterDataToUpdate->toArray()
             );
         // Check response
-        $response->assertStatus(422);
-        $this->assertDatabaseMissing('characters', $userCharacterDataToUpdate->toArray());
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('characters', $userCharacterDataToUpdate->toArray());
     }
 
     public function testUpdateCharacterIgnoreUniqueForSameCharacterNameData()

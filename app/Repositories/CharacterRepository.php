@@ -66,4 +66,19 @@ class CharacterRepository extends BaseRepository
         $character->save();
         return $character;
     }
+
+    /**
+     * Adds experience to character
+     *
+     * @param int $experience
+     * @param Character $character
+     *
+     * @return Character
+     */
+    public static function addExperience(int $experience, Character $character) : Character
+    {
+        $character->experience += $experience;
+        $character->save();
+        return $character;
+    }
 }

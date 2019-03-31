@@ -17,7 +17,7 @@ class CreateCharactersTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('user_id')->index()->nullable();
             $table->unsignedInteger('fraction_id')->index()->default(1);
-            $table->string('name')->collation('utf8_bin')->unique();
+            $table->string('name')->collation('utf8_bin');
             $table->unsignedInteger('experience')->default(0);
             $table->timestamps();
             $table->softDeletes();
