@@ -49,37 +49,6 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     /**
-     * Determine if the user has verified their email address.
-     *
-     * @return bool
-     */
-    public function hasVerifiedEmail() : bool
-    {
-        return $this->email_verified_at !== null;
-    }
-
-    /**
-     * Mark the given user's email as verified.
-     *
-     * @return bool
-     */
-    public function markEmailAsVerified() : bool
-    {
-        $this->email_verified_at = now();
-        return $this->save();
-    }
-
-    /**
-     * Send the email verification notification.
-     *
-     * @return void
-     */
-    public function sendEmailVerificationNotification() : void
-    {
-        $this->notify(new VerifyEmail()); // my notification
-    }
-
-    /**
      * Relation to character model.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -178,29 +147,6 @@ class User extends Authenticatable implements MustVerifyEmail
     public function hasRole(string $role) : bool
     {
         return !is_null($this->roles()->where('name', '=', $role)->first());
-    }
-
-    /**
-     * Activate User.
-     * @return bool || void
-     */
-    public function activate() : ?bool
-    {
-        if ($this->is_active === false) {
-            return $this->is_active = true;
-        }
-    }
-
-    /**
-     * Activate User.
-     * @return void
-     */
-    public function activateAndSave() : void
-    {
-        if ($this->is_active === false) {
-            $this->is_active = true;
-            $this->update();
-        }
     }
 }
 

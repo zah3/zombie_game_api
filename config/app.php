@@ -162,6 +162,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\ExperienceServiceProvider::class,
+        App\Providers\UserServiceProvider::class,
 
     ],
 
@@ -212,7 +213,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'ExperienceService' => \App\Facades\ExperienceService::class,
-
+        'UserService' => \App\Facades\UserServiceFacade::class,
+        
     ],
 
 ];

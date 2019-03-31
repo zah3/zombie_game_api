@@ -13,8 +13,8 @@
 
 //Route::get('/', function () {
 //    return view('welcome');
-//});
+//});oute
 //
 Auth::routes();
 
-Route::get('verify-email', 'Auth\VerificationController@verify')->name('verification.verify');
+Route::middleware('web')->get('verify', 'Auth\VerificationController@verify')->name('verification.verify');
