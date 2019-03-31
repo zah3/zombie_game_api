@@ -17,6 +17,6 @@ $factory->define(App\User::class, function (Faker $faker) {
     return [
         'username' => $faker->unique()->userName,
         'password' => \Illuminate\Support\Facades\Hash::make(random_bytes(10)),
-        'is_active' => true,
+        'email_verified_at' => now(),
     ];
 });

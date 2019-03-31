@@ -14,13 +14,13 @@ class SeedUserTable extends Migration
      */
     public function up()
     {
-        DB::unprepared("INSERT INTO users (username, password, is_active) VALUES" .
-            "('Zachariasz_admin','". Hash::make('Zachariasz') . "', true)," .
-            "('Zachariasz_user','".  Hash::make('Zachariasz') . "', true)," .
-            "('Karol','".  Hash::make('Karol') . "', true)," .
-            "('Rafał','".  Hash::make('Rafał') . "', true)," .
-            "('Maciej','".  Hash::make('Maciej') . "', true)," .
-            "('Mikołaj','".  Hash::make('Mikołaj') . "', true)");
+        DB::unprepared("INSERT INTO users (username, password, email_verified_at) VALUES" .
+            "('Zachariasz_admin','". Hash::make('Zachariasz') . "', now())," .
+            "('Zachariasz_user','".  Hash::make('Zachariasz') . "', now())," .
+            "('Karol','".  Hash::make('Karol') . "', now())," .
+            "('Rafał','".  Hash::make('Rafał') . "', now())," .
+            "('Maciej','".  Hash::make('Maciej') . "', now())," .
+            "('Mikołaj','".  Hash::make('Mikołaj') . "', now())");
     }
 
     /**
