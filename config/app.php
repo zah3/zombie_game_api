@@ -213,7 +213,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'ExperienceService' => \App\Facades\ExperienceService::class,
-        'UserService' => \App\Facades\UserServiceFacade::class,
+        'UserService' => \App\Facades\UserService::class,
 
     ],
 

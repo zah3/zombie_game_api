@@ -8,8 +8,8 @@
                     <div class="card-header">{{ __('Verify Your Email Address') }}</div>
 
                     <div class="card-body">
-                        <div class="alert alert-success" role="alert">
-                            {{ __('E-mail is now verified. You can log into application.') }}
+                        <div class="alert alert-{{$type}}" role="alert">
+                            {{ $message }}
                         </div>
 
                     </div>

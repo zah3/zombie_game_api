@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Facades\UserService;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
@@ -27,6 +29,7 @@ class VerificationController extends Controller
     {
         $this->middleware('throttle:6,1')->only('verify', 'resend');
     }
+
     /**
      * Mark the authenticated user's email address as verified.
      *
@@ -36,14 +39,23 @@ class VerificationController extends Controller
      */
     public function verify(Request $request)
     {
+        $type = 'danger';
         if (!$request->hasValidSignature()) {
-            abort(
-                403
-            );
+            $message = 'Your verification code has expired. Ask about it once again.';
+            return view('auth.verify', compact('message','type'));
         }
 
+        $user = User::find($request->input('id'));
+        if (UserService::hasUserVerifiedEmail($user)) {
+            $message = 'You have already verified Your email address.';
+            return view('auth.verify', compact('message','type'));
+        }
 
-        return view('auth.verify');
+        UserService::setEmailAsVerified($user);
+
+        $type = 'success';
+        $message = 'E-mail is now verified. You can log in to application.';
+        return view('auth.verify', compact('message','type'));
     }
 
     /**
