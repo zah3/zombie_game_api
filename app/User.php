@@ -4,6 +4,7 @@ namespace App;
 
 use App\Events\UserEvent;
 use App\Http\Helpers\StatusResponse;
+use App\Notifications\VerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -41,18 +42,11 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $fillable = [
         'username',
         'email',
-        'is_active',
     ];
 
     protected $hidden = [
         'password',
     ];
-
-    protected $casts = [
-        'is_active' => true,
-    ];
-
-
 
     /**
      * Determine if the user has verified their email address.
@@ -82,7 +76,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function sendEmailVerificationNotification() : void
     {
-
+        $this->notify(new VerifyEmail()); // my notification
     }
 
     /**
@@ -121,19 +115,19 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Scope for active users.
+     * Scope query for users with verified emails
      *
      * @param $query
      *
      * @return mixed
      */
-    public function scopeWithActive(Builder $query) : Builder
+    public function scopeWithEmailVerifiedAt(Builder $query) : Builder
     {
-        return $query->where($this->table . '.is_active', '=', true);
+        return $query->where($this->table . '.email_verified_at', '!=', null);
     }
 
     /**
-     * Scope with username
+     * Scope query to find specified username
      *
      * @param $query
      * @param $username

@@ -70,12 +70,12 @@ class UserController extends Controller
         $newUser = [
             'username' => $request->input('username'),
             'password' => Hash::make($request->input('password')),
-            'is_active' => false
+            'email_verified_at' => null
         ];
         $user = new User();
         $user->username = $newUser['username'];
         $user->password = $newUser['password'];
-        $user->is_active = $newUser['is_active'];
+        $user->email_verified_at = $newUser['email_verified_at'];
         $user->save();
 
         return UserResource::make(User::find($user->id));

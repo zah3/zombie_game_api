@@ -32,7 +32,7 @@ class API_User_Test extends TestCase
             'users',
             [
                 'username' => $user->username,
-                'is_active' => 0,
+                'email_verified_at' => null,
             ]
         );
 
