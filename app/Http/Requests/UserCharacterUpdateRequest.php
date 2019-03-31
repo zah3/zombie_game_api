@@ -4,7 +4,6 @@ namespace App\Http\Requests;
 
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class UserCharacterUpdateRequest extends FormRequest
 {
@@ -28,7 +27,6 @@ class UserCharacterUpdateRequest extends FormRequest
         return [
             'name' => [
                 'string',
-                Rule::unique('characters','name')->ignore($this->route('character')),
                 'max:255',
                 'alpha_dash',
                 'min:4',

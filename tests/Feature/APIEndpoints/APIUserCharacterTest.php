@@ -171,9 +171,8 @@ class API_User_Character_Test extends TestCase
             ->json('POST', 'api/user/characters', $otherUserCharacter->toArray());
 
         // Check response
-        $response->assertStatus(422)
-            ->assertJsonValidationErrors('name');
-        $this->assertDatabaseMissing('characters', $otherUserCharacter->toArray());
+        $response->assertStatus(201);
+        $this->assertDatabaseHas('characters', $otherUserCharacter->toArray());
     }
 
     public function testStoreCharacterWithoutName()
@@ -297,8 +296,8 @@ class API_User_Character_Test extends TestCase
                 $userCharacterDataToUpdate->toArray()
             );
         // Check response
-        $response->assertStatus(422);
-        $this->assertDatabaseMissing('characters', $userCharacterDataToUpdate->toArray());
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('characters', $userCharacterDataToUpdate->toArray());
     }
 
     public function testUpdateCharacterIgnoreUniqueForSameCharacterNameData()
