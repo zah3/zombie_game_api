@@ -4,7 +4,6 @@ namespace App;
 
 use App\Events\UserEvent;
 use App\Http\Helpers\StatusResponse;
-use App\Notifications\VerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;

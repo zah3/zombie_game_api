@@ -214,7 +214,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'ExperienceService' => \App\Facades\ExperienceService::class,
         'UserService' => \App\Facades\UserServiceFacade::class,
-        
+
     ],
 
 ];
