@@ -29,6 +29,7 @@ class VerificationController extends Controller
      */
     public function verify(Request $request)
     {
+        dd('ww');
         if (! $request->hasValidSignature()) {
             abort(401);
         }

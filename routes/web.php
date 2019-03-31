@@ -11,10 +11,10 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
+//Route::get('/', function () {
+//    return view('welcome');
+//});
+//
 Auth::routes();
 
-Route::get('verify/{id}', 'Auth\VerificationController@verify')->name('verification.verify');
+Route::get('verify-email', 'Auth\VerificationController@verify')->name('verification.verify');
