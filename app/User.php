@@ -4,6 +4,7 @@ namespace App;
 
 use App\Events\UserEvent;
 use App\Http\Helpers\StatusResponse;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -12,7 +13,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable, HasApiTokens, SoftDeletes;
 
@@ -26,7 +27,8 @@ class User extends Authenticatable
      */
     public $timestamps = [
         'created_at',
-        'updated_at'
+        'updated_at',
+        'email_verified_at',
     ];
 
     /**
@@ -35,19 +37,13 @@ class User extends Authenticatable
      */
     public $dates = ['deleted_at'];
 
-
     protected $fillable = [
         'username',
         'email',
-        'is_active',
     ];
 
     protected $hidden = [
         'password',
-    ];
-
-    protected $casts = [
-        'is_active' => true,
     ];
 
     /**
@@ -86,19 +82,19 @@ class User extends Authenticatable
     }
 
     /**
-     * Scope for active users.
+     * Scope query for users with verified emails
      *
      * @param $query
      *
      * @return mixed
      */
-    public function scopeWithActive(Builder $query) : Builder
+    public function scopeWithEmailVerifiedAt(Builder $query) : Builder
     {
-        return $query->where($this->table . '.is_active', '=', true);
+        return $query->where($this->table . '.email_verified_at', '!=', null);
     }
 
     /**
-     * Scope with username
+     * Scope query to find specified username
      *
      * @param $query
      * @param $username
@@ -110,68 +106,6 @@ class User extends Authenticatable
         return $query->where($this->table . '.username', '=', $username);
     }
 
-    /**
-     * AuthorizeRoles
-     *
-     * @param string || array $roles
-     *
-     * @return bool
-     */
-    public function authorizeRoles($roles)
-    {
-        if (is_array($roles)) {
-            return $this->hasAnyRole($roles) ||
-                abort(StatusResponse::STATUS_UNAUTHORIZED, self::MESSAGE_UNAUTHORIZED);
-        }
-        return $this->hasRole($roles) ||
-            abort(StatusResponse::STATUS_UNAUTHORIZED, self::MESSAGE_UNAUTHORIZED);
-    }
 
-    /**
-     * Check if user has any of roles.
-     *
-     * @param array $roles
-     *
-     * @return bool
-     */
-    public function hasAnyRole(array $roles) : bool
-    {
-        return !is_null($this->roles()->whereIn('name', $roles)->first());
-    }
-
-    /**
-     * Check if user has 1 role.
-     *
-     * @param string $role
-     *
-     * @return bool
-     */
-    public function hasRole(string $role) : bool
-    {
-        return !is_null($this->roles()->where('name', '=', $role)->first());
-    }
-
-    /**
-     * Activate User.
-     * @return bool || void
-     */
-    public function activate() : ?bool
-    {
-        if ($this->is_active === false) {
-            return $this->is_active = true;
-        }
-    }
-
-    /**
-     * Activate User.
-     * @return void
-     */
-    public function activateAndSave() : void
-    {
-        if ($this->is_active === false) {
-            $this->is_active = true;
-            $this->update();
-        }
-    }
 }
 

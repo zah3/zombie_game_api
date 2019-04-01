@@ -26,12 +26,12 @@ class UserScopeTest extends TestCase
     public function testWithActive()
     {
         $user = factory(User::class)->create([
-            'is_active' => true,
+            'email_verified_at' => null,
         ]);
         factory(User::class, 3)->create([
-            'is_active' => false,
+            'email_verified_at' => null,
         ]);
-        $modelFormDatabase = User::query()->withActive($user->username)->first();
+        $modelFormDatabase = User::query()->withEmailVerifiedAt()->first();
         $this->assertNotNull($modelFormDatabase);
         $this->assertEquals($user->is_active, $modelFormDatabase->is_active);
     }

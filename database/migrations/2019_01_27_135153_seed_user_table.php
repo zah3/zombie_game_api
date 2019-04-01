@@ -14,13 +14,13 @@ class SeedUserTable extends Migration
      */
     public function up()
     {
-        DB::unprepared("INSERT INTO users (username, password, is_active) VALUES" .
-            "('Zachariasz_admin','". Hash::make('Zachariasz') . "', true)," .
-            "('Zachariasz_user','".  Hash::make('Zachariasz') . "', true)," .
-            "('Karol','".  Hash::make('Karol') . "', true)," .
-            "('Rafał','".  Hash::make('Rafał') . "', true)," .
-            "('Maciej','".  Hash::make('Maciej') . "', true)," .
-            "('Mikołaj','".  Hash::make('Mikołaj') . "', true)");
+        DB::unprepared("INSERT INTO users (username, password, email, email_verified_at) VALUES" .
+            "('Zachariasz_admin','". Hash::make('Zachariasz') . "','a@o2.pl', now())," .
+            "('Zachariasz_user','".  Hash::make('Zachariasz') . "','a3@o2.pl', now())," .
+            "('Karol','".  Hash::make('Karol') . "','a2@o2.pl', now())," .
+            "('Rafał','".  Hash::make('Rafał') . "','a4@o2.pl', now())," .
+            "('Maciej','".  Hash::make('Maciej') . "','a5@o2.pl', now())," .
+            "('Mikołaj','".  Hash::make('Mikołaj') . "','a6@o2.pl', now())");
     }
 
     /**

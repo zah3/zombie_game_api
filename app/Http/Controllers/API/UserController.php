@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Facades\UserService;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\StatusResponse;
 use App\Http\Requests\{
@@ -68,15 +69,19 @@ class UserController extends Controller
     public function register(UserRegisterRequest $request)
     {
         $newUser = [
+            'email' => $request->input('email'),
             'username' => $request->input('username'),
             'password' => Hash::make($request->input('password')),
-            'is_active' => false
+            'email_verified_at' => null
         ];
         $user = new User();
+        $user->email = $newUser['email'];
         $user->username = $newUser['username'];
         $user->password = $newUser['password'];
-        $user->is_active = $newUser['is_active'];
+        $user->email_verified_at = $newUser['email_verified_at'];
         $user->save();
+
+        UserService::sendEmailVerificationNotification($user);
 
         return UserResource::make(User::find($user->id));
     }
