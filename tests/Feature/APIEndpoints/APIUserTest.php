@@ -243,6 +243,6 @@ class API_User_Test extends TestCase
 
         $response->assertStatus(422)
             ->assertJsonValidationErrors('username');
-
     }
+
 }

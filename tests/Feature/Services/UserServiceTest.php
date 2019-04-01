@@ -10,9 +10,12 @@ namespace Tests\Feature\Services;
 
 
 use App\Facades\UserService;
+use App\Notifications\VerifyEmail;
 use App\RoleUser;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Notification;
+use Mockery\Matcher\Not;
 use Tests\TestCase;
 
 class UserServiceTest extends TestCase
@@ -54,6 +57,23 @@ class UserServiceTest extends TestCase
         UserService::setEmailAsVerified($user);
         $user->refresh();
         $this->assertNotNull($user->email_verified_at);
+    }
+
+    public function testSendEmailVerificationNotification()
+    {
+        $user = factory(User::class)->create([
+            'email_verified_at' => null,
+        ]);
+        Notification::fake();
+
+        Notification::assertNothingSent();
+
+        UserService::sendEmailVerificationNotification($user);
+
+        // Assert a notification was sent to the given users...
+        Notification::assertSentTo(
+            [$user], VerifyEmail::class
+        );
     }
 
     public function testAuthorizeRolesReturnTrue()
