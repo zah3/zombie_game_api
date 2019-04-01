@@ -2,8 +2,12 @@
 
 namespace Tests\Feature\APIEndpoints;
 
+use App\Facades\UserService;
+use App\Notifications\VerifyEmail;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class API_User_Test extends TestCase
@@ -77,6 +81,8 @@ class API_User_Test extends TestCase
 
     public function testRegisterWithIncorrectPasswordData()
     {
+        Notification::fake();
+
         // Incorrect password with confirm_password
         $incorrectData = [
             'username' => 'username',
@@ -96,6 +102,7 @@ class API_User_Test extends TestCase
             'users',
             ['username' => $incorrectData['username']]
         );
+        Notification::assertNothingSent();
 
         // Incorrect password - over 20 characters
         $incorrectData = [
@@ -117,6 +124,7 @@ class API_User_Test extends TestCase
             'users',
             ['username' => $incorrectData['username']]
         );
+        Notification::assertNothingSent();
 
         // Incorrect password - less then 8 characters
         $incorrectData = [
@@ -137,10 +145,12 @@ class API_User_Test extends TestCase
             'users',
             ['username' => $incorrectData['username']]
         );
+        Notification::assertNothingSent();
     }
 
     public function testRegisterWithIncorrectUsernameData()
     {
+        Notification::fake();
         // Try to create user with already existed username
         $user = factory(User::class)->create([
             'username' => 'existed',
@@ -162,6 +172,7 @@ class API_User_Test extends TestCase
         $response2->assertStatus(422)
             ->assertJsonValidationErrors('username');
 
+        Notification::assertNothingSent();
         // Send correct data
         $goodData = [
             'email' => 'email@o2.pl',
@@ -175,6 +186,7 @@ class API_User_Test extends TestCase
             'api/register',
             $goodData
         );
+
         $response3->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
@@ -195,6 +207,8 @@ class API_User_Test extends TestCase
     }
     public function testRegisterWithIncorrectTooLongUsernameData()
     {
+        Notification::fake();
+
         $user = factory(User::class)->make([
             'username' => 'LoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsum' .
                 'LoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsum' .
@@ -220,10 +234,12 @@ class API_User_Test extends TestCase
 
         $response->assertStatus(422)
             ->assertJsonValidationErrors('username');
-
+        Notification::assertNothingSent();
     }
     public function testRegisterWithNonAlphaDashUsernameData()
     {
+        Notification::fake();
+
         $user = factory(User::class)->make([
             'username' => 'Lorem Ipsum Lorem',
         ]);
@@ -243,6 +259,7 @@ class API_User_Test extends TestCase
 
         $response->assertStatus(422)
             ->assertJsonValidationErrors('username');
+        Notification::assertNothingSent();
     }
 
 }
