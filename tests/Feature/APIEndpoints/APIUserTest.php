@@ -2,11 +2,9 @@
 
 namespace Tests\Feature\APIEndpoints;
 
-use App\Facades\UserService;
-use App\Notifications\VerifyEmail;
+
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
