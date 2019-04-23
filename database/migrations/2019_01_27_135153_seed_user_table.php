@@ -18,9 +18,9 @@ class SeedUserTable extends Migration
             "('Zachariasz_admin','". Hash::make('Zachariasz') . "','a@o2.pl', now())," .
             "('Zachariasz_user','".  Hash::make('Zachariasz') . "','a3@o2.pl', now())," .
             "('Karol','".  Hash::make('Karol') . "','a2@o2.pl', now())," .
-            "('Rafał','".  Hash::make('Rafał') . "','a4@o2.pl', now())," .
+            "('Rafal','".  Hash::make('Rafal') . "','a4@o2.pl', now())," .
             "('Maciej','".  Hash::make('Maciej') . "','a5@o2.pl', now())," .
-            "('Mikołaj','".  Hash::make('Mikołaj') . "','a6@o2.pl', now())");
+            "('Mikolaj','".  Hash::make('Mikolaj') . "','a6@o2.pl', now())");
     }
 
     /**
