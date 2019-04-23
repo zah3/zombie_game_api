@@ -13,7 +13,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable
 {
     use Notifiable, HasApiTokens, SoftDeletes;
 
@@ -105,7 +105,5 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $query->where($this->table . '.username', '=', $username);
     }
-
-
 }
 

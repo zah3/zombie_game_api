@@ -16,9 +16,9 @@ class SeedUserRolesTable extends Migration
     {
         $zachariaszAdmin = User::withUsername('Zachariasz_admin')->first();
         $zachariaszUser = User::withUsername('Zachariasz_user')->first();
-        $mikolaj = User::withUsername('Mikołaj')->first();
+        $mikolaj = User::withUsername('Mikolaj')->first();
         $maciej = User::withUsername('Maciej')->first();
-        $rafal = User::withUsername('Rafał')->first();
+        $rafal = User::withUsername('Rafal')->first();
         $karol = User::withUsername('Karol')->first();
 
         $userRole = Role::withName(Role::USER)->first();
