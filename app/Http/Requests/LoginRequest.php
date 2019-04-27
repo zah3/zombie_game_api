@@ -31,12 +31,15 @@ class LoginRequest extends FormRequest
                 'required',
                 'max:255',
                 new LoginValidation(),
-                function($attribute, $value, $fail) {
-                    if(UserService::hasUserVerifiedEmail($this->user()) === false) {
-                        // It's necessary to logout user, even if not has a token
-                        // just for safety
-                        Auth::logout();
-                        $fail('You have to verified Your email.');
+                function ($attribute, $value, $fail) {
+                    $user = $this->user();
+                    if ($user !== null) {
+                        if (UserService::hasUserVerifiedEmail($this->user()) === false) {
+                            // It's necessary to logout user, even if not has a token
+                            // just for safety
+                            Auth::logout();
+                            $fail('You have to verified Your email.');
+                        }
                     }
                 }
             ],

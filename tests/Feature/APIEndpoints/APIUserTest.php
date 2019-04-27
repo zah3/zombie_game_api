@@ -65,7 +65,7 @@ class API_User_Test extends TestCase
         $response3->assertStatus(422)
             ->assertJsonValidationErrors('username');
 
-        // Send correct data for login
+        // Not Verified mail
         $response4 = $this->json(
             'POST',
             'api/login',
@@ -74,7 +74,21 @@ class API_User_Test extends TestCase
                 'username' => $user->username,
             ]
         );
-        $response4->assertStatus(200);
+        $response4->assertStatus(422);
+
+        $userFromDB = User::withUsername($user->username)->firstOrFail();
+        $userFromDB->email_verified_at = now();
+        $userFromDB->save();
+        // Send correct Response
+        $response5 = $this->json(
+            'POST',
+            'api/login',
+            [
+                'password' => $goodDataWithCamelCase['password'],
+                'username' => $user->username,
+            ]
+        );
+        $response5->assertStatus(200);
     }
 
     public function testRegisterWithIncorrectPasswordData()
