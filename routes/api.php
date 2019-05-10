@@ -28,11 +28,11 @@ Route::group(['middleware' => 'auth:api'], function () {
 
 
 Route::prefix('user')->middleware('auth:api')->group(function () {
-    Route::get('/', 'API\UserController@index')->middleware('auth:api');
-    Route::post('/store', 'API\UserController@store')->middleware('auth:api');
-    Route::delete('/destroy/{id}', 'API\UserController@destroy')->middleware('auth:api');
-    Route::get('/show/{id}', 'API\UserController@show')->middleware('auth:api');
-    Route::put('/update/{id}', 'API\UserController@update')->middleware('auth:api');
+    Route::get('/', 'API\UserController@index');
+    Route::post('/store', 'API\UserController@store');
+    Route::delete('/destroy/{id}', 'API\UserController@destroy');
+    Route::get('/show/{id}', 'API\UserController@show');
+    Route::put('/update/{id}', 'API\UserController@update');
 
     Route::prefix('/characters')->group(function () {
         Route::delete('/{character}', 'API\UserCharacterController@destroy');
@@ -42,6 +42,7 @@ Route::prefix('user')->middleware('auth:api')->group(function () {
         Route::get('/', 'API\UserCharacterController@index');
     });
 });
-Route::prefix('email')->group(function () {
+
+Route::prefix('email')->group(['middleware' => 'throttle:20,60'], function () {
     Route::get('resend', 'Auth\VerificationController@resend')->name('verification.resend');
 });
