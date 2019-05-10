@@ -103,5 +103,18 @@ class User extends Authenticatable
     {
         return $query->where($this->table . '.username', '=', $username);
     }
+
+    /**
+     * Scope query to find specified email
+     *
+     * @param $query
+     * @param $email
+     *
+     * @return mixed
+     */
+    public function scopeWithEmail(Builder $query, string $email) : Builder
+    {
+        return $query->where($this->table . '.email', '=', $email);
+    }
 }
 

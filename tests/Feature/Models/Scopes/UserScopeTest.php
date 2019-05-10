@@ -23,7 +23,7 @@ class UserScopeTest extends TestCase
         $this->assertEquals($user->username, $modelFormDatabase->username);
     }
 
-    public function testWithActive()
+    public function withEmailVerifiedAt()
     {
         $user = factory(User::class)->create([
             'email_verified_at' => null,
@@ -34,5 +34,16 @@ class UserScopeTest extends TestCase
         $modelFormDatabase = User::query()->withEmailVerifiedAt()->first();
         $this->assertNotNull($modelFormDatabase);
         $this->assertEquals($user->is_active, $modelFormDatabase->is_active);
+    }
+
+    public function withEmail()
+    {
+        $user = factory(User::class)->create([
+            'email' => 'example@o2.pl',
+        ]);
+        factory(User::class, 3)->create();
+        $modelFormDatabase = User::query()->withEmail()->first();
+        $this->assertNotNull($modelFormDatabase);
+        $this->assertEquals($user->email, $modelFormDatabase->email);
     }
 }

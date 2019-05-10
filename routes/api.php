@@ -43,6 +43,6 @@ Route::prefix('user')->middleware('auth:api')->group(function () {
     });
 });
 
-Route::prefix('email')->group(['middleware' => 'throttle:20,60'], function () {
+Route::prefix('email')->group(function () {
     Route::get('resend', 'Auth\VerificationController@resend')->name('verification.resend');
 });
