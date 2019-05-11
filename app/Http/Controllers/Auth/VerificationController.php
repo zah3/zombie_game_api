@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Entities\Constants\ExceptionMessage;
-use App\Exceptions\VerificationUserIsAlreadyVerifiedException;
 use App\Facades\UserService;
 use App\Notifications\VerifyEmail;
 use App\User;

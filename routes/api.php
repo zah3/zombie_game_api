@@ -46,3 +46,20 @@ Route::prefix('user')->middleware('auth:api')->group(function () {
 Route::prefix('verification')->group(function () {
     Route::post('resend', 'Auth\VerificationController@resend')->name('verification.resend');
 });
+
+Route::group([
+    'namespace' => 'Auth',
+    'middleware' => 'api',
+    'prefix' => 'password'
+], function () {
+    Route::post('/', 'PasswordController@create');
+    Route::get('{token}', 'PasswordController@get');
+});
+
+Route::group([
+    'namespace' => 'Auth',
+    'middleware' => 'api',
+    'prefix' => 'password/reset'
+], function () {
+    Route::post('', 'PasswordResetController@reset');
+});
