@@ -43,6 +43,6 @@ Route::prefix('user')->middleware('auth:api')->group(function () {
     });
 });
 
-Route::prefix('email')->group(function () {
-    Route::get('resend', 'Auth\VerificationController@resend')->name('verification.resend');
+Route::prefix('verification')->group(function () {
+    Route::post('resend', 'Auth\VerificationController@resend')->name('verification.resend');
 });

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Entities\Constants\ExceptionMessage;
+use App\Exceptions\VerificationUserIsAlreadyVerifiedException;
 use App\Facades\UserService;
+use App\Notifications\VerifyEmail;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -41,21 +44,21 @@ class VerificationController extends Controller
     {
         $type = 'danger';
         if (!$request->hasValidSignature()) {
-            $message = 'Your verification code has expired. Ask about it once again.';
-            return view('auth.verify', compact('message','type'));
+            $message = VerifyEmail::MESSAGE_DANGER_CODE_EXPIRED;
+            return view('auth.verify', compact('message', 'type'));
         }
 
         $user = User::find($request->input('id'));
         if (UserService::hasUserVerifiedEmail($user)) {
-            $message = 'You have already verified Your email address.';
-            return view('auth.verify', compact('message','type'));
+            $message = VerifyEmail::MESSAGE_DANGER_ALREADY_VERIFIED;
+            return view('auth.verify', compact('message', 'type'));
         }
 
         UserService::setEmailAsVerified($user);
 
         $type = 'success';
-        $message = 'E-mail is now verified. You can log in to application.';
-        return view('auth.verify', compact('message','type'));
+        $message = VerifyEmail::MESSAGE_SUCCESS;
+        return view('auth.verify', compact('message', 'type'));
     }
 
     /**
@@ -63,6 +66,7 @@ class VerificationController extends Controller
      *
      * @param  \Illuminate\Http\Request $request
      *
+     * @throws
      * @return \Illuminate\Http\Response
      */
     public function resend(Request $request)
@@ -70,15 +74,13 @@ class VerificationController extends Controller
         $request->validate([
             'email' => 'exists:users,email',
         ]);
-        $user = User::withEmail
-        if ($request->user()->hasVerifiedEmail()) {
-            abort(
-                422,
-                'Your e-mail is already verified.'
-            );
-        }
-
-        $request->user()->sendEmailVerificationNotification();
+        $user = User::withEmail($request->input('email'))->first();
+        abort_if(
+            UserService::hasUserVerifiedEmail($user) === true,
+            422,
+            ExceptionMessage::VERIFICATION_USER_IS_ALREADY_VERIFIED
+        );
+        UserService::sendEmailVerificationNotification($user);
 
         return response()->json(null, 200);
     }
