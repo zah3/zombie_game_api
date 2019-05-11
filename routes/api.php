@@ -52,7 +52,7 @@ Route::group([
     'middleware' => 'api',
     'prefix' => 'password'
 ], function () {
-    Route::post('/', 'PasswordController@create');
+    Route::post('/', 'PasswordController@store');
     Route::get('{token}', 'PasswordController@get');
 });
 
