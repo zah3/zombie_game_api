@@ -9,14 +9,25 @@
 namespace App\Http\Controllers\Auth;
 
 
+use App\Http\Controllers\Controller;
 use App\Notifications\PasswordResetSuccess;
 use App\PasswordReset;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
-class PasswordResetController
+class PasswordResetController extends Controller
 {
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('throttle:6,1')->only('index');
+    }
 
     /**
      * Resets password
@@ -25,7 +36,7 @@ class PasswordResetController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function reset(Request $request)
+    public function store(Request $request)
     {
         $request->validate([
             'email' => 'required | string | email',

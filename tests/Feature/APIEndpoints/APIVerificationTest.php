@@ -25,10 +25,7 @@ class APIVerificationTest extends TestCase
 
     public function test_resend_validation_not_exist_email()
     {
-        $user = factory(User::class)->create();
-        $response = $this->actingAs($user, 'api')
-            ->json(
-                'POST',
+        $response = $this->postJson(
                 'api/verification/resend',
                 ['email' => 'exapmle@com.eu']
             );
@@ -39,9 +36,7 @@ class APIVerificationTest extends TestCase
     public function test_resend_validation_user_have_already_verified()
     {
         $user = factory(User::class)->create();
-        $response = $this->actingAs($user, 'api')
-            ->json(
-                'POST',
+        $response = $this->postJson(
                 'api/verification/resend',
                 ['email' => $user->email]
             );
@@ -57,12 +52,10 @@ class APIVerificationTest extends TestCase
         $user = factory(User::class)->create([
             'email_verified_at' => null,
         ]);
-        $response = $this->actingAs($user, 'api')
-            ->json(
-                'POST',
-                'api/verification/resend',
-                ['email' => $user->email]
-            );
+        $response = $this->postJson(
+            'api/verification/resend',
+            ['email' => $user->email]
+        );
 
         Notification::assertSentTo(
             $user,

@@ -11,10 +11,22 @@
 |
 */
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});oute
-//
 Auth::routes();
 
 Route::middleware('web')->get('verify', 'Auth\VerificationController@verify')->name('verification.verify');
+
+Route::group([
+    'namespace' => 'Auth',
+    'middleware' => 'web',
+    'prefix' => 'password/reset'
+], function () {
+    Route::post('', 'PasswordResetController@store');
+});
+Route::group([
+    'namespace' => 'Auth',
+    'middleware' => 'web',
+    'prefix' => 'password'
+], function () {
+    Route::post('/', 'PasswordController@store');
+    Route::get('{token}', 'PasswordController@get');
+});

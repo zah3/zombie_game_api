@@ -12,6 +12,16 @@ use Illuminate\Http\Request;
 
 class PasswordController extends Controller
 {
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('throttle:6,1')->only('store');
+    }
     /**
      * POST api/password
      * Creates reset password notification
@@ -27,8 +37,7 @@ class PasswordController extends Controller
         ]);
         $user = User::withEmail($request->email)->first();
 
-        $passwordReset = PasswordReset::updateOrCreate(
-            ['email' => $user->email],
+        $passwordReset = PasswordReset::create(
             [
                 'email' => $user->email,
                 'token' => str_random(60)
@@ -60,7 +69,7 @@ class PasswordController extends Controller
                 404,
                 PasswordResetSuccess::MESSAGE_ERROR_INVALID_TOKEN
             );
-            return $passwordReset;
         }
+        return $passwordReset;
     }
 }

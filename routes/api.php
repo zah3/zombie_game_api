@@ -61,5 +61,5 @@ Route::group([
     'middleware' => 'api',
     'prefix' => 'password/reset'
 ], function () {
-    Route::post('', 'PasswordResetController@reset');
+    Route::post('', 'PasswordResetController@store');
 });
