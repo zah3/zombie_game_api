@@ -6,7 +6,7 @@
  * Time: 08:30
  */
 
-namespace Tests\Feature\Models\Relationships;
+namespace Tests\Unit\Models\Relationships;
 
 
 use App\Character;

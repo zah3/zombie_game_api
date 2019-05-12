@@ -14,12 +14,12 @@ class SeedUserRolesTable extends Migration
      */
     public function up()
     {
-        $zachariaszAdmin = User::withUsername('Zachariasz_admin')->first();
-        $zachariaszUser = User::withUsername('Zachariasz_user')->first();
-        $mikolaj = User::withUsername('Mikolaj')->first();
-        $maciej = User::withUsername('Maciej')->first();
-        $rafal = User::withUsername('Rafal')->first();
-        $karol = User::withUsername('Karol')->first();
+        $zachariaszAdmin = User::whereUsername('Zachariasz_admin')->first();
+        $zachariaszUser = User::whereUsername('Zachariasz_user')->first();
+        $mikolaj = User::whereUsername('Mikolaj')->first();
+        $maciej = User::whereUsername('Maciej')->first();
+        $rafal = User::whereUsername('Rafal')->first();
+        $karol = User::whereUsername('Karol')->first();
 
         $userRole = Role::withName(Role::USER)->first();
         $adminRole = Role::withName(Role::ADMIN)->first();

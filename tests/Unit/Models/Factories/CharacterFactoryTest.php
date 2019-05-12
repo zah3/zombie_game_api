@@ -6,7 +6,7 @@
  * Time: 08:06
  */
 
-namespace Tests\Feature\Models\Factories;
+namespace Tests\Unit\Models\Factories;
 
 
 use App\Character;

@@ -11,10 +11,6 @@
 |
 */
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});oute
-//
 Auth::routes();
 
 Route::middleware('web')->get('verify', 'Auth\VerificationController@verify')->name('verification.verify');

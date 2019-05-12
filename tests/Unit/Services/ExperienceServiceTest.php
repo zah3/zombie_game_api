@@ -6,7 +6,7 @@
  * Time: 07:40
  */
 
-namespace Tests\Feature\Services;
+namespace Tests\Unit\Services;
 
 
 use App\Character;
@@ -21,9 +21,9 @@ class ExperienceServiceTest extends TestCase
     public function testAddExperienceToCharacter()
     {
         $character = factory(Character::class)->create();
-        $experiencePonts = 200;
+        $experiencePoints = 200;
         $actualExperiencePoints = ExperienceService::addExperienceToCharacter(
-            $experiencePonts,
+            $experiencePoints,
             $character
         );
         // Takes actual information about model from DB

@@ -21,6 +21,7 @@ use App\User;
  * @method static authorizeRoles(User $user, $roles)
  * @method static hasAnyRole(User $user, array $roles) : bool
  * @method static  hasRole(User $user, string $role) : bool
+ * @method static  generateResetPasswordToken() : string
  */
 class UserService extends Facade
 {

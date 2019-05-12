@@ -5,6 +5,7 @@ namespace App;
 use App\Events\UserEvent;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Notifications\Notifiable;
@@ -92,16 +93,11 @@ class User extends Authenticatable
     }
 
     /**
-     * Scope query to find specified username
-     *
-     * @param $query
-     * @param $username
-     *
-     * @return mixed
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function scopeWithUsername(Builder $query, string $username) : Builder
+    public function passwordReset() : HasOne
     {
-        return $query->where($this->table . '.username', '=', $username);
+        return $this->hasOne(PasswordReset::class);
     }
 }
 

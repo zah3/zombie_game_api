@@ -31,7 +31,6 @@ class API_User_Character_Test extends TestCase
         // Send request to endpoint
         $response = $this->actingAs($user, 'api')
             ->json('GET', 'api/user/characters');
-
         // Check response
         $response->assertOk()
             ->assertJsonCount(2, 'data')
@@ -270,7 +269,6 @@ class API_User_Character_Test extends TestCase
                 'api/user/characters/' . $userCharacterExisted->id,
                 $userCharacterDataToUpdate->toArray()
             );
-        var_dump($response->json());
         // Check response
         $response->assertStatus(200);
         $this->assertDatabaseHas('characters', $userCharacterDataToUpdate->toArray());
@@ -373,6 +371,7 @@ class API_User_Character_Test extends TestCase
             'GET',
             'api/user/characters/' . $userCharacter->id
         );
+
         // Check response
         $response->assertStatus(401);
         $this->assertDatabaseHas('characters', $userCharacter->toArray());

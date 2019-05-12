@@ -19,7 +19,7 @@ class IsUserWithUsernameVerified implements Rule
      */
     public function passes($attribute, $value) : bool
     {
-        $user = User::withUsername($value)->firstOrFail();
+        $user = User::whereUsername($value)->firstOrFail();
         return $user->email_verified_at !== null;
     }
 

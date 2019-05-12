@@ -6,7 +6,7 @@
  * Time: 18:55
  */
 
-namespace Tests\Feature\Models\Scopes;
+namespace Tests\Unit\Models\Scopes;
 
 
 use App\User;
@@ -14,16 +14,7 @@ use Tests\TestCase;
 
 class UserScopeTest extends TestCase
 {
-    public function testWithUsername()
-    {
-        $user = factory(User::class)->create();
-        factory(User::class, 3)->create();
-        $modelFormDatabase = User::query()->withUsername($user->username)->first();
-        $this->assertNotNull($modelFormDatabase);
-        $this->assertEquals($user->username, $modelFormDatabase->username);
-    }
-
-    public function testWithActive()
+    public function testWithEmailVerifiedAt()
     {
         $user = factory(User::class)->create([
             'email_verified_at' => null,

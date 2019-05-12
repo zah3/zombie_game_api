@@ -6,7 +6,7 @@
  * Time: 08:37
  */
 
-namespace Tests\Feature\Models\Factories;
+namespace Tests\Unit\Models\Factories;
 
 
 use App\Role;

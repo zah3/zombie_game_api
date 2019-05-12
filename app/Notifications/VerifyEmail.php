@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\URL;
 
 class VerifyEmail extends VerifyEmailBase
 {
+    public const CODE_VALID_IN_MINUTES = 60;
+
+    public const MESSAGE_SUCCESS = 'E-mail is now verified. You can log in to application.';
+    public const MESSAGE_DANGER_ALREADY_VERIFIED = 'You have already verified Your email address.';
+    public const MESSAGE_DANGER_CODE_EXPIRED = 'Your verification code has expired. Ask about it once again.';
 
     /**
      * Get the notification's delivery channels.
@@ -30,7 +35,7 @@ class VerifyEmail extends VerifyEmailBase
     {
         $temporarySignedURL = URL::temporarySignedRoute(
             'verification.verify',
-            Carbon::now()->addMinutes(60), ['id' => $notifiable->getKey()]
+            Carbon::now()->addMinutes(self::CODE_VALID_IN_MINUTES), ['id' => $notifiable->getKey()]
         );
 
         return $temporarySignedURL;

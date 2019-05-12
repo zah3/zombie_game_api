@@ -6,7 +6,7 @@
  * Time: 08:22
  */
 
-namespace Tests\Feature\Models\Scopes;
+namespace Tests\Unit\Models\Scopes;
 
 
 use App\Role;

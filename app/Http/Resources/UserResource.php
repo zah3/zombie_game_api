@@ -19,9 +19,12 @@ class UserResource extends JsonResource
         return [
             'id' => $this->id,
             'username' => $this->username,
+            'email' => $this->email,
             'is_active' => $this->when(optional($request->user())->hasRole(Role::ADMIN), $this->is_active),
-            'created_at' => optional($this->created_at)->toDateTimeString(),
-            'updated_at' => optional($this->updated_at)->toDateTimeString(),
+            'email_verified_at' => optional($this->email_verified_at)->toIso8601String(),
+            'created_at' => optional($this->created_at)->toIso8601String(),
+            'updated_at' => optional($this->updated_at)->toIso8601String(),
+            'deleted_at' => optional($this->deleted_at)->toIso8601String(),
             'roles' => RoleResource::collection($this->whenLoaded('roles')),
         ];
     }

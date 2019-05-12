@@ -6,10 +6,11 @@
  * Time: 08:10
  */
 
-namespace Tests\Feature\Models\Relationships;
+namespace Tests\Unit\Models\Relationships;
 
 
 use App\Character;
+use App\PasswordReset;
 use App\Role;
 use App\RoleUser;
 use App\User;
@@ -24,12 +25,14 @@ class UserRelationshipsTest extends TestCase
     {
         $user = factory(User::class)->create();
         $role = factory(Role::class)->create();
-        factory(RoleUser::class)->create([
+        $userRole = factory(RoleUser::class)->create([
             'user_id' => $user->id,
             'role_id' => $role->id,
         ]);
         $rolesForUser = $user->roles;
         $this->assertNotNull($rolesForUser);
+        $this->assertEquals($user->id, $userRole->user_id);
+        $this->assertEquals($role->id, $userRole->role_id);
     }
 
     public function testCharacters()
@@ -40,5 +43,17 @@ class UserRelationshipsTest extends TestCase
         ]);
         $userCharacters = $user->characters;
         $this->assertNotEmpty($userCharacters);
+        $this->assertEquals($user->id, $userCharacters[0]->user_id);
+    }
+
+    public function testResetPassword()
+    {
+        $user = factory(User::class)->create();
+        factory(PasswordReset::class)->create([
+            'user_id' => $user->id,
+        ]);
+        $userPasswordReset = $user->passwordReset;
+        $this->assertNotNull($userPasswordReset);
+        $this->assertEquals($user->id, $userPasswordReset->user_id);
     }
 }
