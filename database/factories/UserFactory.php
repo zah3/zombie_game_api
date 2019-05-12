@@ -15,7 +15,7 @@ use Faker\Generator as Faker;
 
 $factory->define(App\User::class, function (Faker $faker) {
     return [
-        'username' => $faker->unique()->userName,
+        'username' => $faker->unique()->userName . $faker->randomNumber(2),
         'email' => $faker->unique()->email,
         'password' => \Illuminate\Support\Facades\Hash::make(random_bytes(10)),
         'email_verified_at' => now(),

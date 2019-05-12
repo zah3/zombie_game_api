@@ -55,6 +55,7 @@ class PasswordResetController extends Controller
         );
         return response()->json([
             'message' => PasswordResetSuccessNotification::MESSAGE_SUCCESS,
+            201
         ]);
     }
 }
