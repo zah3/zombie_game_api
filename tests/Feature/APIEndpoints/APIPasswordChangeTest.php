@@ -16,13 +16,13 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
-class APIPasswordTest extends TestCase
+class APIPasswordChangeTest extends TestCase
 {
     use DatabaseTransactions;
 
     public function testStoreWithoutEmailField()
     {
-        $response = $this->postJson('api/password');
+        $response = $this->postJson('api/password/reset');
         $response->assertStatus(422)
             ->assertJsonValidationErrors('email');
     }
@@ -30,7 +30,7 @@ class APIPasswordTest extends TestCase
     public function testStoreWithWrongEmail()
     {
         $response = $this->postJson(
-            'api/password',
+            'api/password/reset',
             ['email' => 'eweq@o2.pl']
         );
         $response->assertStatus(422)
@@ -43,7 +43,7 @@ class APIPasswordTest extends TestCase
 
         $user = factory(User::class)->create();
         $response = $this->postJson(
-            'api/password',
+            'api/password/reset',
             ['email' => $user->email]
         );
         $response->assertStatus(200);
@@ -64,12 +64,13 @@ class APIPasswordTest extends TestCase
 
         $user = factory(User::class)->create();
         $response = $this->postJson(
-            'api/password',
+            'api/password/reset',
             ['email' => $user->email]
         );
+
         $response->assertStatus(200);
         $response2 = $this->postJson(
-            'api/password',
+            'api/password/reset',
             ['email' => $user->email]
         );
         $response2->assertStatus(200);
@@ -93,7 +94,7 @@ class APIPasswordTest extends TestCase
         $i = 0;
         do {
             $response = $this->postJson(
-                'api/password',
+                'api/password/reset',
                 ['email' => $user->email]
             );
             $i++;

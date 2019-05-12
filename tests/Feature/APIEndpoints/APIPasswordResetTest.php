@@ -25,7 +25,8 @@ class APIPasswordResetTest extends TestCase
         Notification::fake();
         $user = factory(User::class)->create();
 
-        $response = $this->postJson('api/password',
+        $response = $this->postJson(
+            'api/password/reset',
             ['email' => $user->email]
         );
         $response->assertStatus(200);
@@ -44,7 +45,7 @@ class APIPasswordResetTest extends TestCase
                     'confirm_password' => 'xxxxxxxxx',
                 ];
                 $changePasswordResponse = $this->postJson(
-                    'api/password/reset',
+                    'api/password/change',
                     $requestData
                 );
 
@@ -61,7 +62,7 @@ class APIPasswordResetTest extends TestCase
         $user = factory(User::class)->create();
 
         $response = $this->postJson(
-            'api/password',
+            'api/password/reset',
             ['email' => $user->email]
         );
         $response->assertStatus(200);
@@ -80,7 +81,7 @@ class APIPasswordResetTest extends TestCase
                     'confirm_password' => 'xxxxxxxxx',
                 ];
                 $changePasswordResponse = $this->postJson(
-                    'api/password/reset',
+                    'api/password/change',
                     $requestData
                 );
 
@@ -97,7 +98,7 @@ class APIPasswordResetTest extends TestCase
         $user = factory(User::class)->create();
 
         $response = $this->postJson(
-            'api/password',
+            'api/password/reset',
             ['email' => $user->email]
         );
         $response->assertStatus(200);
@@ -105,7 +106,7 @@ class APIPasswordResetTest extends TestCase
         $user2 = factory(User::class)->create();
 
         $response2 = $this->postJson(
-            'api/password',
+            'api/password/reset',
             ['email' => $user2->email]
         );
         $response2->assertStatus(200);
@@ -124,7 +125,7 @@ class APIPasswordResetTest extends TestCase
                     'confirm_password' => 'xxxxxxxxx',
                 ];
                 $changePasswordResponse = $this->postJson(
-                    'api/password/reset',
+                    'api/password/change',
                     $requestData
                 );
 
@@ -143,7 +144,7 @@ class APIPasswordResetTest extends TestCase
         $user = factory(User::class)->create();
 
         $response = $this->postJson(
-            'api/password',
+            'api/password/reset',
             ['email' => $user->email]
         );
         $response->assertStatus(200);
@@ -163,7 +164,7 @@ class APIPasswordResetTest extends TestCase
                 ];
                 $user->refresh();
                 $changePasswordResponse = $this->postJson(
-                    'api/password/reset',
+                    'api/password/change',
                     $requestData
                 )->assertJsonStructure([
                     'id',
