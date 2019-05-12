@@ -193,5 +193,4 @@ class UserController extends Controller
 
         return response(null, 204);
     }
-
 }

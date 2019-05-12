@@ -273,5 +273,4 @@ class API_User_Test extends TestCase
             ->assertJsonValidationErrors('username');
         Notification::assertNothingSent();
     }
-
 }

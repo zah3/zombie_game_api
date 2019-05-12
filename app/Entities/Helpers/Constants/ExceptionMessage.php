@@ -6,7 +6,7 @@
  * Time: 02:23
  */
 
-namespace App\Entities\Constants;
+namespace App\Entities\Constants\Helpers;
 
 
 abstract class ExceptionMessage

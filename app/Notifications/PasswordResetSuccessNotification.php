@@ -6,23 +6,14 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class PasswordResetRequest extends Notification
+class PasswordResetSuccessNotification extends Notification
 {
     use Queueable;
 
-    protected $token;
+    public const MESSAGE_SUCCESS = 'We have e-mailed your password reset link!';
 
-    /**
-     * Create a new notification instance.
-     *
-     * @param string $token
-     *
-     * @return void
-     */
-    public function __construct(string $token)
-    {
-        $this->token = $token;
-    }
+    public const MESSAGE_ERROR_INVALID_TOKEN = 'This password reset token is invalid.';
+    public const MESSAGE_ERROR_CANNOT_FIND_EMAIL = "We can't find a user with that e-mail address.";
 
     /**
      * Get the notification's delivery channels.
@@ -45,10 +36,9 @@ class PasswordResetRequest extends Notification
      */
     public function toMail($notifiable)
     {
-        $url = url('/api/password/find/' . $this->token);
         return (new MailMessage)
-            ->line('You are receiving this email because we received a password reset request for your account.')
-            ->action('Reset Password', url($url))
-            ->line('If you did not request a password reset, no further action is required.');
+            ->line('You are changed your password with success.')
+            ->line('If you did change password, no further action is required.')
+            ->line('If you did not change password, protect your account.');
     }
 }

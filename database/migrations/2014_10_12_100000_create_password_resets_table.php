@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
 class CreatePasswordResetsTable extends Migration
 {
@@ -14,10 +15,14 @@ class CreatePasswordResetsTable extends Migration
     public function up()
     {
         Schema::create('password_resets', function (Blueprint $table) {
-            $table->string('email')->index();
-            $table->string('token')->index();
-            $table->timestamp('created_at')->nullable();
+            $table->increments('id');
+            $table->string('email');
+            $table->string('token');
+            $table->timestamps();
         });
+
+        $sql = "CREATE UNIQUE INDEX password_resets_email_token_uindex ON password_resets (email, token);";
+        DB::unprepared($sql);
     }
 
     /**

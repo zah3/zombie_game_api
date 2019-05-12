@@ -6,7 +6,7 @@
  * Time: 18:55
  */
 
-namespace Tests\Feature\Models\Scopes;
+namespace Tests\Unit\Models\Scopes;
 
 
 use App\User;

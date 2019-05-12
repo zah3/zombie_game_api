@@ -5,6 +5,7 @@ namespace App;
 use App\Events\UserEvent;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Notifications\Notifiable;
@@ -115,6 +116,14 @@ class User extends Authenticatable
     public function scopeWithEmail(Builder $query, string $email) : Builder
     {
         return $query->where($this->table . '.email', '=', $email);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function passwordReset() : HasOne
+    {
+        return $this->hasOne(PasswordReset::class,'email','email');
     }
 }
 

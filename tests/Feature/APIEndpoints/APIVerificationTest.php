@@ -9,13 +9,11 @@
 namespace Tests\Feature\APIEndpoints;
 
 
-use App\Entities\Constants\ExceptionMessage;
-use App\Facades\UserService;
+use App\Entities\Constants\Helpers\ExceptionMessage;
 use App\Notifications\VerifyEmail;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Not;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
@@ -26,9 +24,9 @@ class APIVerificationTest extends TestCase
     public function test_resend_validation_not_exist_email()
     {
         $response = $this->postJson(
-                'api/verification/resend',
-                ['email' => 'exapmle@com.eu']
-            );
+            'api/verification/resend',
+            ['email' => 'exapmle@com.eu']
+        );
         $response->assertStatus(422)
             ->assertJsonValidationErrors('email');
     }
@@ -37,9 +35,9 @@ class APIVerificationTest extends TestCase
     {
         $user = factory(User::class)->create();
         $response = $this->postJson(
-                'api/verification/resend',
-                ['email' => $user->email]
-            );
+            'api/verification/resend',
+            ['email' => $user->email]
+        );
         $response->assertStatus(422)->assertJson([
             'message' => ExceptionMessage::VERIFICATION_USER_IS_ALREADY_VERIFIED,
         ]);
@@ -52,7 +50,7 @@ class APIVerificationTest extends TestCase
         $user = factory(User::class)->create([
             'email_verified_at' => null,
         ]);
-        $response = $this->postJson(
+        $this->postJson(
             'api/verification/resend',
             ['email' => $user->email]
         );
@@ -67,7 +65,7 @@ class APIVerificationTest extends TestCase
                 $verifyResponse->assertSuccessful();
                 $verifyResponse->assertViewIs('auth.verify');
                 $verifyResponse->assertViewHas('type', 'danger');
-                $verifyResponse->assertViewHas('message',VerifyEmail::MESSAGE_DANGER_CODE_EXPIRED);
+                $verifyResponse->assertViewHas('message', VerifyEmail::MESSAGE_DANGER_CODE_EXPIRED);
                 $user->refresh();
                 return $user->email_verified_at === null;
             }

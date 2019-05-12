@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Entities\Helpers\Utilities;
 use App\Http\Controllers\Controller;
-use App\Notifications\PasswordResetRequest;
-use App\Notifications\PasswordResetSuccess;
+use App\Notifications\PasswordResetRequestNotification;
+use App\Notifications\PasswordResetSuccessNotification;
 use App\PasswordReset;
 use App\User;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class PasswordController extends Controller
@@ -20,56 +20,41 @@ class PasswordController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('throttle:6,1')->only('store');
+        $this->middleware('throttle:5,1')->only('store');
     }
+
     /**
-     * POST api/password
+     * POST password
      * Creates reset password notification
      *
      * @param Request $request
      *
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     public function store(Request $request)
     {
         $request->validate([
             'email' => 'required|email|exists:users,email',
         ]);
+        $userWithSameEmailInPasswordResetTable = PasswordReset::whereEmail($request->email)->first();
+        // It means that - user probably haven't receive email with secret code
+        if ($userWithSameEmailInPasswordResetTable) {
+            $userWithSameEmailInPasswordResetTable->delete();
+        }
         $user = User::withEmail($request->email)->first();
 
         $passwordReset = PasswordReset::create(
             [
                 'email' => $user->email,
-                'token' => str_random(60)
+                'token' => Utilities::generateRandomUniqueString(),
             ]
         );
         $user->notify(
-            new PasswordResetRequest($passwordReset->token)
+            new PasswordResetRequestNotification($passwordReset->token)
         );
         return response()->json([
-            'message' => PasswordResetSuccess::MESSAGE_SUCCESS,
+            'message' => PasswordResetSuccessNotification::MESSAGE_SUCCESS,
         ]);
-    }
-
-    /**
-     * GET api/password/token
-     * Finds token
-     *
-     * @param $token
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function show($token)
-    {
-        $passwordReset = PasswordReset::whereToken($token)->firstOrFail();
-
-        if (Carbon::parse($passwordReset->updated_at)->addMinutes(720)->isPast()) {
-            $passwordReset->delete();
-            abort(
-                404,
-                PasswordResetSuccess::MESSAGE_ERROR_INVALID_TOKEN
-            );
-        }
-        return $passwordReset;
     }
 }

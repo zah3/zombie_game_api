@@ -6,8 +6,7 @@
  * Time: 08:02
  */
 
-namespace Tests\Feature\Models\Factories;
-
+namespace Tests\Unit\Models\Factories;
 
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

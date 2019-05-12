@@ -18,15 +18,7 @@ Route::middleware('web')->get('verify', 'Auth\VerificationController@verify')->n
 Route::group([
     'namespace' => 'Auth',
     'middleware' => 'web',
-    'prefix' => 'password/reset'
-], function () {
-    Route::post('', 'PasswordResetController@store');
-});
-Route::group([
-    'namespace' => 'Auth',
-    'middleware' => 'web',
     'prefix' => 'password'
 ], function () {
-    Route::post('/', 'PasswordController@store');
-    Route::get('{token}', 'PasswordController@get');
+    Route::get('{token}', 'PasswordController@show');
 });

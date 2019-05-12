@@ -15,7 +15,6 @@ use App\RoleUser;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Notification;
-use Mockery\Matcher\Not;
 use Tests\TestCase;
 
 class UserServiceTest extends TestCase

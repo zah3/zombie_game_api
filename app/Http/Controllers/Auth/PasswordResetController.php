@@ -10,7 +10,8 @@ namespace App\Http\Controllers\Auth;
 
 
 use App\Http\Controllers\Controller;
-use App\Notifications\PasswordResetSuccess;
+use App\Http\Resources\UserResource;
+use App\Notifications\PasswordResetSuccessNotification;
 use App\PasswordReset;
 use App\User;
 use Illuminate\Http\Request;
@@ -30,6 +31,7 @@ class PasswordResetController extends Controller
     }
 
     /**
+     * POST /api/password/reset`
      * Resets password
      *
      * @param Request $request
@@ -39,9 +41,10 @@ class PasswordResetController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'email' => 'required | string | email',
-            'password' => 'required | string | confirmed',
-            'token' => 'required | string'
+            'email' => 'required|exists:password_resets,email|email|max:255',
+            'password' => 'required|min:8|max:20',
+            'confirm_password' => 'required|same:password',
+            'token' => 'required|exists:password_resets,token|string|max:255'
         ]);
         $passwordReset = PasswordReset::where([
             ['token', $request->token],
@@ -50,8 +53,8 @@ class PasswordResetController extends Controller
 
         abort_if(
             $passwordReset === null,
-            404,
-            PasswordResetSuccess::MESSAGE_ERROR_INVALID_TOKEN
+            422,
+            PasswordResetSuccessNotification::MESSAGE_ERROR_INVALID_TOKEN
         );
 
         $user = User::withEmail($request->email)->first();
@@ -59,13 +62,13 @@ class PasswordResetController extends Controller
         abort_if(
             $user === null,
             404,
-            PasswordResetSuccess::MESSAGE_ERROR_CANNOT_FIND_EMAIL
+            PasswordResetSuccessNotification::MESSAGE_ERROR_CANNOT_FIND_EMAIL
         );
 
         $user->password = Hash::make($request->input('password'));
         $user->save();
         $passwordReset->delete();
-        $user->notify(new PasswordResetSuccess());
-        return response()->json($user);
+        $user->notify(new PasswordResetSuccessNotification());
+        return response()->json(UserResource::make($user),201);
     }
 }

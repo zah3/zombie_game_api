@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Entities\Constants\ExceptionMessage;
+use App\Entities\Constants\Helpers\ExceptionMessage;
 use App\Facades\UserService;
 use App\Notifications\VerifyEmail;
 use App\User;

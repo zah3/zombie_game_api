@@ -13,6 +13,7 @@ class VerifyEmail extends VerifyEmailBase
     public const MESSAGE_SUCCESS = 'E-mail is now verified. You can log in to application.';
     public const MESSAGE_DANGER_ALREADY_VERIFIED = 'You have already verified Your email address.';
     public const MESSAGE_DANGER_CODE_EXPIRED = 'Your verification code has expired. Ask about it once again.';
+
     /**
      * Get the notification's delivery channels.
      *

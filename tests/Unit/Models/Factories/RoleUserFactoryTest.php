@@ -6,6 +6,8 @@
  * Time: 08:42
  */
 
+namespace Tests\Unit\Models\Factories;
+
 use Tests\TestCase;
 
 class RoleUserFactoryTest extends TestCase
