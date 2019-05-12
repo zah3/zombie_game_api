@@ -269,7 +269,6 @@ class API_User_Character_Test extends TestCase
                 'api/user/characters/' . $userCharacterExisted->id,
                 $userCharacterDataToUpdate->toArray()
             );
-        var_dump($response->json());
         // Check response
         $response->assertStatus(200);
         $this->assertDatabaseHas('characters', $userCharacterDataToUpdate->toArray());

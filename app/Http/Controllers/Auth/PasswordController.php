@@ -24,7 +24,7 @@ class PasswordController extends Controller
     }
 
     /**
-     * POST password
+     * POST api/password
      * Creates reset password notification
      *
      * @param Request $request
@@ -37,16 +37,16 @@ class PasswordController extends Controller
         $request->validate([
             'email' => 'required|email|exists:users,email',
         ]);
-        $userWithSameEmailInPasswordResetTable = PasswordReset::whereEmail($request->email)->first();
-        // It means that - user probably haven't receive email with secret code
-        if ($userWithSameEmailInPasswordResetTable) {
-            $userWithSameEmailInPasswordResetTable->delete();
-        }
         $user = User::withEmail($request->email)->first();
+        // It means that - user probably haven't receive email with secret code
+        $userInPasswordResetTable = PasswordReset::whereUserId($user->id)->first();
+        if ($userInPasswordResetTable) {
+            $userInPasswordResetTable->delete();
+        }
 
         $passwordReset = PasswordReset::create(
             [
-                'email' => $user->email,
+                'user_id' => $user->id,
                 'token' => Utilities::generateRandomUniqueString(),
             ]
         );

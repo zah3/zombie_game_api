@@ -31,7 +31,7 @@ class PasswordResetController extends Controller
     }
 
     /**
-     * POST /api/password/reset`
+     * POST /api/password/reset
      * Resets password
      *
      * @param Request $request
@@ -41,22 +41,11 @@ class PasswordResetController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'email' => 'required|exists:password_resets,email|email|max:255',
+            'email' => 'required|exists:users,email|email|max:255',
             'password' => 'required|min:8|max:20',
             'confirm_password' => 'required|same:password',
             'token' => 'required|exists:password_resets,token|string|max:255'
         ]);
-        $passwordReset = PasswordReset::where([
-            ['token', $request->token],
-            ['email', $request->email]
-        ])->first();
-
-        abort_if(
-            $passwordReset === null,
-            422,
-            PasswordResetSuccessNotification::MESSAGE_ERROR_INVALID_TOKEN
-        );
-
         $user = User::withEmail($request->email)->first();
 
         abort_if(
@@ -65,10 +54,21 @@ class PasswordResetController extends Controller
             PasswordResetSuccessNotification::MESSAGE_ERROR_CANNOT_FIND_EMAIL
         );
 
+        $passwordReset = PasswordReset::where([
+            ['token', $request->token],
+            ['user_id', $user->id]
+        ])->first();
+
+        abort_if(
+            $passwordReset === null,
+            422,
+            PasswordResetSuccessNotification::MESSAGE_ERROR_INVALID_TOKEN
+        );
+
         $user->password = Hash::make($request->input('password'));
         $user->save();
         $passwordReset->delete();
         $user->notify(new PasswordResetSuccessNotification());
-        return response()->json(UserResource::make($user),201);
+        return response()->json(UserResource::make($user), 201);
     }
 }

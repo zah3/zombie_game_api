@@ -70,7 +70,7 @@ class APIPasswordTest extends TestCase
         );
         $response2->assertStatus(200);
         // Check if is not put same email in password_records table
-        $passwordResets = PasswordReset::whereEmail($user->email)->get();
+        $passwordResets = PasswordReset::whereUserId($user->id)->get();
         $this->assertEquals(1,count($passwordResets));
         Notification::assertSentTo(
             $user,

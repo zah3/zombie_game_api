@@ -16,12 +16,12 @@ class CreatePasswordResetsTable extends Migration
     {
         Schema::create('password_resets', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('email');
+            $table->unsignedInteger('user_id');
             $table->string('token');
             $table->timestamps();
         });
 
-        $sql = "CREATE UNIQUE INDEX password_resets_email_token_uindex ON password_resets (email, token);";
+        $sql = "CREATE UNIQUE INDEX password_resets_email_token_uindex ON password_resets (user_id, token);";
         DB::unprepared($sql);
     }
 

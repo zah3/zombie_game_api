@@ -14,11 +14,3 @@
 Auth::routes();
 
 Route::middleware('web')->get('verify', 'Auth\VerificationController@verify')->name('verification.verify');
-
-Route::group([
-    'namespace' => 'Auth',
-    'middleware' => 'web',
-    'prefix' => 'password'
-], function () {
-    Route::get('{token}', 'PasswordController@show');
-});

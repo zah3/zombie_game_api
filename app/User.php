@@ -123,7 +123,7 @@ class User extends Authenticatable
      */
     public function passwordReset() : HasOne
     {
-        return $this->hasOne(PasswordReset::class,'email','email');
+        return $this->hasOne(PasswordReset::class);
     }
 }
 
