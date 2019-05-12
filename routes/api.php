@@ -24,15 +24,15 @@ Route::prefix('verification')->group(function () {
 
 Route::group([
     'namespace' => 'Auth',
-    'prefix' => 'password'
+    'prefix' => 'password/reset'
 ], function () {
-    Route::post('/', 'PasswordController@store');
+    Route::post('/', 'PasswordResetController@store');
 });
 Route::group([
     'namespace' => 'Auth',
-    'prefix' => 'password/reset'
+    'prefix' => 'password/change'
 ], function () {
-    Route::post('', 'PasswordResetController@store');
+    Route::post('', 'PasswordChangeController@store');
 });
 
 //});

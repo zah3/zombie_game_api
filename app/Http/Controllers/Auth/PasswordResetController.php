@@ -1,21 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: zachariasz
- * Date: 2019-05-11
- * Time: 08:35
- */
 
 namespace App\Http\Controllers\Auth;
 
-
+use App\Entities\Helpers\Utilities;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\UserResource;
+use App\Notifications\PasswordResetRequestNotification;
 use App\Notifications\PasswordResetSuccessNotification;
 use App\PasswordReset;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 class PasswordResetController extends Controller
 {
@@ -27,48 +20,42 @@ class PasswordResetController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('throttle:6,1')->only('index');
+        $this->middleware('throttle:5,1')->only('store');
     }
 
     /**
-     * POST /api/password/reset
-     * Resets password
+     * POST api/password
+     * Creates reset password notification
      *
      * @param Request $request
      *
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     public function store(Request $request)
     {
         $request->validate([
-            'email' => 'required|exists:users,email|email|max:255',
-            'password' => 'required|min:8|max:20',
-            'confirm_password' => 'required|same:password',
-            'token' => 'required|exists:password_resets,token|string|max:255'
+            'email' => 'required|email|exists:users,email',
         ]);
         $user = User::whereEmail($request->email)->first();
+        // It means that - user probably haven't receive email with secret code
+        $userInPasswordResetTable = PasswordReset::whereUserId($user->id)->first();
+        if ($userInPasswordResetTable) {
+            $userInPasswordResetTable->delete();
+        }
 
-        abort_if(
-            $user === null,
-            404,
-            PasswordResetSuccessNotification::MESSAGE_ERROR_CANNOT_FIND_EMAIL
+        $passwordReset = PasswordReset::create(
+            [
+                'user_id' => $user->id,
+                'token' => Utilities::generateRandomUniqueString(),
+            ]
         );
-
-        $passwordReset = PasswordReset::where([
-            ['token', $request->token],
-            ['user_id', $user->id]
-        ])->first();
-
-        abort_if(
-            $passwordReset === null,
-            422,
-            PasswordResetSuccessNotification::MESSAGE_ERROR_INVALID_TOKEN
+        $user->notify(
+            new PasswordResetRequestNotification($passwordReset->token)
         );
-
-        $user->password = Hash::make($request->input('password'));
-        $user->save();
-        $passwordReset->delete();
-        $user->notify(new PasswordResetSuccessNotification());
-        return response()->json(UserResource::make($user), 201);
+        return response()->json([
+            'message' => PasswordResetSuccessNotification::MESSAGE_SUCCESS,
+            201
+        ]);
     }
 }
