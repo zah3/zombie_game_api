@@ -46,7 +46,7 @@ class PasswordResetController extends Controller
             'confirm_password' => 'required|same:password',
             'token' => 'required|exists:password_resets,token|string|max:255'
         ]);
-        $user = User::withEmail($request->email)->first();
+        $user = User::whereEmail($request->email)->first();
 
         abort_if(
             $user === null,

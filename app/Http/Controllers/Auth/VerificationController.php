@@ -71,9 +71,9 @@ class VerificationController extends Controller
     public function resend(Request $request)
     {
         $request->validate([
-            'email' => 'exists:users,email',
+            'email' => 'required|exists:users,email',
         ]);
-        $user = User::withEmail($request->input('email'))->first();
+        $user = User::whereEmail($request->input('email'))->first();
         abort_if(
             UserService::hasUserVerifiedEmail($user) === true,
             422,

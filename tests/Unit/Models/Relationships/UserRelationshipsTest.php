@@ -33,7 +33,6 @@ class UserRelationshipsTest extends TestCase
         $this->assertNotNull($rolesForUser);
         $this->assertEquals($user->id, $userRole->user_id);
         $this->assertEquals($role->id, $userRole->role_id);
-
     }
 
     public function testCharacters()

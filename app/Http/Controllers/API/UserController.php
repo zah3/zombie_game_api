@@ -38,7 +38,7 @@ class UserController extends Controller
      */
     public function login(LoginRequest $request)
     {
-        $user = User::withUsername($request->input('username'))->first();
+        $user = User::whereUsername($request->input('username'))->first();
 
         DB::beginTransaction();
         try {

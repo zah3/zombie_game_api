@@ -76,7 +76,7 @@ class API_User_Test extends TestCase
         );
         $response4->assertStatus(422);
 
-        $userFromDB = User::withUsername($user->username)->firstOrFail();
+        $userFromDB = User::whereUsername($user->username)->firstOrFail();
         $userFromDB->email_verified_at = now();
         $userFromDB->save();
         // Send correct Response

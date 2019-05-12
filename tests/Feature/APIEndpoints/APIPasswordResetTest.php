@@ -60,7 +60,8 @@ class APIPasswordResetTest extends TestCase
         Notification::fake();
         $user = factory(User::class)->create();
 
-        $response = $this->postJson('api/password',
+        $response = $this->postJson(
+            'api/password',
             ['email' => $user->email]
         );
         $response->assertStatus(200);
@@ -95,14 +96,16 @@ class APIPasswordResetTest extends TestCase
         Notification::fake();
         $user = factory(User::class)->create();
 
-        $response = $this->postJson('api/password',
+        $response = $this->postJson(
+            'api/password',
             ['email' => $user->email]
         );
         $response->assertStatus(200);
 
         $user2 = factory(User::class)->create();
 
-        $response2 = $this->postJson('api/password',
+        $response2 = $this->postJson(
+            'api/password',
             ['email' => $user2->email]
         );
         $response2->assertStatus(200);
@@ -139,7 +142,8 @@ class APIPasswordResetTest extends TestCase
         Notification::fake();
         $user = factory(User::class)->create();
 
-        $response = $this->postJson('api/password',
+        $response = $this->postJson(
+            'api/password',
             ['email' => $user->email]
         );
         $response->assertStatus(200);

@@ -37,7 +37,7 @@ class PasswordController extends Controller
         $request->validate([
             'email' => 'required|email|exists:users,email',
         ]);
-        $user = User::withEmail($request->email)->first();
+        $user = User::whereEmail($request->email)->first();
         // It means that - user probably haven't receive email with secret code
         $userInPasswordResetTable = PasswordReset::whereUserId($user->id)->first();
         if ($userInPasswordResetTable) {

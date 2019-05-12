@@ -29,7 +29,8 @@ class APIPasswordTest extends TestCase
 
     public function testStoreWithWrongEmail()
     {
-        $response = $this->postJson('api/password',
+        $response = $this->postJson(
+            'api/password',
             ['email' => 'eweq@o2.pl']
         );
         $response->assertStatus(422)
@@ -41,7 +42,8 @@ class APIPasswordTest extends TestCase
         Notification::fake();
 
         $user = factory(User::class)->create();
-        $response = $this->postJson('api/password',
+        $response = $this->postJson(
+            'api/password',
             ['email' => $user->email]
         );
         $response->assertStatus(200);
@@ -61,11 +63,13 @@ class APIPasswordTest extends TestCase
         Notification::fake();
 
         $user = factory(User::class)->create();
-        $response = $this->postJson('api/password',
+        $response = $this->postJson(
+            'api/password',
             ['email' => $user->email]
         );
         $response->assertStatus(200);
-        $response2 = $this->postJson('api/password',
+        $response2 = $this->postJson(
+            'api/password',
             ['email' => $user->email]
         );
         $response2->assertStatus(200);
@@ -88,7 +92,8 @@ class APIPasswordTest extends TestCase
         $user = factory(User::class)->create();
         $i = 0;
         do {
-            $response = $this->postJson('api/password',
+            $response = $this->postJson(
+                'api/password',
                 ['email' => $user->email]
             );
             $i++;

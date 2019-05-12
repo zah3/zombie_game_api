@@ -93,32 +93,6 @@ class User extends Authenticatable
     }
 
     /**
-     * Scope query to find specified username
-     *
-     * @param $query
-     * @param $username
-     *
-     * @return mixed
-     */
-    public function scopeWithUsername(Builder $query, string $username) : Builder
-    {
-        return $query->where($this->table . '.username', '=', $username);
-    }
-
-    /**
-     * Scope query to find specified email
-     *
-     * @param $query
-     * @param $email
-     *
-     * @return mixed
-     */
-    public function scopeWithEmail(Builder $query, string $email) : Builder
-    {
-        return $query->where($this->table . '.email', '=', $email);
-    }
-
-    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function passwordReset() : HasOne
