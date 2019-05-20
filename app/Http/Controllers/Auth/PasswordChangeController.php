@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Auth;
 
 
+use App\Entities\Constants\Helpers\ExceptionMessage;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Notifications\PasswordResetSuccessNotification;
@@ -27,7 +28,7 @@ class PasswordChangeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('throttle:6,1')->only('index');
+        //  $this->middleware('throttle:6,1')->only('index');
     }
 
     /**
@@ -44,7 +45,7 @@ class PasswordChangeController extends Controller
             'email' => 'required|exists:users,email|email|max:255',
             'password' => 'required|min:8|max:20',
             'confirm_password' => 'required|same:password',
-            'token' => 'required|exists:password_resets,token|string|max:255'
+            'token' => 'required|string:255',
         ]);
         $user = User::whereEmail($request->email)->first();
 
@@ -54,20 +55,23 @@ class PasswordChangeController extends Controller
             PasswordResetSuccessNotification::MESSAGE_ERROR_CANNOT_FIND_EMAIL
         );
 
-        $passwordReset = PasswordReset::where([
-            ['token', $request->token],
-            ['user_id', $user->id]
-        ])->first();
+        $passwordReset = $user->passwordReset;
 
         abort_if(
-            $passwordReset === null,
+            $passwordReset === null || !Hash::check($request->input('token'),$passwordReset->token),
             422,
             PasswordResetSuccessNotification::MESSAGE_ERROR_INVALID_TOKEN
         );
 
+        abort_if(
+            $passwordReset->created_at->diffInMinutes(now()) >= PasswordReset::LIMIT_IN_MINUTES,
+            422,
+            ExceptionMessage::PASSWORD_RESET_TOKEN_CREATED_MORE_THEN_LIMIT
+        );
+
         $user->password = Hash::make($request->input('password'));
         $user->save();
-        $passwordReset->delete();
+        $user->passwordReset()->delete();
         $user->notify(new PasswordResetSuccessNotification());
         return response()->json(UserResource::make($user), 201);
     }

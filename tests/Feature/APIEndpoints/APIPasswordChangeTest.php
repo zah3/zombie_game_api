@@ -12,6 +12,7 @@ namespace Tests\Feature\APIEndpoints;
 use App\Notifications\PasswordResetRequestNotification;
 use App\Notifications\PasswordResetSuccessNotification;
 use App\User;
+use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
@@ -84,9 +85,11 @@ class APIPasswordChangeTest extends TestCase
                     'api/password/change',
                     $requestData
                 );
-
-                $changePasswordResponse->assertStatus(422)
-                    ->assertJsonValidationErrors('token');
+                $changePasswordResponse->assertStatus(422);
+                $this->assertEquals(
+                    $changePasswordResponse->json('message'),
+                    PasswordResetSuccessNotification::MESSAGE_ERROR_INVALID_TOKEN
+                );
                 return is_null($secretCodeToResetPasswordFromMail) === false;
             }
         );
@@ -157,7 +160,7 @@ class APIPasswordChangeTest extends TestCase
                 $secretCodeToResetPasswordFromMail = $mailData['introLines'][3];
                 $this->assertNotNull($secretCodeToResetPasswordFromMail);
                 $requestData = [
-                    'token' => $user->passwordReset->token,
+                    'token' => $secretCodeToResetPasswordFromMail,
                     'email' => $user->email,
                     'password' => 'xxxxxxxxx',
                     'confirm_password' => 'xxxxxxxxx',
@@ -166,7 +169,9 @@ class APIPasswordChangeTest extends TestCase
                 $changePasswordResponse = $this->postJson(
                     'api/password/change',
                     $requestData
-                )->assertJsonStructure([
+                );
+
+                $changePasswordResponse->assertJsonStructure([
                     'id',
                     'email',
                     'email_verified_at',
