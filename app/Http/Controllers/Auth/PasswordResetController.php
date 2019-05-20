@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Entities\Helpers\Utilities;
 use App\Http\Controllers\Controller;
 use App\Notifications\PasswordResetRequestNotification;
-use App\Notifications\PasswordResetSuccessNotification;
+use App\Notifications\PasswordChangeNotification;
 use App\PasswordReset;
 use App\User;
 use Illuminate\Http\Request;
@@ -57,7 +57,7 @@ class PasswordResetController extends Controller
             new PasswordResetRequestNotification($token)
         );
         return response()->json([
-            'message' => PasswordResetSuccessNotification::MESSAGE_SUCCESS,
+            'message' => PasswordChangeNotification::MESSAGE_SUCCESS,
             201
         ]);
     }

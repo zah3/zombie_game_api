@@ -12,7 +12,7 @@ namespace App\Http\Controllers\Auth;
 use App\Entities\Constants\Helpers\ExceptionMessage;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
-use App\Notifications\PasswordResetSuccessNotification;
+use App\Notifications\PasswordChangeNotification;
 use App\PasswordReset;
 use App\User;
 use Illuminate\Http\Request;
@@ -52,15 +52,21 @@ class PasswordChangeController extends Controller
         abort_if(
             $user === null,
             404,
-            PasswordResetSuccessNotification::MESSAGE_ERROR_CANNOT_FIND_EMAIL
+            PasswordChangeNotification::MESSAGE_ERROR_CANNOT_FIND_EMAIL
         );
 
         $passwordReset = $user->passwordReset;
 
         abort_if(
-            $passwordReset === null || !Hash::check($request->input('token'), $passwordReset->token),
+            $passwordReset === null,
             422,
-            PasswordResetSuccessNotification::MESSAGE_ERROR_INVALID_TOKEN
+            PasswordChangeNotification::MESSAGE_ERROR_USER_NOT_HAVE_GENERATED_TOKEN
+        );
+
+        abort_if(
+            !Hash::check($request->input('token'), $passwordReset->token),
+            422,
+            PasswordChangeNotification::MESSAGE_ERROR_INVALID_TOKEN
         );
 
         abort_if(
@@ -72,7 +78,7 @@ class PasswordChangeController extends Controller
         $user->password = Hash::make($request->input('password'));
         $user->save();
         $user->passwordReset()->delete();
-        $user->notify(new PasswordResetSuccessNotification());
+        $user->notify(new PasswordChangeNotification());
         return response()->json(UserResource::make($user), 201);
     }
 }
