@@ -11,7 +11,7 @@ namespace Tests\Feature\APIEndpoints;
 
 use App\Entities\Constants\Helpers\ExceptionMessage;
 use App\Notifications\PasswordResetRequestNotification;
-use App\Notifications\PasswordResetSuccessNotification;
+use App\Notifications\PasswordChangeNotification;
 use App\PasswordReset;
 use App\User;
 use Carbon\Carbon;
@@ -91,7 +91,7 @@ class APIPasswordChangeTest extends TestCase
                 $changePasswordResponse->assertStatus(422);
                 $this->assertEquals(
                     $changePasswordResponse->json('message'),
-                    PasswordResetSuccessNotification::MESSAGE_ERROR_INVALID_TOKEN
+                    PasswordChangeNotification::MESSAGE_ERROR_INVALID_TOKEN
                 );
                 return is_null($secretCodeToResetPasswordFromMail) === false;
             }
@@ -177,11 +177,33 @@ class APIPasswordChangeTest extends TestCase
 
                 $changePasswordResponse->assertStatus(422)
                     ->assertJsonFragment([
-                        'message' => PasswordResetSuccessNotification::MESSAGE_ERROR_INVALID_TOKEN,
+                        'message' => PasswordChangeNotification::MESSAGE_ERROR_INVALID_TOKEN,
                     ]);
                 return is_null($secretCodeToResetPasswordFromMail) === false;
             }
         );
+    }
+
+    public function testStoreWithNotGeneratedToken()
+    {
+        Notification::fake();
+        $user = factory(User::class)->create();
+
+        $requestData = [
+            'token' => 'fake_token',
+            'email' => $user->email,
+            'password' => 'xxxxxxxxx',
+            'confirm_password' => 'xxxxxxxxx',
+        ];
+        $changePasswordResponse = $this->postJson(
+            'api/password/change',
+            $requestData
+        );
+
+        $changePasswordResponse->assertStatus(422)
+            ->assertJsonFragment([
+                'message' => PasswordChangeNotification::MESSAGE_ERROR_USER_NOT_HAVE_GENERATED_TOKEN,
+            ]);
     }
 
     public function testStoreWithSuccess()
@@ -229,7 +251,7 @@ class APIPasswordChangeTest extends TestCase
                     'deleted_at' => optional($user->deleted_at)->toIso8601String(),
                 ]);
                 $changePasswordResponse->assertStatus(201);
-                Notification::assertSentTo($user, PasswordResetSuccessNotification::class);
+                Notification::assertSentTo($user, PasswordChangeNotification::class);
                 return is_null($secretCodeToResetPasswordFromMail) === false;
             }
         );

@@ -6,7 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class PasswordResetSuccessNotification extends Notification
+class PasswordChangeNotification extends Notification
 {
     use Queueable;
 
@@ -14,6 +14,7 @@ class PasswordResetSuccessNotification extends Notification
 
     public const MESSAGE_ERROR_INVALID_TOKEN = 'This password reset token is invalid.';
     public const MESSAGE_ERROR_CANNOT_FIND_EMAIL = "We can't find a user with that e-mail address.";
+    public const MESSAGE_ERROR_USER_NOT_HAVE_GENERATED_TOKEN = "User has not generated token.";
 
     /**
      * Get the notification's delivery channels.
