@@ -9,6 +9,7 @@ use App\Notifications\PasswordResetSuccessNotification;
 use App\PasswordReset;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class PasswordResetController extends Controller
 {
@@ -39,19 +40,21 @@ class PasswordResetController extends Controller
         ]);
         $user = User::whereEmail($request->email)->first();
         // It means that - user probably haven't receive email with secret code
-        $userInPasswordResetTable = PasswordReset::whereUserId($user->id)->first();
-        if ($userInPasswordResetTable) {
-            $userInPasswordResetTable->delete();
+        $passwordResetForUser = $user->passwordReset;
+
+        if ($passwordResetForUser) {
+            $user->passwordReset()->delete();
         }
 
-        $passwordReset = PasswordReset::create(
+        $token = Utilities::generateRandomUniqueString();
+        PasswordReset::create(
             [
                 'user_id' => $user->id,
-                'token' => Utilities::generateRandomUniqueString(),
+                'token' => Hash::make($token),
             ]
         );
         $user->notify(
-            new PasswordResetRequestNotification($passwordReset->token)
+            new PasswordResetRequestNotification($token)
         );
         return response()->json([
             'message' => PasswordResetSuccessNotification::MESSAGE_SUCCESS,

@@ -9,9 +9,13 @@
 namespace Tests\Feature\APIEndpoints;
 
 
+use App\Entities\Constants\Helpers\ExceptionMessage;
 use App\Notifications\PasswordResetRequestNotification;
 use App\Notifications\PasswordResetSuccessNotification;
+use App\PasswordReset;
 use App\User;
+use Carbon\Carbon;
+use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
@@ -84,9 +88,51 @@ class APIPasswordChangeTest extends TestCase
                     'api/password/change',
                     $requestData
                 );
+                $changePasswordResponse->assertStatus(422);
+                $this->assertEquals(
+                    $changePasswordResponse->json('message'),
+                    PasswordResetSuccessNotification::MESSAGE_ERROR_INVALID_TOKEN
+                );
+                return is_null($secretCodeToResetPasswordFromMail) === false;
+            }
+        );
+    }
 
-                $changePasswordResponse->assertStatus(422)
-                    ->assertJsonValidationErrors('token');
+    public function testStoreWithExpiredToken()
+    {
+        Notification::fake();
+        $user = factory(User::class)->create();
+
+        $response = $this->postJson(
+            'api/password/reset',
+            ['email' => $user->email]
+        );
+        $response->assertStatus(200);
+
+        Notification::assertSentTo(
+            $user,
+            PasswordResetRequestNotification::class,
+            function ($notification, $channels) use ($user) {
+                $mailData = $notification->toMail($user)->toArray();
+                $secretCodeToResetPasswordFromMail = $mailData['introLines'][3];
+                $this->assertNotNull($secretCodeToResetPasswordFromMail);
+
+                Carbon::setTestNow(now()->addMinutes(PasswordReset::LIMIT_IN_MINUTES));
+                $requestData = [
+                    'token' => $secretCodeToResetPasswordFromMail,
+                    'email' => $user->email,
+                    'password' => 'xxxxxxxxx',
+                    'confirm_password' => 'xxxxxxxxx',
+                ];
+                $changePasswordResponse = $this->postJson(
+                    'api/password/change',
+                    $requestData
+                );
+                $changePasswordResponse->assertStatus(422);
+                $this->assertEquals(
+                    ExceptionMessage::PASSWORD_RESET_TOKEN_CREATED_MORE_THEN_LIMIT,
+                    $changePasswordResponse->json('message')
+                );
                 return is_null($secretCodeToResetPasswordFromMail) === false;
             }
         );
@@ -157,7 +203,7 @@ class APIPasswordChangeTest extends TestCase
                 $secretCodeToResetPasswordFromMail = $mailData['introLines'][3];
                 $this->assertNotNull($secretCodeToResetPasswordFromMail);
                 $requestData = [
-                    'token' => $user->passwordReset->token,
+                    'token' => $secretCodeToResetPasswordFromMail,
                     'email' => $user->email,
                     'password' => 'xxxxxxxxx',
                     'confirm_password' => 'xxxxxxxxx',
@@ -166,7 +212,9 @@ class APIPasswordChangeTest extends TestCase
                 $changePasswordResponse = $this->postJson(
                     'api/password/change',
                     $requestData
-                )->assertJsonStructure([
+                );
+
+                $changePasswordResponse->assertJsonStructure([
                     'id',
                     'email',
                     'email_verified_at',
