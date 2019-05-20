@@ -28,7 +28,7 @@ class PasswordChangeController extends Controller
      */
     public function __construct()
     {
-        //  $this->middleware('throttle:6,1')->only('index');
+        $this->middleware('throttle:6,1')->only('index');
     }
 
     /**
@@ -58,7 +58,7 @@ class PasswordChangeController extends Controller
         $passwordReset = $user->passwordReset;
 
         abort_if(
-            $passwordReset === null || !Hash::check($request->input('token'),$passwordReset->token),
+            $passwordReset === null || !Hash::check($request->input('token'), $passwordReset->token),
             422,
             PasswordResetSuccessNotification::MESSAGE_ERROR_INVALID_TOKEN
         );
