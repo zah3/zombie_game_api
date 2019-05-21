@@ -38,7 +38,14 @@ class PasswordResetController extends Controller
         $request->validate([
             'email' => 'required|email|exists:users,email',
         ]);
-        $user = User::whereEmail($request->email)->first();
+        $user = User::whereEmail($request->email)->withEmailVerifiedAt()->first();
+
+        abort_if(
+            $user === null,
+            404,
+            User::MESSAGE_USER_NOT_VERIFIED
+        );
+        
         // It means that - user probably haven't receive email with secret code
         $passwordResetForUser = $user->passwordReset;
 
