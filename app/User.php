@@ -19,6 +19,7 @@ class User extends Authenticatable
     public const GAME_TOKEN = "GameToken";
 
     public const MESSAGE_UNAUTHORIZED = 'This action is unauthorized.';
+    public const MESSAGE_USER_NOT_VERIFIED = 'User is not verified.';
 
 
     /**

@@ -28,7 +28,7 @@ class PasswordChangeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('throttle:6,1')->only('index');
+        $this->middleware('throttle:10,1')->only('store');
     }
 
     /**
