@@ -41,14 +41,14 @@ class GameController extends Controller
         $character = $user->characters()->findOrFail($characterId);
 
         $request->validate([
-            'fraction_id' => 'optional|exists:fractions,id',
-            'experience' => 'int|optional|between:' . $character->experience . ',4294967295',
-            'agility' => 'int|optional|between:' . $character->agility . ',4294967295',
-            'strength' => 'int|optional|between' . $character->strength . ',4294967295',
-            'coordinates.x' => 'numeric|optional',
-            'coordinates.y' => 'numeric|optional',
-            'abilities.id' => 'int|optional|exists:abilities,id',
-            'abilities.is_active' => 'optional:in:0,1',
+            'fraction_id' => 'sometimes|exists:fractions,id',
+            'experience' => 'int|sometimes|between:' . $character->experience . ',4294967295',
+            'agility' => 'int|sometimes|between:' . $character->agility . ',4294967295',
+            'strength' => 'int|sometimes|between:' . $character->strength . ',4294967295',
+            'coordinates.x' => 'numeric|sometimes',
+            'coordinates.y' => 'numeric|sometimes',
+            'abilities.id' => 'int|sometimes|exists:abilities,id',
+            'abilities.is_active' => 'sometimes|in:0,1',
         ]);
 
         return response()->json(['message' => 'OK'], 200);
