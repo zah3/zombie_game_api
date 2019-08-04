@@ -10,11 +10,11 @@ namespace Tests\Unit\Services;
 
 
 use App\Character;
-use App\Facades\ExperienceService;
+use App\Facades\GameService;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
-class ExperienceServiceTest extends TestCase
+class GameServiceTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -22,7 +22,7 @@ class ExperienceServiceTest extends TestCase
     {
         $character = factory(Character::class)->create();
         $experiencePoints = 200;
-        $actualExperiencePoints = ExperienceService::addExperienceToCharacter(
+        $actualExperiencePoints = GameService::addExperienceToCharacter(
             $experiencePoints,
             $character
         );

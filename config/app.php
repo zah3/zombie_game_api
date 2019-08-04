@@ -161,7 +161,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        App\Providers\ExperienceServiceProvider::class,
+        App\Providers\GameServiceProvider::class,
         App\Providers\UserServiceProvider::class,
 
     ],
@@ -212,7 +212,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        'ExperienceService' => \App\Facades\ExperienceService::class,
+        'ExperienceService' => \App\Facades\GameService::class,
         'UserService' => \App\Facades\UserService::class,
 
     ],

@@ -54,4 +54,9 @@ Route::group(['middleware' => 'auth:api'], function () {
             Route::get('/', 'API\UserCharacterController@index');
         });
     });
+
+    Route::prefix('game')->group(function(){
+        Route::get('/','API\GameController@show');
+        Route::put('/','API\GameController@update');
+    });
 });

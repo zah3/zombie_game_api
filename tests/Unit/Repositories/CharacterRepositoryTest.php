@@ -27,6 +27,8 @@ class CharacterRepositoryTest extends TestCase
             $user,
             null,
             $character->name,
+            null,
+            null,
             null
         );
         $this->assertNotNull($createdModel);
@@ -51,5 +53,23 @@ class CharacterRepositoryTest extends TestCase
         $character->refresh();
         $this->assertNotNull($updatedModel);
         $this->assertEquals(100, $character->experience);
+    }
+
+    public function testAddAgility()
+    {
+        $character = factory(Character::class)->create();
+        $updatedModel = CharacterRepository::addAgility(50, $character);
+        $character->refresh();
+        $this->assertNotNull($updatedModel);
+        $this->assertEquals(50, $character->agility);
+    }
+
+    public function testAddStrength()
+    {
+        $character = factory(Character::class)->create();
+        $updatedModel = CharacterRepository::addStrength(30, $character);
+        $character->refresh();
+        $this->assertNotNull($updatedModel);
+        $this->assertEquals(30, $character->strength);
     }
 }

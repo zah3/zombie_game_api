@@ -12,7 +12,7 @@ namespace App\Services;
 use App\Character;
 use App\Repositories\CharacterRepository;
 
-class ExperienceService
+class GameService
 {
 
     /**

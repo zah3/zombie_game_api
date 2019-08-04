@@ -23,6 +23,8 @@ class CharacterRepository extends BaseRepository
      * @param Fraction|null $fraction
      * @param string $name
      * @param int|null $experience
+     * @param int|null $agility
+     * @param int|null $strength
      *
      * @return Character
      */
@@ -30,7 +32,9 @@ class CharacterRepository extends BaseRepository
         User $user,
         ?Fraction $fraction,
         string $name,
-        ?int $experience
+        ?int $experience = null,
+        ?int $agility = null,
+        ?int $strength = null
     ) : Character
     {
         $character = new Character();
@@ -40,6 +44,8 @@ class CharacterRepository extends BaseRepository
             Fraction::ID_NORMAL;
         $character->name = $name;
         $character->experience = $experience !== null ? $experience : 0;
+        $character->agility = $agility !== null ? $agility : Character::DEFAULT_AGILITY;
+        $character->strength = $strength !== null ? $strength : Character::DEFAULT_STRENGTH;
         $character->save();
 
         return $character;
@@ -78,6 +84,36 @@ class CharacterRepository extends BaseRepository
     public static function addExperience(int $experience, Character $character) : Character
     {
         $character->experience += $experience;
+        $character->save();
+        return $character;
+    }
+
+    /**
+     * Adds agility to character
+     *
+     * @param int $agility
+     * @param Character $character
+     *
+     * @return Character
+     */
+    public static function addAgility(int $agility, Character $character) : Character
+    {
+        $character->agility += $agility;
+        $character->save();
+        return $character;
+    }
+
+    /**
+     * Adds strength to character
+     *
+     * @param int $strength
+     * @param Character $character
+     *
+     * @return Character
+     */
+    public static function addStrength(int $strength, Character $character) : Character
+    {
+        $character->strength += $strength;
         $character->save();
         return $character;
     }

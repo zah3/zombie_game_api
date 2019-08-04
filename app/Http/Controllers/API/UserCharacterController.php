@@ -15,7 +15,6 @@ use App\Http\Controllers\Controller;
 
 class UserCharacterController extends Controller
 {
-
     /**
      * GET user/characters
      * Returns all characters of user

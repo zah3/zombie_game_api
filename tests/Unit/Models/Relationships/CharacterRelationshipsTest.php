@@ -40,4 +40,20 @@ class CharacterRelationshipsTest extends TestCase
         $characterFraction =$character->fraction;
         $this->assertNotNull($characterFraction);
     }
+
+    public function testCoordinate()
+    {
+        $character = factory(Character::class)->create();
+        // It's also checks mysql create_default_coordinate_for_new_character trigger
+        $this->assertNotNull($character->coordinate);
+        $this->assertEquals($character->id,$character->coordinate->character_id);
+    }
+
+
+    public function testAbilities()
+    {
+        $character = factory(Character::class)->create();
+        // It's also checks mysql after_character_insert trigger
+        $this->assertNotEmpty($character->abilities->toArray());
+    }
 }

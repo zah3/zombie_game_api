@@ -11,10 +11,10 @@ namespace App\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class ExperienceService extends Facade
+class GameService extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'ExperienceService';
+        return 'GameService';
     }
 }
