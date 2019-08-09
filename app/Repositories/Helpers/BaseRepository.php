@@ -25,9 +25,9 @@ abstract class BaseRepository
     public static function updateField(Model $model, array $newFields, string $fieldName)
     {
         if (
-            $model->$fieldName !== $newFields[$fieldName] &&
-            array_key_exists($fieldName, $newFields)
-        ){
+            array_key_exists($fieldName, $newFields) &&
+            $model->$fieldName !== $newFields[$fieldName]
+        ) {
             $model->$fieldName = $newFields[$fieldName];
         }
         return $model;

@@ -67,6 +67,8 @@ class CharacterRepository extends BaseRepository
         $character = self::updateField($character, $newFields, 'user_id');
         $character = self::updateField($character, $newFields, 'fraction_id');
         $character = self::updateField($character, $newFields, 'name');
+        $character = self::updateField($character, $newFields, 'agility');
+        $character = self::updateField($character, $newFields, 'strength');
         $character = self::updateField($character, $newFields, 'experience');
 
         $character->save();

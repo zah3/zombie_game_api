@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Facades\GameService;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\GameResource;
 use Illuminate\Http\Request;
@@ -50,6 +51,16 @@ class GameController extends Controller
             'abilities.id' => 'int|sometimes|exists:abilities,id',
             'abilities.is_active' => 'sometimes|in:0,1',
         ]);
+
+        GameService::save(
+            $character,
+            $request->input('fraction_id'),
+            $request->input('experience'),
+            $request->input('agility'),
+            $request->input('strength'),
+            $request->input('coordinates'),
+            $request->input('abilities')
+        );
 
         return response()->json(['message' => 'OK'], 200);
     }

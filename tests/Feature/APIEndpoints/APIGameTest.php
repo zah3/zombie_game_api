@@ -64,6 +64,8 @@ class APIGameTest extends TestCase
                     "y" => $character->coordinate->y,
                 ],
             ]);
+
+        
     }
 
     public function testUpdate()
@@ -75,7 +77,7 @@ class APIGameTest extends TestCase
                 'PUT',
                 'api/game/' . $character->id,
                 [
-                    'fraction_id' => 1,
+                    'fraction_id' => 2,
                     'experience' => 2,
                     'agility' => 10,
                     'strength' => 10,
@@ -84,12 +86,17 @@ class APIGameTest extends TestCase
                         'y' => 2,
                     ],
                     'abilities' => [
-                        'id' => 1,
-                        'is_active' => 1
-                    ]
+                        [
+                            'id' => 1,
+                            'is_active' => 1
+                        ]
+                    ],
                 ]
             );
 
         $character->refresh();
+        $response->assertOk();
+        $character->refresh();
+        $character->load(['abilities', 'coordinate']);
     }
 }
