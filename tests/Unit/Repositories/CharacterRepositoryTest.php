@@ -45,31 +45,4 @@ class CharacterRepositoryTest extends TestCase
         $this->assertEquals($updatedModel->name, $newFields->name);
         $this->assertDatabaseHas($character->getTable(), $updatedModel->toArray());
     }
-
-    public function testAddExperience()
-    {
-        $character = factory(Character::class)->create();
-        $updatedModel = CharacterRepository::addExperience(100, $character);
-        $character->refresh();
-        $this->assertNotNull($updatedModel);
-        $this->assertEquals(100, $character->experience);
-    }
-
-    public function testAddAgility()
-    {
-        $character = factory(Character::class)->create();
-        $updatedModel = CharacterRepository::addAgility(50, $character);
-        $character->refresh();
-        $this->assertNotNull($updatedModel);
-        $this->assertEquals(50, $character->agility);
-    }
-
-    public function testAddStrength()
-    {
-        $character = factory(Character::class)->create();
-        $updatedModel = CharacterRepository::addStrength(30, $character);
-        $character->refresh();
-        $this->assertNotNull($updatedModel);
-        $this->assertEquals(30, $character->strength);
-    }
 }

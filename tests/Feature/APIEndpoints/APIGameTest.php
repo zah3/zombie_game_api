@@ -64,39 +64,72 @@ class APIGameTest extends TestCase
                     "y" => $character->coordinate->y,
                 ],
             ]);
-
-        
     }
 
     public function testUpdate()
     {
         $character = factory(Character::class)->create();
 
+        $array = [
+            'fraction_id' => 2,
+            'experience' => 2,
+            'agility' => 10,
+            'strength' => 10,
+            'coordinates' => [
+                'x' => 2,
+                'y' => 2,
+            ],
+            'abilities' => [
+                [
+                    'id' => 1,
+                    'is_active' => 1
+                ]
+            ],
+        ];
+
         $response = $this->actingAs($character->user, 'api')
             ->json(
                 'PUT',
                 'api/game/' . $character->id,
-                [
-                    'fraction_id' => 2,
-                    'experience' => 2,
-                    'agility' => 10,
-                    'strength' => 10,
-                    'coordinates' => [
-                        'x' => 2,
-                        'y' => 2,
-                    ],
-                    'abilities' => [
-                        [
-                            'id' => 1,
-                            'is_active' => 1
-                        ]
-                    ],
-                ]
-            );
+                $array
 
+            );
         $character->refresh();
-        $response->assertOk();
-        $character->refresh();
-        $character->load(['abilities', 'coordinate']);
+
+        $response->assertOk()
+            ->assertJsonStructure([
+                'data' => [
+                    "character_id",
+                    "experience",
+                    "agility",
+                    "strength",
+                    "fraction" => [
+                        "id",
+                        "name",
+                        "created_at",
+                        "updated_at",
+                    ],
+                    "coordinates" => [
+                        "x",
+                        "y",
+                    ],
+                    "abilities",
+                ]
+            ])->assertJsonFragment([
+                "character_id" => $character->id,
+                "experience" => $character->experience,
+                "agility" => $character->agility,
+                "strength" => $character->strength,
+                "fraction" => [
+                    "id" => $character->fraction_id,
+                    "name" => $character->fraction->name,
+                    "created_at" => optional($character->fraction->created_at)->toIso8601String(),
+                    "updated_at" => optional($character->fraction->updated_at)->toIso8601String()
+                ],
+                "coordinates" => [
+                    "x" => $character->coordinate->x,
+                    "y" => $character->coordinate->y,
+                ],
+            ]);
     }
 }

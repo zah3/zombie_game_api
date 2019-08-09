@@ -74,49 +74,4 @@ class CharacterRepository extends BaseRepository
         $character->save();
         return $character;
     }
-
-    /**
-     * Adds experience to character
-     *
-     * @param int $experience
-     * @param Character $character
-     *
-     * @return Character
-     */
-    public static function addExperience(int $experience, Character $character) : Character
-    {
-        $character->experience += $experience;
-        $character->save();
-        return $character;
-    }
-
-    /**
-     * Adds agility to character
-     *
-     * @param int $agility
-     * @param Character $character
-     *
-     * @return Character
-     */
-    public static function addAgility(int $agility, Character $character) : Character
-    {
-        $character->agility += $agility;
-        $character->save();
-        return $character;
-    }
-
-    /**
-     * Adds strength to character
-     *
-     * @param int $strength
-     * @param Character $character
-     *
-     * @return Character
-     */
-    public static function addStrength(int $strength, Character $character) : Character
-    {
-        $character->strength += $strength;
-        $character->save();
-        return $character;
-    }
 }

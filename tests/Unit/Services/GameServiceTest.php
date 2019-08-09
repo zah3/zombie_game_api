@@ -18,18 +18,4 @@ class GameServiceTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function testAddExperienceToCharacter()
-    {
-        $character = factory(Character::class)->create();
-        $experiencePoints = 200;
-        $actualExperiencePoints = GameService::addExperienceToCharacter(
-            $experiencePoints,
-            $character
-        );
-        // Takes actual information about model from DB
-        $character->refresh();
-
-        $this->assertEquals(200, $actualExperiencePoints);
-        $this->assertEquals(200, $character->experience);
-    }
 }

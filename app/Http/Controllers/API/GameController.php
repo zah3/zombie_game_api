@@ -34,9 +34,9 @@ class GameController extends Controller
      * @param Request $request
      * @param int $characterId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return GameResource
      */
-    public function update(Request $request, int $characterId)
+    public function update(Request $request, int $characterId) : GameResource
     {
         $user = $request->user();
         $character = $user->characters()->findOrFail($characterId);
@@ -61,7 +61,7 @@ class GameController extends Controller
             $request->input('coordinates'),
             $request->input('abilities')
         );
-
-        return response()->json(['message' => 'OK'], 200);
+        $character->load(['fraction', 'coordinate', 'abilities']);
+        return GameResource::make($character);
     }
 }

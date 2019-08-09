@@ -41,30 +41,30 @@ class GameService
     {
         DB::beginTransaction();
         try {
-        $newFields = [
-            'fraction_id' => $fractionId,
-            'experience' => $experience,
-            'agility' => $agility,
-            'strength' => $strength,
-        ];
-        CharacterRepository::update($character, $newFields);
+            $newFields = [
+                'fraction_id' => $fractionId,
+                'experience' => $experience,
+                'agility' => $agility,
+                'strength' => $strength,
+            ];
+            CharacterRepository::update($character, $newFields);
 
-        CoordinateRepository::update($character->coordinate, $coordinate);
+            CoordinateRepository::update($character->coordinate, $coordinate);
 
-        $existsAbilities = $character->abilities;
-        foreach ($abilities as $key => $ability) {
-            $existingAbility = $existsAbilities->where('id', '=', $ability['id'])->first();
-            if ($existingAbility === null) {
-                continue;
+            $existsAbilities = $character->abilities;
+            foreach ($abilities as $key => $ability) {
+                $existingAbility = $existsAbilities->where('id', '=', $ability['id'])->first();
+                if ($existingAbility === null) {
+                    continue;
+                }
+                if ($ability['is_active'] !== $existingAbility) {
+                    $existingAbility = $character->abilities()
+                        ->findOrFail($existingAbility->id);
+
+                    $existingAbility->pivot->is_active = $ability['is_active'];
+                    $existingAbility->pivot->save();
+                }
             }
-            if ($ability['is_active'] !== $existingAbility) {
-                $existingAbility = $character->abilities()
-                    ->findOrFail($existingAbility->id);
-
-                $existingAbility->pivot->is_active = $ability['is_active'];
-                $existingAbility->pivot->save();
-            }
-        }
         } catch (\Exception $exception) {
             DB::rollBack();
             abort(
@@ -76,20 +76,5 @@ class GameService
 
         DB::commit();
         return true;
-    }
-
-
-    /**
-     * Adds experience to character
-     *
-     * @param int $experiencePoints
-     * @param Character $character
-     *
-     * @return int Character.experience
-     */
-    public function addExperienceToCharacter(int $experiencePoints, Character $character) : int
-    {
-        $character = CharacterRepository::addExperience($experiencePoints, $character);
-        return $character->experience;
     }
 }
