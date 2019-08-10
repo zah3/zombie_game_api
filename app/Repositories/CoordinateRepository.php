@@ -9,7 +9,7 @@
 namespace App\Repositories;
 
 
-use App\Coordinate;
+use App\Entities\Coordinate;
 use App\Repositories\Helpers\BaseRepository;
 
 class CoordinateRepository extends BaseRepository

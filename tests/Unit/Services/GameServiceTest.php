@@ -9,8 +9,6 @@
 namespace Tests\Unit\Services;
 
 
-use App\Character;
-use App\Facades\GameService;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 

@@ -9,8 +9,8 @@
 namespace Tests\Unit\Models\Relationships;
 
 
-use App\Role;
-use App\RoleUser;
+use App\Entities\Role;
+use App\Entities\RoleUser;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 

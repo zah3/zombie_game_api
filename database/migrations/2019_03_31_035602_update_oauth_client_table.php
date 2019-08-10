@@ -17,7 +17,7 @@ class UpdateOauthClientTable extends Migration
         );
         $client = \Laravel\Passport\Passport::client()->forceFill([
             'user_id' => null,
-            'name' => \App\User::GAME_TOKEN,
+            'name' => \App\Entities\User::GAME_TOKEN,
             'secret' => str_random(40),
             'redirect' => 'http://localhost',
             'personal_access_client' => 1,

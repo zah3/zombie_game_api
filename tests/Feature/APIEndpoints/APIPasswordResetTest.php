@@ -10,8 +10,8 @@ namespace Tests\Feature\APIEndpoints;
 
 
 use App\Notifications\PasswordResetRequestNotification;
-use App\PasswordReset;
-use App\User;
+use App\Entities\PasswordReset;
+use App\Entities\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;

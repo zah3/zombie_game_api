@@ -9,8 +9,8 @@
 namespace Tests\Feature\Repositories;
 
 
-use App\Character;
-use App\User;
+use App\Entities\Character;
+use App\Entities\User;
 use App\Repositories\CharacterRepository;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;

@@ -3,13 +3,13 @@
 use Faker\Generator as Faker;
 
 
-$factory->define(App\RoleUser::class, function (Faker $faker) {
+$factory->define(App\Entities\RoleUser::class, function (Faker $faker) {
     return [
         'user_id' => function(){
-            return factory(\App\User::class)->create()->id;
+            return factory(\App\Entities\User::class)->create()->id;
         },
         'role_id' => function(){
-            return factory(\App\Role::class)->create()->id;
+            return factory(\App\Entities\Role::class)->create()->id;
         },
     ];
 });

@@ -9,9 +9,9 @@
 namespace App\Services;
 
 
-use App\Character;
-use App\Repositories\CharacterRepository;
-use App\Repositories\CoordinateRepository;
+use App\Entities\Character;
+use App\Facades\CharacterRepository;
+use App\Facades\CoordinateRepository;
 use Illuminate\Support\Facades\DB;
 
 class GameService
@@ -51,9 +51,9 @@ class GameService
 
             CoordinateRepository::update($character->coordinate, $coordinate);
 
-            $existsAbilities = $character->abilities;
+            $existingAbilities = $character->abilities;
             foreach ($abilities as $key => $ability) {
-                $existingAbility = $existsAbilities->where('id', '=', $ability['id'])->first();
+                $existingAbility = $existingAbilities->where('id', '=', $ability['id'])->first();
                 if ($existingAbility === null) {
                     continue;
                 }

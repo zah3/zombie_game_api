@@ -9,9 +9,9 @@
 namespace Tests\Feature\APIEndpoints;
 
 
-use App\Character;
-use App\Fraction;
-use App\User;
+use App\Entities\Character;
+use App\Entities\Fraction;
+use App\Entities\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 

@@ -2,8 +2,8 @@
 
 namespace App\Rules;
 
-use App\Character;
-use App\User;
+use App\Entities\Character;
+use App\Entities\User;
 use Illuminate\Contracts\Validation\Rule;
 
 class CharacterLimit implements Rule

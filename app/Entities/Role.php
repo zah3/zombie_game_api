@@ -1,13 +1,12 @@
 <?php
 
-namespace App;
+namespace App\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
 class Role extends Model
 {
-
     public const ADMIN = 'administrator';
     public const USER = 'user';
 
@@ -25,7 +24,6 @@ class Role extends Model
         return $this->belongsToMany(User::class)->withTimestamps();
     }
 
-    /// Scopes
 
     /**
      * Scope return role with name.

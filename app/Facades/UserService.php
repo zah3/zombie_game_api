@@ -10,7 +10,7 @@ namespace App\Facades;
 
 
 use Illuminate\Support\Facades\Facade;
-use App\User;
+use App\Entities\User;
 
 /**
  * Class UserServiceFacade

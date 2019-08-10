@@ -163,6 +163,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\GameServiceProvider::class,
         App\Providers\UserServiceProvider::class,
+        App\Providers\CoordinateRepositoryProvider::class,
+        App\Providers\CharacterRepositoryProvider::class,
 
     ],
 
@@ -212,8 +214,6 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        'ExperienceService' => \App\Facades\GameService::class,
-        'UserService' => \App\Facades\UserService::class,
 
     ],
 

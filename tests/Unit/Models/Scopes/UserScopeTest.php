@@ -9,7 +9,7 @@
 namespace Tests\Unit\Models\Scopes;
 
 
-use App\User;
+use App\Entities\User;
 use Tests\TestCase;
 
 class UserScopeTest extends TestCase

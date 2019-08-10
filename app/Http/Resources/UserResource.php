@@ -2,9 +2,8 @@
 
 namespace App\Http\Resources;
 
-use App\Role;
+use App\Entities\Role;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Auth;
 
 class UserResource extends JsonResource
 {

@@ -9,8 +9,8 @@
 namespace Tests\Unit\Models\Relationships;
 
 
-use App\Character;
-use App\Fraction;
+use App\Entities\Character;
+use App\Entities\Fraction;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 

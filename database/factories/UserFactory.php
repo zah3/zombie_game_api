@@ -13,7 +13,7 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(App\User::class, function (Faker $faker) {
+$factory->define(App\Entities\User::class, function (Faker $faker) {
     return [
         'username' => $faker->unique()->userName . $faker->randomNumber(2),
         'email' => $faker->unique()->email,

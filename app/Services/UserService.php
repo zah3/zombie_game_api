@@ -11,7 +11,7 @@ namespace App\Services;
 
 use App\Http\Helpers\StatusResponse;
 use App\Notifications\VerifyEmail;
-use App\User;
+use App\Entities\User;
 
 class UserService
 {

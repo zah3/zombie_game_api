@@ -15,7 +15,7 @@ use App\Http\Requests\{
     LoginRequest, UserRegisterRequest, UpdateUserRequest
 };
 use App\Http\Resources\UserResource;
-use App\User;
+use App\Entities\User;
 use Carbon\Carbon;
 use Illuminate\Http\{
     Response

@@ -9,7 +9,7 @@
 namespace Tests\Unit\Models\Factories;
 
 
-use App\Role;
+use App\Entities\Role;
 use Tests\TestCase;
 
 class RoleFactoryTest extends TestCase

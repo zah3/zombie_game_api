@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Entities;
 
 use App\Events\UserEvent;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -67,6 +67,14 @@ class User extends Authenticatable
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function passwordReset() : HasOne
+    {
+        return $this->hasOne(PasswordReset::class);
+    }
+
+    /**
      * @inheritdoc
      */
     protected static function boot()
@@ -91,14 +99,6 @@ class User extends Authenticatable
     public function scopeWithEmailVerifiedAt(Builder $query) : Builder
     {
         return $query->where($this->table . '.email_verified_at', '!=', null);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function passwordReset() : HasOne
-    {
-        return $this->hasOne(PasswordReset::class);
     }
 }
 

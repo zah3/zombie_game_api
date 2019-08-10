@@ -9,10 +9,10 @@
 namespace App\Repositories;
 
 
-use App\Character;
-use App\Fraction;
+use App\Entities\Character;
+use App\Entities\Fraction;
 use App\Repositories\Helpers\BaseRepository;
-use App\User;
+use App\Entities\User;
 
 class CharacterRepository extends BaseRepository
 {
