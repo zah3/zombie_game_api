@@ -17,11 +17,13 @@ class GameController extends Controller
      * @param int $characterId
      *
      * @return GameResource
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function show(Request $request, int $characterId) : GameResource
     {
         $user = $request->user();
         $character = $user->characters()->findOrFail($characterId);
+        $this->authorize('view', [GameResource::class, $character]);
 
         $character->load(['fraction', 'coordinate', 'abilities']);
         return GameResource::make($character);
@@ -35,11 +37,13 @@ class GameController extends Controller
      * @param int $characterId
      *
      * @return GameResource
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(Request $request, int $characterId) : GameResource
     {
         $user = $request->user();
         $character = $user->characters()->findOrFail($characterId);
+        $this->authorize('update', [GameResource::class, $character]);
 
         $request->validate([
             'fraction_id' => 'sometimes|exists:fractions,id',
