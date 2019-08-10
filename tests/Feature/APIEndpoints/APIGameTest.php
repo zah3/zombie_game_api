@@ -66,11 +66,25 @@ class APIGameTest extends TestCase
             ]);
     }
 
+    public function testShowChecksPolicy()
+    {
+        $character1 = factory(Character::class)->create();
+        $character2 = factory(Character::class)->create();
+
+        $response = $this->actingAs($character1->user, 'api')
+            ->json(
+                'GET',
+                'api/game/' . $character2->id
+            );
+
+        $response->assertNotFound();
+    }
+
     public function testUpdate()
     {
         $character = factory(Character::class)->create();
 
-        $array = [
+        $dataToUpdate = [
             'fraction_id' => 2,
             'experience' => 2,
             'agility' => 10,
@@ -91,7 +105,7 @@ class APIGameTest extends TestCase
             ->json(
                 'PUT',
                 'api/game/' . $character->id,
-                $array
+                $dataToUpdate
 
             );
         $character->refresh();
@@ -131,5 +145,37 @@ class APIGameTest extends TestCase
                     "y" => $character->coordinate->y,
                 ],
             ]);
+    }
+
+    public function testUpdatesChecksPolicy()
+    {
+        $character1 = factory(Character::class)->create();
+        $character2 = factory(Character::class)->create();
+
+        $dataToUpdate = [
+            'fraction_id' => 3,
+            'experience' => 100,
+            'agility' => 103,
+            'strength' => 120,
+            'coordinates' => [
+                'x' => 22,
+                'y' => 32,
+            ],
+            'abilities' => [
+                [
+                    'id' => 1,
+                    'is_active' => 0
+                ]
+            ],
+        ];
+
+        $response = $this->actingAs($character1->user, 'api')
+            ->json(
+                'PUT',
+                'api/game/' . $character2->id,
+                $dataToUpdate
+
+            );
+        $response->assertNotFound();
     }
 }

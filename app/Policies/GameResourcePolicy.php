@@ -14,7 +14,7 @@ class GameResourcePolicy
 
     public function view(User $user, Character $character)
     {
-        return UserService::hasRole($user, Role::ADMIN) || $user->id === $character->user_id;
+        return $user->id === $character->user_id;
     }
 
     /**
@@ -27,6 +27,6 @@ class GameResourcePolicy
      */
     public function update(User $user, Character $character)
     {
-        return UserService::hasRole($user, Role::ADMIN) || $user->id === $character->user_id;
+        return $user->id === $character->user_id;
     }
 }
