@@ -10,11 +10,7 @@ namespace Tests\Unit\Models\Relationships;
 
 
 use App\Entities\{
-    Character,
-    PasswordReset,
-    Role,
-    RoleUser,
-    User
+    Character, Coordinate, PasswordReset, Role, RoleUser, User
 };
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;

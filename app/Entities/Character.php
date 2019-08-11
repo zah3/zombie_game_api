@@ -64,7 +64,7 @@ class Character extends Model
     }
 
     /**
-     * Relation to Coordinate model.
+     * Relation to Abilities model.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */

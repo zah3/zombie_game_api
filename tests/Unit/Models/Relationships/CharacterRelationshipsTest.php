@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: zachariasz
- * Date: 2019-03-21
- * Time: 08:30
- */
+
 
 namespace Tests\Unit\Models\Relationships;
 
@@ -48,8 +43,7 @@ class CharacterRelationshipsTest extends TestCase
         $this->assertNotNull($character->coordinate);
         $this->assertEquals($character->id,$character->coordinate->character_id);
     }
-
-
+    
     public function testAbilities()
     {
         $character = factory(Character::class)->create();
