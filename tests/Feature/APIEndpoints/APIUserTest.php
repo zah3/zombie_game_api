@@ -3,7 +3,7 @@
 namespace Tests\Feature\APIEndpoints;
 
 
-use App\User;
+use App\Entities\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;

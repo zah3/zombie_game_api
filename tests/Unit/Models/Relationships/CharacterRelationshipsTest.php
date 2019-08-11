@@ -1,17 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: zachariasz
- * Date: 2019-03-21
- * Time: 08:30
- */
+
 
 namespace Tests\Unit\Models\Relationships;
 
 
-use App\Character;
-use App\Fraction;
-use App\User;
+use App\Entities\Character;
+use App\Entities\Fraction;
+use App\Entities\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
@@ -39,5 +34,20 @@ class CharacterRelationshipsTest extends TestCase
 
         $characterFraction =$character->fraction;
         $this->assertNotNull($characterFraction);
+    }
+
+    public function testCoordinate()
+    {
+        $character = factory(Character::class)->create();
+        // It's also checks mysql create_default_coordinate_for_new_character trigger
+        $this->assertNotNull($character->coordinate);
+        $this->assertEquals($character->id,$character->coordinate->character_id);
+    }
+    
+    public function testAbilities()
+    {
+        $character = factory(Character::class)->create();
+        // It's also checks mysql after_character_insert trigger
+        $this->assertNotEmpty($character->abilities->toArray());
     }
 }

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Character;
+use App\Entities\Character;
 use App\Http\Requests\UserCharacterStoreRequest;
 use App\Http\Requests\UserCharacterUpdateRequest;
 use App\Http\Resources\CharacterResource;
-use App\Repositories\CharacterRepository;
+use App\Facades\CharacterRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +15,6 @@ use App\Http\Controllers\Controller;
 
 class UserCharacterController extends Controller
 {
-
     /**
      * GET user/characters
      * Returns all characters of user

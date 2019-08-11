@@ -11,7 +11,7 @@ namespace Tests\Feature\APIEndpoints;
 
 use App\Entities\Constants\Helpers\ExceptionMessage;
 use App\Notifications\VerifyEmail;
-use App\User;
+use App\Entities\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Notification;

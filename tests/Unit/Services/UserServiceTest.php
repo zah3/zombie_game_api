@@ -11,15 +11,14 @@ namespace Tests\Feature\Services;
 
 use App\Facades\UserService;
 use App\Notifications\VerifyEmail;
-use App\RoleUser;
-use App\User;
+use App\Entities\RoleUser;
+use App\Entities\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class UserServiceTest extends TestCase
 {
-
     use DatabaseTransactions;
 
     public function testHasUserVerifiedEmailReturnTrue()

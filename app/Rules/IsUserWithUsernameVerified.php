@@ -2,7 +2,7 @@
 
 namespace App\Rules;
 
-use App\User;
+use App\Entities\User;
 use Illuminate\Contracts\Validation\Rule;
 
 class IsUserWithUsernameVerified implements Rule

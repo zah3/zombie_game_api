@@ -6,8 +6,8 @@ use App\Entities\Helpers\Utilities;
 use App\Http\Controllers\Controller;
 use App\Notifications\PasswordResetRequestNotification;
 use App\Notifications\PasswordChangeNotification;
-use App\PasswordReset;
-use App\User;
+use App\Entities\PasswordReset;
+use App\Entities\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 

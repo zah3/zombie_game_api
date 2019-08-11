@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,6 +13,12 @@ class Fraction extends Model
     public const ID_NORMAL = 1;
     public const ID_ZOMBIE_KILLER = 2;
     public const ID_KNIGHT = 3;
+
+    public const AVAILABLE_IDS = [
+        self::ID_NORMAL,
+        self::ID_ZOMBIE_KILLER,
+        self::ID_KNIGHT
+    ];
 
     /**
      * Relation to character model.

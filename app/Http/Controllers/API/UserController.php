@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * @author  zachariasz
- * Date: 2018-10-28
- * Time: 16:46
- */
 
 namespace App\Http\Controllers\API;
 
@@ -15,7 +9,7 @@ use App\Http\Requests\{
     LoginRequest, UserRegisterRequest, UpdateUserRequest
 };
 use App\Http\Resources\UserResource;
-use App\User;
+use App\Entities\User;
 use Carbon\Carbon;
 use Illuminate\Http\{
     Response

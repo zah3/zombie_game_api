@@ -9,10 +9,10 @@
 namespace App\Repositories;
 
 
-use App\Character;
-use App\Fraction;
+use App\Entities\Character;
+use App\Entities\Fraction;
 use App\Repositories\Helpers\BaseRepository;
-use App\User;
+use App\Entities\User;
 
 class CharacterRepository extends BaseRepository
 {
@@ -23,6 +23,8 @@ class CharacterRepository extends BaseRepository
      * @param Fraction|null $fraction
      * @param string $name
      * @param int|null $experience
+     * @param int|null $agility
+     * @param int|null $strength
      *
      * @return Character
      */
@@ -30,7 +32,9 @@ class CharacterRepository extends BaseRepository
         User $user,
         ?Fraction $fraction,
         string $name,
-        ?int $experience
+        ?int $experience = null,
+        ?int $agility = null,
+        ?int $strength = null
     ) : Character
     {
         $character = new Character();
@@ -40,6 +44,8 @@ class CharacterRepository extends BaseRepository
             Fraction::ID_NORMAL;
         $character->name = $name;
         $character->experience = $experience !== null ? $experience : 0;
+        $character->agility = $agility !== null ? $agility : Character::DEFAULT_AGILITY;
+        $character->strength = $strength !== null ? $strength : Character::DEFAULT_STRENGTH;
         $character->save();
 
         return $character;
@@ -61,23 +67,10 @@ class CharacterRepository extends BaseRepository
         $character = self::updateField($character, $newFields, 'user_id');
         $character = self::updateField($character, $newFields, 'fraction_id');
         $character = self::updateField($character, $newFields, 'name');
+        $character = self::updateField($character, $newFields, 'agility');
+        $character = self::updateField($character, $newFields, 'strength');
         $character = self::updateField($character, $newFields, 'experience');
 
-        $character->save();
-        return $character;
-    }
-
-    /**
-     * Adds experience to character
-     *
-     * @param int $experience
-     * @param Character $character
-     *
-     * @return Character
-     */
-    public static function addExperience(int $experience, Character $character) : Character
-    {
-        $character->experience += $experience;
         $character->save();
         return $character;
     }

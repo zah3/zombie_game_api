@@ -9,7 +9,7 @@
 namespace Tests\Unit\Models\Scopes;
 
 
-use App\Role;
+use App\Entities\Role;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 

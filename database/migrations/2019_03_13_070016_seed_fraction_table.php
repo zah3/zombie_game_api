@@ -1,6 +1,6 @@
 <?php
 
-use App\Fraction;
+use App\Entities\Fraction;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Migrations\Migration;
 

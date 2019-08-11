@@ -9,8 +9,8 @@
 namespace Tests\Feature\Repositories;
 
 
-use App\Character;
-use App\User;
+use App\Entities\Character;
+use App\Entities\User;
 use App\Repositories\CharacterRepository;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
@@ -27,6 +27,8 @@ class CharacterRepositoryTest extends TestCase
             $user,
             null,
             $character->name,
+            null,
+            null,
             null
         );
         $this->assertNotNull($createdModel);
@@ -42,14 +44,5 @@ class CharacterRepositoryTest extends TestCase
         $this->assertNotNull($updatedModel);
         $this->assertEquals($updatedModel->name, $newFields->name);
         $this->assertDatabaseHas($character->getTable(), $updatedModel->toArray());
-    }
-
-    public function testAddExperience()
-    {
-        $character = factory(Character::class)->create();
-        $updatedModel = CharacterRepository::addExperience(100, $character);
-        $character->refresh();
-        $this->assertNotNull($updatedModel);
-        $this->assertEquals(100, $character->experience);
     }
 }

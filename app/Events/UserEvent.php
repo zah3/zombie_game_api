@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\{
+use App\Entities\{
     User,
     Role
 };

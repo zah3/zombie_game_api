@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
-use App\Services\ExperienceService;
+use App\Repositories\CoordinateRepository;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 
-class ExperienceServiceProvider extends ServiceProvider
+class CoordinateRepositoryProvider extends ServiceProvider
 {
     /**
      * Bootstrap services.
@@ -25,8 +25,8 @@ class ExperienceServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        App::bind('ExperienceService', function () {
-            return new ExperienceService;
+        App::bind('CoordinateRepository',function(){
+           return new CoordinateRepository;
         });
     }
 }

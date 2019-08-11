@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Entities\Constants\Helpers\ExceptionMessage;
 use App\Facades\UserService;
 use App\Notifications\VerifyEmail;
-use App\User;
+use App\Entities\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 

@@ -13,8 +13,8 @@ use App\Entities\Constants\Helpers\ExceptionMessage;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Notifications\PasswordChangeNotification;
-use App\PasswordReset;
-use App\User;
+use App\Entities\PasswordReset;
+use App\Entities\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
