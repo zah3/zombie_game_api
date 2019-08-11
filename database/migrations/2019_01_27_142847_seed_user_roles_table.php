@@ -2,8 +2,8 @@
 
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Migrations\Migration;
-use App\User;
-use App\Role;
+use App\Entities\User;
+use App\Entities\Role;
 
 class SeedUserRolesTable extends Migration
 {

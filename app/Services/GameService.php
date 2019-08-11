@@ -27,7 +27,7 @@ class GameService
      * @param array $coordinate
      * @param array $abilities
      *
-     * @return bool
+     * @return void
      */
     public function save(
         Character $character,
@@ -37,7 +37,7 @@ class GameService
         int $strength,
         array $coordinate,
         array $abilities
-    ) : bool
+    ) : void
     {
         DB::beginTransaction();
         try {
@@ -71,10 +71,8 @@ class GameService
                 $exception->getCode(),
                 $exception->getMessage()
             );
-            return false;
         }
 
         DB::commit();
-        return true;
     }
 }

@@ -56,7 +56,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     });
 
     Route::prefix('/game')->group(function(){
-        Route::get('/{characterId}','API\GameController@show');
-        Route::put('/{characterId}','API\GameController@update');
+        Route::get('/{character}','API\GameController@show');
+        Route::put('/{character}','API\GameController@update');
     });
 });

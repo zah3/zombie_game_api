@@ -6,6 +6,7 @@ use App\Facades\GameService;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\GameResource;
 use Illuminate\Http\Request;
+use App\Entities\Character;
 
 class GameController extends Controller
 {
@@ -13,16 +14,13 @@ class GameController extends Controller
      * GET api/game/{character.id}
      * Returns game data from a system
      *
-     * @param Request $request
-     * @param int $characterId
+     * @param Character $character
      *
      * @return GameResource
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function show(Request $request, int $characterId) : GameResource
+    public function show(Character $character) : GameResource
     {
-        $user = $request->user();
-        $character = $user->characters()->findOrFail($characterId);
         $this->authorize('view', [GameResource::class, $character]);
 
         $character->load(['fraction', 'coordinate', 'abilities']);
@@ -34,15 +32,13 @@ class GameController extends Controller
      * Save game data
      *
      * @param Request $request
-     * @param int $characterId
+     * @param Character $character
      *
      * @return GameResource
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function update(Request $request, int $characterId) : GameResource
+    public function update(Request $request, Character $character) : GameResource
     {
-        $user = $request->user();
-        $character = $user->characters()->findOrFail($characterId);
         $this->authorize('update', [GameResource::class, $character]);
 
         $request->validate([
@@ -52,8 +48,8 @@ class GameController extends Controller
             'strength' => 'int|sometimes|between:' . $character->strength . ',4294967295',
             'coordinates.x' => 'numeric|sometimes',
             'coordinates.y' => 'numeric|sometimes',
-            'abilities.id' => 'int|sometimes|exists:abilities,id',
-            'abilities.is_active' => 'sometimes|in:0,1',
+            'abilities.*.id' => 'int|sometimes|exists:abilities,id',
+            'abilities.*.is_active' => 'sometimes|in:0,1',
         ]);
 
         GameService::save(
@@ -65,6 +61,7 @@ class GameController extends Controller
             $request->input('coordinates'),
             $request->input('abilities')
         );
+
         $character->load(['fraction', 'coordinate', 'abilities']);
         return GameResource::make($character);
     }

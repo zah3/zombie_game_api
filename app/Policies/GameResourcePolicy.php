@@ -3,9 +3,7 @@
 namespace App\Policies;
 
 use App\Entities\Character;
-use App\Entities\Role;
 use App\Entities\User;
-use App\Facades\UserService;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class GameResourcePolicy
