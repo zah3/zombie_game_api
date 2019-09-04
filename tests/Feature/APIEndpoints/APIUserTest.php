@@ -14,6 +14,8 @@ class API_User_Test extends TestCase
 
     public function testLoginCheckCaseSensitiveInFields()
     {
+        $this->withoutMiddleware();
+
         $user = factory(User::class)->make([
             'username' => 'usernamE',
         ]);
@@ -94,6 +96,7 @@ class API_User_Test extends TestCase
     public function testRegisterWithIncorrectPasswordData()
     {
         Notification::fake();
+        $this->withoutMiddleware();
 
         // Incorrect password with confirm_password
         $incorrectData = [
@@ -163,6 +166,8 @@ class API_User_Test extends TestCase
     public function testRegisterWithIncorrectUsernameData()
     {
         Notification::fake();
+        $this->withoutMiddleware();
+
         // Try to create user with already existed username
         $user = factory(User::class)->create([
             'username' => 'existed',
@@ -220,6 +225,7 @@ class API_User_Test extends TestCase
     public function testRegisterWithIncorrectTooLongUsernameData()
     {
         Notification::fake();
+        $this->withoutMiddleware();
 
         $user = factory(User::class)->make([
             'username' => 'LoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsum' .
@@ -250,6 +256,8 @@ class API_User_Test extends TestCase
     }
     public function testRegisterWithNonAlphaDashUsernameData()
     {
+        $this->withoutMiddleware();
+
         Notification::fake();
 
         $user = factory(User::class)->make([

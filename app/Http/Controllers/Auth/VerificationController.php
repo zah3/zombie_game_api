@@ -21,17 +21,6 @@ class VerificationController extends Controller
     | be resent if the user did not receive the original email message.
     |
     */
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('throttle:6,1')->only('verify', 'resend');
-    }
-
     /**
      * Mark the authenticated user's email address as verified.
      *

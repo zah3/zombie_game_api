@@ -26,6 +26,8 @@ class APIPasswordChangeTest extends TestCase
     public function testStoreWithNotExistMailDB()
     {
         Notification::fake();
+        $this->withoutMiddleware();
+
         $user = factory(User::class)->create();
 
         $response = $this->postJson(
@@ -62,6 +64,8 @@ class APIPasswordChangeTest extends TestCase
     public function testStoreWithNotExistedToken()
     {
         Notification::fake();
+        $this->withoutMiddleware();
+
         $user = factory(User::class)->create();
 
         $response = $this->postJson(
@@ -100,6 +104,8 @@ class APIPasswordChangeTest extends TestCase
     public function testStoreWithExpiredToken()
     {
         Notification::fake();
+        $this->withoutMiddleware();
+
         $user = factory(User::class)->create();
 
         $response = $this->postJson(
@@ -140,6 +146,8 @@ class APIPasswordChangeTest extends TestCase
     public function testStoreWithTokenFromOtherUser()
     {
         Notification::fake();
+        $this->withoutMiddleware();
+
         $user = factory(User::class)->create();
 
         $response = $this->postJson(
@@ -186,6 +194,8 @@ class APIPasswordChangeTest extends TestCase
     public function testStoreWithNotGeneratedToken()
     {
         Notification::fake();
+        $this->withoutMiddleware();
+
         $user = factory(User::class)->create();
 
         $requestData = [
@@ -208,6 +218,8 @@ class APIPasswordChangeTest extends TestCase
     public function testStoreWithSuccess()
     {
         Notification::fake();
+        $this->withoutMiddleware();
+
         $user = factory(User::class)->create();
 
         $response = $this->postJson(

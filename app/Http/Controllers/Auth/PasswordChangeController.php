@@ -22,16 +22,6 @@ class PasswordChangeController extends Controller
 {
 
     /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('throttle:10,1')->only('store');
-    }
-
-    /**
      * POST /api/password/reset
      * Resets password
      *

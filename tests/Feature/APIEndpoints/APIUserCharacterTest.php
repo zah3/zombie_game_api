@@ -36,7 +36,7 @@ class API_User_Character_Test extends TestCase
             ->assertJsonCount(2, 'data')
             ->assertJsonStructure([
                 'data' => [
-                    '*' => [
+                    [
                         'id',
                         'fraction',
                         'name',
