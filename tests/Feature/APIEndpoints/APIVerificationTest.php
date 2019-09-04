@@ -23,6 +23,7 @@ class APIVerificationTest extends TestCase
 
     public function test_resend_validation_not_exist_email()
     {
+        $this->withoutMiddleware();
         $response = $this->postJson(
             'api/verification/resend',
             ['email' => 'exapmle@com.eu']
@@ -33,6 +34,8 @@ class APIVerificationTest extends TestCase
 
     public function test_resend_validation_user_have_already_verified()
     {
+        $this->withoutMiddleware();
+
         $user = factory(User::class)->create();
         $response = $this->postJson(
             'api/verification/resend',
@@ -45,6 +48,8 @@ class APIVerificationTest extends TestCase
 
     public function test_resend_send_email_and_verify()
     {
+        $this->withoutMiddleware();
+
         Notification::fake();
 
         $user = factory(User::class)->create([

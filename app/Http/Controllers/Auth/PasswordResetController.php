@@ -15,16 +15,6 @@ class PasswordResetController extends Controller
 {
 
     /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('throttle:5,1')->only('store');
-    }
-
-    /**
      * POST api/password
      * Creates reset password notification
      *

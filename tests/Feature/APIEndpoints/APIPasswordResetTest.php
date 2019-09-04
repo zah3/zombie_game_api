@@ -22,6 +22,7 @@ class APIPasswordResetTest extends TestCase
 
     public function testStoreWithoutEmailField()
     {
+        $this->withoutMiddleware();
         $response = $this->postJson('api/password/reset');
         $response->assertStatus(422)
             ->assertJsonValidationErrors('email');
@@ -29,6 +30,8 @@ class APIPasswordResetTest extends TestCase
 
     public function testStoreWithWrongEmail()
     {
+        $this->withoutMiddleware();
+
         $response = $this->postJson(
             'api/password/reset',
             ['email' => 'eweq@o2.pl']
@@ -40,6 +43,7 @@ class APIPasswordResetTest extends TestCase
     public function testStoreWithSuccess()
     {
         Notification::fake();
+        $this->withoutMiddleware();
 
         $user = factory(User::class)->create();
         $response = $this->postJson(
@@ -58,9 +62,11 @@ class APIPasswordResetTest extends TestCase
             }
         );
     }
+
     public function testStoreWithTwoAttempts()
     {
         Notification::fake();
+        $this->withoutMiddleware();
 
         $user = factory(User::class)->create();
         $response = $this->postJson(
@@ -76,7 +82,7 @@ class APIPasswordResetTest extends TestCase
         $response2->assertStatus(200);
         // Check if is not put same email in password_records table
         $passwordResets = PasswordReset::whereUserId($user->id)->get();
-        $this->assertEquals(1,count($passwordResets));
+        $this->assertEquals(1, count($passwordResets));
         Notification::assertSentTo(
             $user,
             PasswordResetRequestNotification::class,
@@ -99,7 +105,7 @@ class APIPasswordResetTest extends TestCase
             );
             $i++;
         } while ($i < 5);
-        $this->assertEquals("Too Many Attempts.",$response->json()['message']);
+        $this->assertEquals("Too Many Attempts.", $response->json()['message']);
         $response->assertStatus(429);
     }
 }
