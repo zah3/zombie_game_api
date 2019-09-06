@@ -93,19 +93,4 @@ class APIPasswordResetTest extends TestCase
             }
         );
     }
-
-    public function testCreateCheckThrottle()
-    {
-        $user = factory(User::class)->create();
-        $i = 0;
-        do {
-            $response = $this->postJson(
-                'api/password/reset',
-                ['email' => $user->email]
-            );
-            $i++;
-        } while ($i < 5);
-        $this->assertEquals("Too Many Attempts.", $response->json()['message']);
-        $response->assertStatus(429);
-    }
 }
