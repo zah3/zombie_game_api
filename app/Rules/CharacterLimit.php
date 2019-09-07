@@ -8,7 +8,6 @@ use Illuminate\Contracts\Validation\Rule;
 
 class CharacterLimit implements Rule
 {
-
     private $user;
 
     /**
