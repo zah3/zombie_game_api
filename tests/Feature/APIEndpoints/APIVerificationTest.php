@@ -69,7 +69,7 @@ class APIVerificationTest extends TestCase
                 $verifyResponse = $this->get($mailData['actionUrl']);
                 $verifyResponse->assertSuccessful();
                 $verifyResponse->assertViewIs('auth.verify');
-                $verifyResponse->assertViewHas('type', 'danger');
+                $verifyResponse->assertViewHas('color', 'red');
                 $verifyResponse->assertViewHas('message', VerifyEmail::MESSAGE_DANGER_CODE_EXPIRED);
                 $user->refresh();
                 return $user->email_verified_at === null;
@@ -84,7 +84,7 @@ class APIVerificationTest extends TestCase
                 $verifyResponse = $this->get($mailData['actionUrl']);
                 $verifyResponse->assertSuccessful();
                 $verifyResponse->assertViewIs('auth.verify');
-                $verifyResponse->assertViewHas('type', 'success');
+                $verifyResponse->assertViewHas('color', 'green');
                 $verifyResponse->assertViewHas('message', VerifyEmail::MESSAGE_SUCCESS);
                 $user->refresh();
                 // Again
@@ -92,7 +92,7 @@ class APIVerificationTest extends TestCase
                 $verifyResponse = $this->get($mailData['actionUrl']);
                 $verifyResponse->assertSuccessful();
                 $verifyResponse->assertViewIs('auth.verify');
-                $verifyResponse->assertViewHas('type', 'danger');
+                $verifyResponse->assertViewHas('color', 'red');
                 $verifyResponse->assertViewHas('message', VerifyEmail::MESSAGE_DANGER_ALREADY_VERIFIED);
                 return $user->email_verified_at !== null;
             }
