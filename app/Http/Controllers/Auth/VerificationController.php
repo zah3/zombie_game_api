@@ -30,23 +30,23 @@ class VerificationController extends Controller
      */
     public function verify(Request $request)
     {
-        $type = 'danger';
+        $color = 'red';
         if (!$request->hasValidSignature()) {
             $message = VerifyEmail::MESSAGE_DANGER_CODE_EXPIRED;
-            return view('auth.verify', compact('message', 'type'));
+            return view('auth.verify', compact('message', 'color'));
         }
 
         $user = User::find($request->input('id'));
         if (UserService::hasUserVerifiedEmail($user)) {
             $message = VerifyEmail::MESSAGE_DANGER_ALREADY_VERIFIED;
-            return view('auth.verify', compact('message', 'type'));
+            return view('auth.verify', compact('message', 'color'));
         }
 
         UserService::setEmailAsVerified($user);
 
-        $type = 'success';
+        $color = 'green';
         $message = VerifyEmail::MESSAGE_SUCCESS;
-        return view('auth.verify', compact('message', 'type'));
+        return view('auth.verify', compact('message', 'color'));
     }
 
     /**
