@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: zachariasz
- * Date: 2019-03-30
- * Time: 07:40
- */
 
 namespace Tests\Unit\Services;
-
 
 use App\Entities\Character;
 use App\Entities\Fraction;
@@ -24,8 +17,11 @@ class GameServiceTest extends TestCase
         $character = factory(Character::class)->create();
         $fraction = factory(Fraction::class)->create();
         $experience = 10;
-        $agility = 20;
         $strength = 30;
+        $stamina = 23;
+        $speed = 14;
+        $abilityPoints = 45;
+
         $coordinate = [
             'x' => 12,
             'y' => 3,
@@ -53,11 +49,14 @@ class GameServiceTest extends TestCase
             $character,
             $fraction->id,
             $experience,
-            $agility,
             $strength,
+            $speed,
+            $stamina,
+            $abilityPoints,
             $coordinate,
             $abilities
         );
+
         $character->refresh();
 
         $this->assertDatabaseHas(
@@ -69,7 +68,7 @@ class GameServiceTest extends TestCase
                 "name"=> $character->name,
                 'experience' => $experience,
                 'strength' => $strength,
-                'agility' => $agility,
+                'ability_points' => $abilityPoints,
                 "created_at"=> $character->created_at->format('Y-m-d H:i:s'),
                 "updated_at"=> $character->updated_at->format('Y-m-d H:i:s'),
                 "deleted_at"=> null

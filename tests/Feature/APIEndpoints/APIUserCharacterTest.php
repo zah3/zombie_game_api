@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: zachariasz
- * Date: 2019-03-16
- * Time: 16:18
- */
 
 namespace Tests\Feature\APIEndpoints;
-
 
 use App\Entities\Character;
 use App\Entities\Fraction;

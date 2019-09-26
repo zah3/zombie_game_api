@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Facades\UserService;
-use App\Rules\LoginValidation;
+use App\Rules\LoginValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
@@ -30,7 +30,7 @@ class LoginRequest extends FormRequest
             'username' => [
                 'required',
                 'max:255',
-                new LoginValidation(),
+                new LoginValidationRule(),
                 function ($attribute, $value, $fail) {
                     $user = $this->user();
                     if ($user !== null) {

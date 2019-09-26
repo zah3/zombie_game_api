@@ -14,7 +14,8 @@ class InsertAbilityTable extends Migration
     {
         DB::unprepared(
             "INSERT into abilities (name)" .
-            "VALUES ('number 1'),('number_2'),('number_3'),('number_4')"
+            "VALUES ('Combo'),('Kick'),('Power up'),('Defense')," .
+            "('Heal'),('Health'),('Pilum'),('Strength'),('Speed up')"
         );
     }
 }

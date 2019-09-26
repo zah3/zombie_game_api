@@ -6,7 +6,7 @@ use App\Facades\UserService;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\StatusResponse;
 use App\Http\Requests\{
-    LoginRequest, UserRegisterRequest, UpdateUserRequest
+    LoginRequest, UserRegisterRequest
 };
 use App\Http\Resources\UserResource;
 use App\Entities\User;
@@ -44,7 +44,7 @@ class UserController extends Controller
             DB::commit();
         } catch (\Exception $exception) {
             DB::rollBack();
-            return response()->json(['message' => 'Failed to create new token.'], StatusResponse::STATUS_BAD_REQUEST);
+            return response()->json(['message' => 'Failed to create new token.'], 422);
         }
 
         $success['message'] = 'You are successfully login.';
@@ -58,7 +58,7 @@ class UserController extends Controller
      *
      * @param UserRegisterRequest $request
      *
-     * @return UserResource
+     * @return \Illuminate\Http\JsonResponse
      */
     public function register(UserRegisterRequest $request)
     {
@@ -77,7 +77,7 @@ class UserController extends Controller
 
         UserService::sendEmailVerificationNotification($user);
 
-        return UserResource::make(User::find($user->id));
+        return \response()->json(['data' => UserResource::make(User::find($user->id))], 201);
     }
 
     /**
@@ -93,98 +93,5 @@ class UserController extends Controller
         } else {
             return response()->json(['error' => 'Something goes wrong. You cannot logout.'], StatusResponse::STATUS_UNAUTHORIZED);
         }
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return array
-     */
-    public function index()
-    {
-        return response()->json(UserResource::collection(User::with(['roles'])->get()), StatusResponse::STATUS_OK);
-    }
-
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param UserRegisterRequest $request
-     *
-     * @return \Illuminate\Http\JsonResponse
-     *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     */
-    public function store(UserRegisterRequest $request)
-    {
-        $this->authorize('create', User::class);
-        $user = User::create(
-            [
-                'username' => $request->input('username'),
-                'password' => Hash::make($request->input('password')),
-                'is_active' => false,
-            ]
-        );
-
-        return response()->json(['message' => 'success', 'data' => new UserResource($user)]);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param User $user
-     *
-     * @return \Illuminate\Http\JsonResponse
-     *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     */
-    public function show(User $user)
-    {
-        $this->authorize('read', $user);
-
-        return response()->json(UserResource::make($user));
-    }
-
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param UpdateUserRequest $request
-     * @param User $user
-     *
-     * @return \Illuminate\Http\JsonResponse
-     *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     */
-    public function update(UpdateUserRequest $request, User $user)
-    {
-        $this->authorize('update', $user);
-
-        if ($request->input('username') !== $user->username) {
-            $user->username = $request->input('username');
-            $user->save();
-            return response()->json(['message' => 'Updated']);
-        } else {
-            return response()->json(['error' => 'nothing has changed']);
-        }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param User $user
-     *
-     * @return \Illuminate\Http\JsonResponse
-     *
-     * @throws \Exception
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     */
-    public function destroy(User $user)
-    {
-        $this->authorize('delete', $user);
-
-        $user->delete();
-
-        return response(null, 204);
     }
 }

@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: zachariasz
- * Date: 2019-05-11
- * Time: 08:35
- */
 
 namespace App\Http\Controllers\Auth;
-
 
 use App\Entities\Constants\Helpers\ExceptionMessage;
 use App\Http\Controllers\Controller;
@@ -22,8 +15,8 @@ class PasswordChangeController extends Controller
 {
 
     /**
-     * POST /api/password/reset
-     * Resets password
+     * POST /api/password/change
+     * Change password for a user
      *
      * @param Request $request
      *
@@ -37,13 +30,7 @@ class PasswordChangeController extends Controller
             'confirm_password' => 'required|same:password',
             'token' => 'required|string:255',
         ]);
-        $user = User::whereEmail($request->email)->first();
-
-        abort_if(
-            $user === null,
-            404,
-            PasswordChangeNotification::MESSAGE_ERROR_CANNOT_FIND_EMAIL
-        );
+        $user = User::whereEmail($request->email)->firstOrFail();
 
         $passwordReset = $user->passwordReset;
 

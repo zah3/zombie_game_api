@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\CharacterLimit;
+use App\Rules\CharacterLimitRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserCharacterStoreRequest extends FormRequest
@@ -30,7 +30,7 @@ class UserCharacterStoreRequest extends FormRequest
                 'alpha_dash',
                 'min:4',
                 'max:255',
-                new CharacterLimit($this->user())
+                new CharacterLimitRule($this->user())
             ]
         ];
     }

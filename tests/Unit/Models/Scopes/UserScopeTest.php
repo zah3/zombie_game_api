@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: zachariasz
- * Date: 2019-03-21
- * Time: 18:55
- */
 
 namespace Tests\Unit\Models\Scopes;
-
 
 use App\Entities\User;
 use Tests\TestCase;

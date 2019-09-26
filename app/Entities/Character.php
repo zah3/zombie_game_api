@@ -28,6 +28,9 @@ class Character extends Model
     public const LIMIT_PER_USER = 5;
     public const DEFAULT_AGILITY = 5;
     public const DEFAULT_STRENGTH = 5;
+    public const DEFAULT_ABILITY_POINTS = 0;
+    public const DEFAULT_STAMINA = 5;
+    public const DEFAULT_SPEED = 5;
 
     protected $dates = [
         'deleted_at'

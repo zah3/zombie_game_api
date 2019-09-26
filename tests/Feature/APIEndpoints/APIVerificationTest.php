@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: zachariasz
- * Date: 2019-05-11
- * Time: 01:46
- */
 
 namespace Tests\Feature\APIEndpoints;
-
 
 use App\Entities\Constants\Helpers\ExceptionMessage;
 use App\Notifications\VerifyEmail;

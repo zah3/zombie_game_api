@@ -15,7 +15,7 @@ class PasswordResetController extends Controller
 {
 
     /**
-     * POST api/password
+     * POST api/password/reset
      * Creates reset password notification
      *
      * @param Request $request
@@ -32,18 +32,18 @@ class PasswordResetController extends Controller
 
         abort_if(
             $user === null,
-            404,
+            422,
             User::MESSAGE_USER_NOT_VERIFIED
         );
         
         // It means that - user probably haven't receive email with secret code
         $passwordResetForUser = $user->passwordReset;
-
         if ($passwordResetForUser) {
             $user->passwordReset()->delete();
         }
 
         $token = Utilities::generateRandomUniqueString();
+        //here create repository
         PasswordReset::create(
             [
                 'user_id' => $user->id,

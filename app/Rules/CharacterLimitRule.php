@@ -6,7 +6,7 @@ use App\Entities\Character;
 use App\Entities\User;
 use Illuminate\Contracts\Validation\Rule;
 
-class CharacterLimit implements Rule
+class CharacterLimitRule implements Rule
 {
     private $user;
 

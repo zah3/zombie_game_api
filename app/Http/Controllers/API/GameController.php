@@ -40,24 +40,26 @@ class GameController extends Controller
     public function update(Request $request, Character $character) : GameResource
     {
         $this->authorize('update', [GameResource::class, $character]);
-
         $request->validate([
-            'fraction_id' => 'sometimes|exists:fractions,id',
-            'experience' => 'int|sometimes|between:' . $character->experience . ',4294967295',
-            'agility' => 'int|sometimes|between:' . $character->agility . ',4294967295',
-            'strength' => 'int|sometimes|between:' . $character->strength . ',4294967295',
-            'coordinates.x' => 'numeric|sometimes',
-            'coordinates.y' => 'numeric|sometimes',
-            'abilities.*.id' => 'int|sometimes|exists:abilities,id',
-            'abilities.*.is_active' => 'sometimes|in:0,1',
+            'fraction_id' => 'required|exists:fractions,id',
+            'experience' => 'int|required|between:' . $character->experience . ',4294967295',
+            'strength' => 'int|required|between:' . $character->strength . ',4294967295',
+            'stamina' => 'int|required|between:' . $character->stamina . ',4294967295',
+            'speed' => 'int|required|between:' . $character->speed . ',4294967295',
+            'ability_points' => 'int|required|between:0,4294967295',
+            'coordinates.x' => 'numeric|required',
+            'coordinates.y' => 'numeric|required',
+            'abilities.*.id' => 'int|required|exists:abilities,id',
+            'abilities.*.is_active' => 'required|in:0,1',
         ]);
-
         GameService::save(
             $character,
             $request->input('fraction_id'),
             $request->input('experience'),
-            $request->input('agility'),
             $request->input('strength'),
+            $request->input('speed'),
+            $request->input('stamina'),
+            $request->input('ability_points'),
             $request->input('coordinates'),
             $request->input('abilities')
         );

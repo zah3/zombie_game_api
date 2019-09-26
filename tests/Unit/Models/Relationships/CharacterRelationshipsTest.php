@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Tests\Unit\Models\Relationships;
-
 
 use App\Entities\Character;
 use App\Entities\Fraction;

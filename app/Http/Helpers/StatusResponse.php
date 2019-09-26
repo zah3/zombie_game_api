@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: zachariasz
- * Date: 2018-11-11
- * Time: 11:21
- */
 
 namespace App\Http\Helpers;
-
 
 class StatusResponse
 {
@@ -32,7 +25,6 @@ class StatusResponse
      */
     public const STATUS_PARTIAL_CONTENT = 206;
 
-
     /**
      * Failed validation.
      * @var int
@@ -53,5 +45,4 @@ class StatusResponse
      * @var int
      */
     public const STATUS_NOT_FOUND = 404;
-
 }

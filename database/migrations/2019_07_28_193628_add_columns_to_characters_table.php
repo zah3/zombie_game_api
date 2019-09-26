@@ -15,8 +15,10 @@ class AddColumnsToCharactersTable extends Migration
     public function up()
     {
         Schema::table('characters', function (Blueprint $table) {
-            $table->unsignedInteger('agility')->after('experience')->default(Character::DEFAULT_AGILITY);
-            $table->unsignedInteger('strength')->after('agility')->default(Character::DEFAULT_STRENGTH);
+            $table->unsignedInteger('strength')->after('experience')->default(Character::DEFAULT_STRENGTH);
+            $table->unsignedInteger('speed')->after('strength')->default(Character::DEFAULT_SPEED);
+            $table->unsignedInteger('stamina')->after('speed')->default(Character::DEFAULT_STAMINA);
+            $table->unsignedInteger('ability_points')->after('stamina')->default(Character::DEFAULT_ABILITY_POINTS);
         });
     }
 }

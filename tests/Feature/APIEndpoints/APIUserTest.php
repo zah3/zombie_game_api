@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\APIEndpoints;
 
-
 use App\Entities\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Notification;
@@ -32,7 +31,7 @@ class API_User_Test extends TestCase
             $goodDataWithCamelCase
         );
         // Create user in database from endpoint
-        $response->assertStatus(200);
+        $response->assertStatus(201);
         $this->assertDatabaseHas(
             'users',
             [
@@ -203,8 +202,7 @@ class API_User_Test extends TestCase
             'api/register',
             $goodData
         );
-
-        $response3->assertStatus(200)
+        $response3->assertStatus(201)
             ->assertJsonStructure([
                 'data' => [
                     'id',
