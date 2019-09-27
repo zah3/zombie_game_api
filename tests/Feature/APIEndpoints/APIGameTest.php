@@ -104,7 +104,7 @@ class APIGameTest extends TestCase
 
         $response = $this->actingAs($character->user, 'api')
             ->json(
-                'PUT',
+                'POST',
                 'api/game/' . $character->id,
                 $dataToUpdate
 
@@ -176,7 +176,7 @@ class APIGameTest extends TestCase
 
         $response = $this->actingAs($character1->user, 'api')
             ->json(
-                'PUT',
+                'POST',
                 'api/game/' . $character2->id,
                 $dataToUpdate
 
@@ -211,7 +211,7 @@ class APIGameTest extends TestCase
 
         $response = $this->actingAs($character->user, 'api')
             ->json(
-                'PUT',
+                'POST',
                 'api/game/' . $character->id,
                 $dataToUpdate
 
@@ -229,7 +229,7 @@ class APIGameTest extends TestCase
         ];
         $response2 = $this->actingAs($character->user, 'api')
             ->json(
-                'PUT',
+                'POST',
                 'api/game/' . $character->id,
                 $dataToUpdate2
 
@@ -264,7 +264,7 @@ class APIGameTest extends TestCase
         ];
         $response3 = $this->actingAs($character->user, 'api')
             ->json(
-                'PUT',
+                'POST',
                 'api/game/' . $character->id,
                 $dataToUpdate3
 
@@ -278,7 +278,7 @@ class APIGameTest extends TestCase
         ];
         $response4 = $this->actingAs($character->user, 'api')
             ->json(
-                'PUT',
+                'POST',
                 'api/game/' . $character->id,
                 $dataToUpdate4
 
