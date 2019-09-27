@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: zachariasz
- * Date: 2019-03-19
- * Time: 08:42
- */
 
 namespace Tests\Unit\Models\Factories;
 

@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: zachariasz
- * Date: 2019-03-29
- * Time: 19:06
- */
 
 namespace App\Services;
-
 
 use App\Entities\Character;
 use App\Facades\CharacterRepository;
@@ -24,6 +17,9 @@ class GameService
      * @param int $experience
      * @param int $agility
      * @param int $strength
+     * @param int $speed
+     * @param int $stamina
+     * @param int $abilityPoints
      * @param array $coordinate
      * @param array $abilities
      *
@@ -31,10 +27,12 @@ class GameService
      */
     public function save(
         Character $character,
-        int $fractionId,
-        int $experience,
-        int $agility,
-        int $strength,
+        ?int $fractionId,
+        ?int $experience,
+        ?int $strength,
+        ?int $speed,
+        ?int $stamina,
+        ?int $abilityPoints,
         array $coordinate,
         array $abilities
     ) : void
@@ -44,8 +42,10 @@ class GameService
             $newFields = [
                 'fraction_id' => $fractionId,
                 'experience' => $experience,
-                'agility' => $agility,
                 'strength' => $strength,
+                'speed' => $speed,
+                'stamina' => $stamina,
+                'ability_points' => $abilityPoints,
             ];
             CharacterRepository::update($character, $newFields);
 

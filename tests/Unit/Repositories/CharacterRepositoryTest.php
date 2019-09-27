@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: zachariasz
- * Date: 2019-03-30
- * Time: 07:41
- */
 
 namespace Tests\Feature\Repositories;
-
 
 use App\Entities\Character;
 use App\Entities\User;

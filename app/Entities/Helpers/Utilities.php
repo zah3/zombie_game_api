@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: zachariasz
- * Date: 2019-05-12
- * Time: 12:17
- */
 
 namespace App\Entities\Helpers;
-
 
 abstract class Utilities
 {

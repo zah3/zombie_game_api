@@ -18,10 +18,13 @@ class CreatePasswordResetsTable extends Migration
             $table->unsignedInteger('user_id');
             $table->string('token');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
 
         $sqlIndexOnUserId = "CREATE UNIQUE INDEX password_resets_user_id_uindex ON password_resets (user_id);";
         $sqlIndexOnToken = "CREATE UNIQUE INDEX password_resets_token_uindex ON password_resets (token);";
+
         DB::unprepared($sqlIndexOnToken);
         DB::unprepared($sqlIndexOnUserId);
     }

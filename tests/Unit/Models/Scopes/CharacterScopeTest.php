@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: zachariasz
- * Date: 2019-03-27
- * Time: 08:34
- */
 
 namespace Tests\Unit\Models\Scopes;
-
 
 use App\Entities\Character;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

@@ -5,10 +5,8 @@ namespace App\Rules;
 use App\Entities\User;
 use Illuminate\Contracts\Validation\Rule;
 
-class IsUserWithUsernameVerified implements Rule
+class IsUserWithUsernameVerifiedRule implements Rule
 {
-
-
     /**
      * Determine if the validation rule passes.
      *

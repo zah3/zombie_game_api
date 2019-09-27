@@ -50,6 +50,7 @@ class VerificationController extends Controller
     }
 
     /**
+     * POST /verification/resend
      * Resend the email verification notification.
      *
      * @param  \Illuminate\Http\Request $request
@@ -62,7 +63,8 @@ class VerificationController extends Controller
         $request->validate([
             'email' => 'required|exists:users,email',
         ]);
-        $user = User::whereEmail($request->input('email'))->first();
+        $user = User::whereEmail($request->input('email'))->firstOrFail();
+
         abort_if(
             UserService::hasUserVerifiedEmail($user) === true,
             422,

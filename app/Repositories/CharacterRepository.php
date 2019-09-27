@@ -8,7 +8,6 @@
 
 namespace App\Repositories;
 
-
 use App\Entities\Character;
 use App\Entities\Fraction;
 use App\Repositories\Helpers\BaseRepository;
@@ -23,8 +22,10 @@ class CharacterRepository extends BaseRepository
      * @param Fraction|null $fraction
      * @param string $name
      * @param int|null $experience
-     * @param int|null $agility
      * @param int|null $strength
+     * @param int|null $speed
+     * @param int|null $stamina
+     * @param int|null $abilityPoints
      *
      * @return Character
      */
@@ -32,9 +33,11 @@ class CharacterRepository extends BaseRepository
         User $user,
         ?Fraction $fraction,
         string $name,
-        ?int $experience = null,
-        ?int $agility = null,
-        ?int $strength = null
+        int $experience = null,
+        int $strength = null,
+        int $speed = null,
+        int $stamina = null,
+        int $abilityPoints = null
     ) : Character
     {
         $character = new Character();
@@ -44,8 +47,10 @@ class CharacterRepository extends BaseRepository
             Fraction::ID_NORMAL;
         $character->name = $name;
         $character->experience = $experience !== null ? $experience : 0;
-        $character->agility = $agility !== null ? $agility : Character::DEFAULT_AGILITY;
         $character->strength = $strength !== null ? $strength : Character::DEFAULT_STRENGTH;
+        $character->speed = $speed !== null ? $speed : Character::DEFAULT_SPEED;
+        $character->stamina = $stamina !== null ? $stamina : Character::DEFAULT_STAMINA;
+        $character->ability_points = $abilityPoints !== null ? $abilityPoints : Character::DEFAULT_ABILITY_POINTS;
         $character->save();
 
         return $character;
@@ -70,6 +75,9 @@ class CharacterRepository extends BaseRepository
         $character = self::updateField($character, $newFields, 'agility');
         $character = self::updateField($character, $newFields, 'strength');
         $character = self::updateField($character, $newFields, 'experience');
+        $character = self::updateField($character, $newFields, 'stamina');
+        $character = self::updateField($character, $newFields, 'speed');
+        $character = self::updateField($character, $newFields, 'ability_points');
 
         $character->save();
         return $character;

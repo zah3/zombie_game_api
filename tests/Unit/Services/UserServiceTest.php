@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: zachariasz
- * Date: 2019-03-31
- * Time: 21:24
- */
 
 namespace Tests\Feature\Services;
-
 
 use App\Facades\UserService;
 use App\Notifications\VerifyEmail;

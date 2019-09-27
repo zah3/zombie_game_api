@@ -45,8 +45,7 @@ class UserCharacterController extends Controller
         $character = CharacterRepository::create(
             $userCharacterRequest->user(),
             null,
-            $userCharacterRequest->input(['name']),
-            null
+            $userCharacterRequest->input(['name'])
         );
 
         return CharacterResource::make($character);

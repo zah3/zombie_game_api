@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: zachariasz
- * Date: 2019-03-21
- * Time: 18:14
- */
 
 namespace Tests\Unit\Models\Relationships;
-
 
 use App\Entities\Character;
 use App\Entities\Fraction;

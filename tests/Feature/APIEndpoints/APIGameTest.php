@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: zachariasz
- * Date: 2019-08-04
- * Time: 21:41
- */
 
 namespace Tests\Feature\APIEndpoints;
-
 
 use App\Entities\Character;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -26,14 +19,17 @@ class APIGameTest extends TestCase
                 'GET',
                 'api/game/' . $character->id
             );
-
         $character->refresh();
         $response->assertOk()
             ->assertJsonStructure([
                 'data' => [
                     "character_id",
+                    "name",
+                    "username",
                     "experience",
-                    "agility",
+                    "stamina",
+                    "speed",
+                    "ability_points",
                     "strength",
                     "fraction" => [
                         "id",
@@ -49,9 +45,13 @@ class APIGameTest extends TestCase
                 ]
             ])->assertJsonFragment([
                 "character_id" => $character->id,
+                "username" => $character->user->username,
+                "name" => $character->name,
                 "experience" => $character->experience,
-                "agility" => $character->agility,
                 "strength" => $character->strength,
+                "stamina" => $character->stamina,
+                "speed" => $character->speed,
+                "ability_points" => $character->ability_points,
                 "fraction" => [
                     "id" => $character->fraction_id,
                     "name" => $character->fraction->name,
@@ -86,8 +86,10 @@ class APIGameTest extends TestCase
         $dataToUpdate = [
             'fraction_id' => 2,
             'experience' => 2,
-            'agility' => 10,
             'strength' => 10,
+            'stamina' => 10,
+            'speed' => 10,
+            'ability_points' => 21,
             'coordinates' => [
                 'x' => 2,
                 'y' => 2,
@@ -114,8 +116,11 @@ class APIGameTest extends TestCase
                 'data' => [
                     "character_id",
                     "experience",
-                    "agility",
                     "strength",
+                    'strength',
+                    'stamina',
+                    'speed',
+                    'ability_points',
                     "fraction" => [
                         "id",
                         "name",
@@ -131,7 +136,6 @@ class APIGameTest extends TestCase
             ])->assertJsonFragment([
                 "character_id" => $character->id,
                 "experience" => $character->experience,
-                "agility" => $character->agility,
                 "strength" => $character->strength,
                 "fraction" => [
                     "id" => $character->fraction_id,
@@ -154,8 +158,10 @@ class APIGameTest extends TestCase
         $dataToUpdate = [
             'fraction_id' => 3,
             'experience' => 100,
-            'agility' => 103,
             'strength' => 120,
+            'stamina' => 1230,
+            'speed' => 12034,
+            'ability_points' => 12023,
             'coordinates' => [
                 'x' => 22,
                 'y' => 32,
@@ -183,16 +189,20 @@ class APIGameTest extends TestCase
         $character = factory(Character::class)->create([
             'fraction_id' => 3,
             'experience' => 100,
-            'agility' => 103,
-            'strength' => 120,
+            'strength' => 123,
+            'stamina' => 142,
+            'speed' => 152,
+            'ability_points' => 3123,
         ]);
 
         // Experience, agility, strength are less than it was at before
         $dataToUpdate = [
             'fraction_id' => 2,
             'experience' => 2,
-            'agility' => 10,
             'strength' => 10,
+            'speed' => 10,
+            'stamina' => 10,
+            'ability_points' => 10,
             'coordinates' => [
                 'x' => -2.34,
                 'y' => 2,
@@ -208,7 +218,7 @@ class APIGameTest extends TestCase
             );
         $character->refresh();
         $response->assertStatus(422)
-            ->assertJsonValidationErrors(['experience', 'agility', 'strength']);
+            ->assertJsonValidationErrors(['experience', 'experience', 'strength', 'speed', 'stamina']);
 
         // Coordinates should be float
         $dataToUpdate2 = [
@@ -247,7 +257,7 @@ class APIGameTest extends TestCase
                     'is_active' => 1,
                 ],
                 [
-                    'id' => 5,// id has wrong value
+                    'id' => 12,// id has wrong value
                     'is_active' => 1,
                 ],
             ],

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
  * Class LoginValidation
  * @package App\Rules
  */
-class LoginValidation implements Rule
+class LoginValidationRule implements Rule
 {
 
     /**

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Repositories;
-
 
 use App\Entities\Coordinate;
 use App\Repositories\Helpers\BaseRepository;

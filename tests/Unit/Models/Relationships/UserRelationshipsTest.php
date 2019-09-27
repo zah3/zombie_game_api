@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: zachariasz
- * Date: 2019-03-19
- * Time: 08:10
- */
 
 namespace Tests\Unit\Models\Relationships;
-
 
 use App\Entities\{
     Character, Coordinate, PasswordReset, Role, RoleUser, User

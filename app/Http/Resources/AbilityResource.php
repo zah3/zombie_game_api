@@ -19,7 +19,7 @@ class AbilityResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'is_active' => $this->whenPivotLoaded('character_abilities', function () {
-                return boolval($this->pivot->is_active);
+                return $this->pivot->is_active;
             }),
             'created_at' => optional($this->created_at)->toIso8601String(),
             'updated_at' => optional($this->updated_at)->toIso8601String(),
